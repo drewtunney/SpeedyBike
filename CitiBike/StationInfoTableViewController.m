@@ -37,38 +37,40 @@
 //    NSMutableDictionary *md = [stationsList mutableCopy];
 //#warning blocks the main thread
     NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
-    NSArray *individual = [stations valueForKeyPath:@"stationName"];
-    NSLog(@"station list = %@", individual);
+    NSArray *individual = [stations valueForKeyPath:@"availableBikes"];
+    NSLog(@"station list = %@", stations);
     
     self.stations = stations;
 }
 
-//#pragma mark - Table view data source
-//
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-//{
-//    // Return the number of sections.
-//    return 1;
-//}
-//
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-//{
-//    // Return the number of rows in the section.
-//    return [self.stations count];
-//}
+#pragma mark - Table view data source
 
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    // what did you put in the storyboard for the identifier
-//    static NSString *CellIdentifier = @"Station Cell";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-//    
-//    // configure the cells
-//    NSDictionary *stations = self.stations[indexPath.row];
-//    cell.textLabel.text = [stations valueForKeyPath:@"stationBeanList"];
-//    
-//    return cell;
-//}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return [self.stations count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // what did you put in the storyboard for the identifier
+    static NSString *CellIdentifier = @"Station Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    // configure the cells
+    NSDictionary *stations = self.stations[indexPath.row];
+    cell.textLabel.text = [stations valueForKeyPath:@"stationName"];
+    
+    cell.detailTextLabel.text = [stations[@"availableBikes"] stringValue];
+    
+    return cell;
+}
 
 
 
