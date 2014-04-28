@@ -34,25 +34,41 @@
     NSDictionary *stationsList = [NSJSONSerialization JSONObjectWithData:jsonResults
                                                                  options:0
                                                                    error:NULL];
-    NSLog(@"CitiBike Results = %@", stationsList);
+//    NSMutableDictionary *md = [stationsList mutableCopy];
+//#warning blocks the main thread
+    NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
+    NSArray *individual = [stations valueForKeyPath:@"stationName"];
+    NSLog(@"station list = %@", individual);
     
+    self.stations = stations;
 }
 
-#pragma mark - Table view data source
+//#pragma mark - Table view data source
+//
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+//{
+//    // Return the number of sections.
+//    return 1;
+//}
+//
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//{
+//    // Return the number of rows in the section.
+//    return [self.stations count];
+//}
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
-}
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    // what did you put in the storyboard for the identifier
+//    static NSString *CellIdentifier = @"Station Cell";
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+//    
+//    // configure the cells
+//    NSDictionary *stations = self.stations[indexPath.row];
+//    cell.textLabel.text = [stations valueForKeyPath:@"stationBeanList"];
+//    
+//    return cell;
+//}
 
 
 
