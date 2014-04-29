@@ -27,20 +27,26 @@
     [self fetchStations];
 }
 
--(void)fetchStations
+-(IBAction)fetchStations
 {
+    [self.refreshControl beginRefreshing];
     NSURL *url = [NSURL URLWithString:@"http://citibikenyc.com/stations/json"];
-    NSData *jsonResults = [NSData dataWithContentsOfURL:url];
-    NSDictionary *stationsList = [NSJSONSerialization JSONObjectWithData:jsonResults
-                                                                 options:0
-                                                                   error:NULL];
-//    NSMutableDictionary *md = [stationsList mutableCopy];
-//#warning blocks the main thread
-    NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
-    NSArray *individual = [stations valueForKeyPath:@"availableBikes"];
-    NSLog(@"station list = %@", stations);
-    
-    self.stations = stations;
+    // create new queue
+    dispatch_queue_t fetchQ = dispatch_queue_create("station fetcher", NULL);
+    dispatch_async(fetchQ, ^{
+        NSData *jsonResults = [NSData dataWithContentsOfURL:url];
+        NSDictionary *stationsList = [NSJSONSerialization JSONObjectWithData:jsonResults
+                                                                     options:0
+                                                                       error:NULL];
+        NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
+        NSArray *individual = [stations valueForKeyPath:@"availableBikes"];
+        NSLog(@"station list = %@", stations);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // since this is needed for the UI, it needs to be dispatched back to the main queue
+            [self.refreshControl endRefreshing];
+            self.stations = stations;
+        });
+    });
 }
 
 #pragma mark - Table view data source

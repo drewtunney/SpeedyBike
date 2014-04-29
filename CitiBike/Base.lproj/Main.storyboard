@@ -43,6 +43,12 @@
                             <outlet property="delegate" destination="WDa-Qj-1Cu" id="0P6-R2-Ln1"/>
                         </connections>
                     </tableView>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="SGR-Dj-1d5">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <action selector="fetchStations" destination="WDa-Qj-1Cu" eventType="valueChanged" id="GaZ-Mu-SL1"/>
+                        </connections>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XAy-YB-Pfc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
