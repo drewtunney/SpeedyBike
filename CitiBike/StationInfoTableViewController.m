@@ -33,13 +33,13 @@
     NSURL *url = [NSURL URLWithString:@"http://citibikenyc.com/stations/json"];
     // create new queue
     dispatch_queue_t fetchQ = dispatch_queue_create("station fetcher", NULL);
+    // switch to ephemeral fetch. this is in the background right now?
     dispatch_async(fetchQ, ^{
         NSData *jsonResults = [NSData dataWithContentsOfURL:url];
         NSDictionary *stationsList = [NSJSONSerialization JSONObjectWithData:jsonResults
                                                                      options:0
                                                                        error:NULL];
         NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
-        NSArray *individual = [stations valueForKeyPath:@"availableBikes"];
         NSLog(@"station list = %@", stations);
         dispatch_async(dispatch_get_main_queue(), ^{
             // since this is needed for the UI, it needs to be dispatched back to the main queue

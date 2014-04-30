@@ -22,6 +22,7 @@
 		0FE3A6F4190EA23E00CC325A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0FE3A6F2190EA23E00CC325A /* InfoPlist.strings */; };
 		0FE3A6F6190EA23E00CC325A /* CitiBikeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FE3A6F5190EA23E00CC325A /* CitiBikeTests.m */; };
 		0FE3A701190EA2B000CC325A /* StationInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FE3A700190EA2B000CC325A /* StationInfoTableViewController.m */; };
+		0FE3A704190FB2A600CC325A /* StationModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0FE3A702190FB2A600CC325A /* StationModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		0FE3A6F5190EA23E00CC325A /* CitiBikeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CitiBikeTests.m; sourceTree = "<group>"; };
 		0FE3A6FF190EA2B000CC325A /* StationInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationInfoTableViewController.h; sourceTree = "<group>"; };
 		0FE3A700190EA2B000CC325A /* StationInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StationInfoTableViewController.m; sourceTree = "<group>"; };
+		0FE3A703190FB2A600CC325A /* StationModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StationModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				0FE3A6DC190EA23E00CC325A /* Main.storyboard */,
+				0FE3A702190FB2A600CC325A /* StationModel.xcdatamodeld */,
 				0FE3A6FF190EA2B000CC325A /* StationInfoTableViewController.h */,
 				0FE3A700190EA2B000CC325A /* StationInfoTableViewController.m */,
 				0FE3A6DF190EA23E00CC325A /* ViewController.h */,
@@ -255,6 +258,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FE3A701190EA2B000CC325A /* StationInfoTableViewController.m in Sources */,
+				0FE3A704190FB2A600CC325A /* StationModel.xcdatamodeld in Sources */,
 				0FE3A6E1190EA23E00CC325A /* ViewController.m in Sources */,
 				0FE3A6DB190EA23E00CC325A /* AppDelegate.m in Sources */,
 				0FE3A6D7190EA23E00CC325A /* main.m in Sources */,
@@ -472,6 +476,19 @@
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0FE3A702190FB2A600CC325A /* StationModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0FE3A703190FB2A600CC325A /* StationModel.xcdatamodel */,
+			);
+			currentVersion = 0FE3A703190FB2A600CC325A /* StationModel.xcdatamodel */;
+			path = StationModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 0FE3A6BF190EA23E00CC325A /* Project object */;
 }
