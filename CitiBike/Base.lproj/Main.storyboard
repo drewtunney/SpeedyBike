@@ -13,11 +13,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="Station Cell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Station Cell" textLabel="A9d-DL-fCL" detailTextLabel="L0s-si-UOa" style="IBUITableViewCellStyleSubtitle" id="8Ij-eX-psK">
+                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="Station Cell" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Station Cell" textLabel="A9d-DL-fCL" detailTextLabel="L0s-si-UOa" style="IBUITableViewCellStyleSubtitle" id="8Ij-eX-psK">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Ij-eX-psK" id="IsH-Qs-QJE">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="A9d-DL-fCL">
@@ -36,6 +36,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="VYP-G7-5ds" kind="push" id="KKa-OL-fnR"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -53,6 +56,40 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XAy-YB-Pfc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="86" y="38"/>
+        </scene>
+        <!--Map View Controller-->
+        <scene sceneID="esm-HN-YAX">
+            <objects>
+                <viewController id="VYP-G7-5ds" customClass="MapViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="L1g-XD-udb"/>
+                        <viewControllerLayoutGuide type="bottom" id="Qgv-1q-Rmi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yPm-l9-ajd">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="RtY-if-pqW">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="RtY-if-pqW" firstAttribute="top" secondItem="yPm-l9-ajd" secondAttribute="top" id="7EJ-eV-z6I"/>
+                            <constraint firstAttribute="bottom" secondItem="RtY-if-pqW" secondAttribute="bottom" id="UId-dc-JpO"/>
+                            <constraint firstAttribute="trailing" secondItem="RtY-if-pqW" secondAttribute="trailing" id="cda-ve-c2y"/>
+                            <constraint firstItem="RtY-if-pqW" firstAttribute="leading" secondItem="yPm-l9-ajd" secondAttribute="leading" id="n3y-G2-3YE"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="g4T-SL-t8w"/>
+                    <connections>
+                        <outlet property="mapView" destination="RtY-if-pqW" id="4ze-Z6-vLn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0aT-yn-5DZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="594" y="38"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

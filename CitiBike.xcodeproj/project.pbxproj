@@ -23,6 +23,8 @@
 		0FE3A6F6190EA23E00CC325A /* CitiBikeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FE3A6F5190EA23E00CC325A /* CitiBikeTests.m */; };
 		0FE3A701190EA2B000CC325A /* StationInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FE3A700190EA2B000CC325A /* StationInfoTableViewController.m */; };
 		0FE3A704190FB2A600CC325A /* StationModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0FE3A702190FB2A600CC325A /* StationModel.xcdatamodeld */; };
+		0FE3A7071911755600CC325A /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FE3A7061911755600CC325A /* MapViewController.m */; };
+		0FE3A709191177F200CC325A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A708191177F200CC325A /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,9 @@
 		0FE3A6FF190EA2B000CC325A /* StationInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationInfoTableViewController.h; sourceTree = "<group>"; };
 		0FE3A700190EA2B000CC325A /* StationInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StationInfoTableViewController.m; sourceTree = "<group>"; };
 		0FE3A703190FB2A600CC325A /* StationModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StationModel.xcdatamodel; sourceTree = "<group>"; };
+		0FE3A7051911755600CC325A /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		0FE3A7061911755600CC325A /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		0FE3A708191177F200CC325A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FE3A709191177F200CC325A /* MapKit.framework in Frameworks */,
 				0FE3A6CD190EA23E00CC325A /* CoreGraphics.framework in Frameworks */,
 				0FE3A6CF190EA23E00CC325A /* UIKit.framework in Frameworks */,
 				0FE3A6CB190EA23E00CC325A /* Foundation.framework in Frameworks */,
@@ -106,6 +112,7 @@
 		0FE3A6C9190EA23E00CC325A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0FE3A708191177F200CC325A /* MapKit.framework */,
 				0FE3A6CA190EA23E00CC325A /* Foundation.framework */,
 				0FE3A6CC190EA23E00CC325A /* CoreGraphics.framework */,
 				0FE3A6CE190EA23E00CC325A /* UIKit.framework */,
@@ -118,6 +125,8 @@
 			isa = PBXGroup;
 			children = (
 				0FE3A6DC190EA23E00CC325A /* Main.storyboard */,
+				0FE3A7051911755600CC325A /* MapViewController.h */,
+				0FE3A7061911755600CC325A /* MapViewController.m */,
 				0FE3A702190FB2A600CC325A /* StationModel.xcdatamodeld */,
 				0FE3A6FF190EA2B000CC325A /* StationInfoTableViewController.h */,
 				0FE3A700190EA2B000CC325A /* StationInfoTableViewController.m */,
@@ -260,6 +269,7 @@
 				0FE3A701190EA2B000CC325A /* StationInfoTableViewController.m in Sources */,
 				0FE3A704190FB2A600CC325A /* StationModel.xcdatamodeld in Sources */,
 				0FE3A6E1190EA23E00CC325A /* ViewController.m in Sources */,
+				0FE3A7071911755600CC325A /* MapViewController.m in Sources */,
 				0FE3A6DB190EA23E00CC325A /* AppDelegate.m in Sources */,
 				0FE3A6D7190EA23E00CC325A /* main.m in Sources */,
 			);
