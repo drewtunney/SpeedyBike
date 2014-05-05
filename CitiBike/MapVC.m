@@ -23,6 +23,9 @@
 
 
 - (void)viewDidLoad {
+    
+      NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    self.getStations = [NSURLSession sessionWithConfiguration:config];
 
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:40.7127
                                                             longitude:-74.0059
@@ -37,6 +40,25 @@
     marker.snippet = @"New York";
     marker.map = mapView_;
     
+    [self downloadStationData:nil];
+    
+}
+
+- (void)downloadStationData:(id)sender
+{
+    NSURL *url = [NSURL URLWithString:@"http://citibikenyc.com/stations/json"];
+    
+    NSURLSessionDataTask *task = [self.getStations dataTaskWithURL:url completionHandler:^ (NSData *data, NSURLResponse *response, NSError *error)
+    {
+        NSData *jsonResults = [NSData dataWithContentsOfURL:url];
+        NSDictionary *stationsList = [NSJSONSerialization JSONObjectWithData:jsonResults
+                                                                    options:0
+                                                                       error:NULL];
+        NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
+        NSLog(@"station list = %@", stations);
+        
+    }];
+    [task resume];
 }
 
 //-(IBAction)fetchStations
