@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>96B654C8-74A1-4934-B01B-7953B983F543</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CitiBike</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>BF64E9EC-B8AD-4627-A90C-F7209849B5CC</key>
+		<string>ssh://github.com/drewtunney/CitiBike-iOS7.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>CitiBike.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>BF64E9EC-B8AD-4627-A90C-F7209849B5CC</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/drewtunney/CitiBike-iOS7.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>BF64E9EC-B8AD-4627-A90C-F7209849B5CC</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>BF64E9EC-B8AD-4627-A90C-F7209849B5CC</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CitiBike</string>
+		</dict>
+	</array>
+</dict>
+</plist>

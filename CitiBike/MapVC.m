@@ -9,33 +9,57 @@
 #import "MapVC.h"
 #import <GoogleMaps/GoogleMaps.h>
 
-@interface MapVC ()
+@interface MapVC () <GMSMapViewDelegate>
+
+@property(strong, nonatomic) NSURLSession *getStations;
+@property(strong, nonatomic) NSSet *markers;
 
 @end
 
 @implementation MapVC {
+    // TODO: make this a property
     GMSMapView *mapView_;
 }
 
+
 - (void)viewDidLoad {
-    NSLog(@"Current identifier: %@", [[NSBundle mainBundle] bundleIdentifier]);
-    
-    // Create a GMSCameraPosition that tells the map to display the
-    // coordinate -33.86,151.20 at zoom level 6.
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
-                                                            longitude:151.20
-                                                                 zoom:6];
+
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:40.7127
+                                                            longitude:-74.0059
+                                                                 zoom:12];
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     mapView_.myLocationEnabled = YES;
     self.view = mapView_;
     
-    // Creates a marker in the center of the map.
     GMSMarker *marker = [[GMSMarker alloc] init];
-    marker.position = CLLocationCoordinate2DMake(-33.86, 151.20);
-    marker.title = @"Sydney";
-    marker.snippet = @"Australia";
+    marker.position = CLLocationCoordinate2DMake(40.7127, -74.0059);
+    marker.title = @"New York";
+    marker.snippet = @"New York";
     marker.map = mapView_;
+    
 }
+
+//-(IBAction)fetchStations
+//{
+////    [self.refreshControl beginRefreshing];
+//    NSURL *url = [NSURL URLWithString:@"http://citibikenyc.com/stations/json"];
+//    // create new queue
+//    dispatch_queue_t fetchQ = dispatch_queue_create("station fetcher", NULL);
+//    // switch to ephemeral fetch. this is in the background right now?
+//    dispatch_async(fetchQ, ^{
+//        NSData *jsonResults = [NSData dataWithContentsOfURL:url];
+//        NSDictionary *stationsList = [NSJSONSerialization JSONObjectWithData:jsonResults
+//                                                                     options:0
+//                                                                       error:NULL];
+//        NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
+//        NSLog(@"station list = %@", stations);
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            // since this is needed for the UI, it needs to be dispatched back to the main queue
+////            [self.refreshControl endRefreshing];
+//            self.stations = stations;
+//        });
+//    });
+//}
 
 
 @end
