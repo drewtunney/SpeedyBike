@@ -8,16 +8,17 @@
 
 #import "MapVC.h"
 #import <GoogleMaps/GoogleMaps.h>
+#import "StationMarker.h"
 
 @interface MapVC () <GMSMapViewDelegate>
 
 @property(strong, nonatomic) NSURLSession *getStations;
 @property(strong, nonatomic) NSSet *markers;
 
+
 @end
 
 @implementation MapVC {
-    // TODO: make this a property
     GMSMapView *mapView_;
 }
 
@@ -27,17 +28,21 @@
       NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     self.getStations = [NSURLSession sessionWithConfiguration:config];
 
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:40.7127
-                                                            longitude:-74.0059
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:37.7833
+                                                            longitude:-122.4167
                                                                  zoom:12];
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     mapView_.myLocationEnabled = YES;
+    mapView_.settings.myLocationButton = YES;
     self.view = mapView_;
+    mapView_.delegate = self;
+
     
     GMSMarker *marker = [[GMSMarker alloc] init];
     marker.position = CLLocationCoordinate2DMake(40.7127, -74.0059);
     marker.title = @"New York";
     marker.snippet = @"New York";
+    marker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
     marker.map = mapView_;
     
     [self downloadStationData:nil];
@@ -50,37 +55,41 @@
     
     NSURLSessionDataTask *task = [self.getStations dataTaskWithURL:url completionHandler:^ (NSData *data, NSURLResponse *response, NSError *error)
     {
-        NSData *jsonResults = [NSData dataWithContentsOfURL:url];
-        NSDictionary *stationsList = [NSJSONSerialization JSONObjectWithData:jsonResults
+        NSArray *stationsList = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
                                                                        error:NULL];
-        NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
-        NSLog(@"station list = %@", stations);
-        
+        NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"]; 
+        self.stations = stations;
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+            [self createMarkerObjectsWithJson:stationsList];
+        }];
     }];
     [task resume];
 }
 
-//-(IBAction)fetchStations
+- (void)createMarkerObjectsWithJson:(NSArray *)markers
+{
+
+    StationMarker *newMarker = [[StationMarker alloc] init];
+    newMarker.title = [self.stations valueForKeyPath:@"availableBikes"];
+    NSLog(@"title = %@", self.stations);
+}
+
+#pragma mark - GMSMapViewDelegate
+
+- (void)mapView:(GMSMapView *)mapView_
+didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
+    NSLog(@"You tapped at %f,%f", coordinate.latitude, coordinate.longitude);
+}
+
+//-(float)kilometresBetweenPlace1:(CLLocationCoordinate2D) currentLocation andPlace2:(CLLocationCoordinate2D) place2
 //{
-////    [self.refreshControl beginRefreshing];
-//    NSURL *url = [NSURL URLWithString:@"http://citibikenyc.com/stations/json"];
-//    // create new queue
-//    dispatch_queue_t fetchQ = dispatch_queue_create("station fetcher", NULL);
-//    // switch to ephemeral fetch. this is in the background right now?
-//    dispatch_async(fetchQ, ^{
-//        NSData *jsonResults = [NSData dataWithContentsOfURL:url];
-//        NSDictionary *stationsList = [NSJSONSerialization JSONObjectWithData:jsonResults
-//                                                                     options:0
-//                                                                       error:NULL];
-//        NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
-//        NSLog(@"station list = %@", stations);
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            // since this is needed for the UI, it needs to be dispatched back to the main queue
-////            [self.refreshControl endRefreshing];
-//            self.stations = stations;
-//        });
-//    });
+//    CLLocation *userLoc = [[CLLocation alloc] initWithLatitude:currentLocation.latitude longitude:currentLocation.longitude];
+//    CLLocation *poiLoc = [[CLLocation alloc] initWithLatitude:place2.latitude longitude:place2.longitude];
+//    CLLocationDistance dist = [userLoc getDistanceFrom:poiLoc]/(1000*distance);
+//    NSString *strDistance = [NSString stringWithFormat:@"%.2f", dist];
+//    NSLog(@"%@",strDistance);
+//    return [strDistance floatValue];
 //}
 
 

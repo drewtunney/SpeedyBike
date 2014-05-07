@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F6F1DF31917E78C007846F8 /* StationMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F6F1DF21917E78C007846F8 /* StationMarker.m */; };
 		0FE3A6CB190EA23E00CC325A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A6CA190EA23E00CC325A /* Foundation.framework */; };
 		0FE3A6CD190EA23E00CC325A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A6CC190EA23E00CC325A /* CoreGraphics.framework */; };
 		0FE3A6CF190EA23E00CC325A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A6CE190EA23E00CC325A /* UIKit.framework */; };
@@ -50,6 +51,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F6F1DF11917E78C007846F8 /* StationMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationMarker.h; sourceTree = "<group>"; };
+		0F6F1DF21917E78C007846F8 /* StationMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StationMarker.m; sourceTree = "<group>"; };
 		0FE3A6C7190EA23E00CC325A /* CitiBike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CitiBike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FE3A6CA190EA23E00CC325A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0FE3A6CC190EA23E00CC325A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -126,6 +129,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0F6F1DF41918E36F007846F8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0F6F1DF11917E78C007846F8 /* StationMarker.h */,
+				0F6F1DF21917E78C007846F8 /* StationMarker.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		0FE3A6BE190EA23E00CC325A = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +193,7 @@
 				0FE3A700190EA2B000CC325A /* StationInfoTableViewController.m */,
 				0FE3A6E2190EA23E00CC325A /* Images.xcassets */,
 				0FE3A702190FB2A600CC325A /* StationModel.xcdatamodeld */,
+				0F6F1DF41918E36F007846F8 /* Models */,
 				0FE3A6D1190EA23E00CC325A /* Supporting Files */,
 			);
 			path = CitiBike;
@@ -317,6 +330,7 @@
 			files = (
 				0FE3A70C1914147700CC325A /* MapVC.m in Sources */,
 				0FE3A701190EA2B000CC325A /* StationInfoTableViewController.m in Sources */,
+				0F6F1DF31917E78C007846F8 /* StationMarker.m in Sources */,
 				0FE3A704190FB2A600CC325A /* StationModel.xcdatamodeld in Sources */,
 				0FE3A6DB190EA23E00CC325A /* AppDelegate.m in Sources */,
 				0FE3A6D7190EA23E00CC325A /* main.m in Sources */,

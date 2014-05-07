@@ -10,4 +10,22 @@
 
 @implementation StationMarker
 
+- (BOOL)isEqual:(id)object {
+    StationMarker *otherMarker = (StationMarker *)object;
+    
+    if ([otherMarker isKindOfClass:[StationMarker class]]) {
+        
+        if(self.objectID == otherMarker.objectID) {
+            return YES;
+        }
+        
+    }
+    
+    return NO;
+}
+
+- (NSUInteger)hash {
+    return [self.objectID hash];
+}
+
 @end

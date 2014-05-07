@@ -10,5 +10,6 @@
 
 @interface MapVC : UIViewController
 
+@property (strong, nonatomic) NSArray *stations;
 
 @end

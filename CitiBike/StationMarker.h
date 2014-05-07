@@ -10,4 +10,6 @@
 
 @interface StationMarker : GMSMarker
 
+@property (nonatomic, copy)NSString *objectID;
+
 @end
