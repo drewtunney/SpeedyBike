@@ -49,6 +49,25 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Implement here to check if already KVO is implemented.
+
+    [self.view addObserver:self forKeyPath:@"myLocation" options:NSKeyValueObservingOptionNew context: nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"myLocation"] && [object isKindOfClass:[GMSMapView class]])
+    {
+        [mapView_ animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:mapView_.myLocation.coordinate.latitude
+                                                                                 longitude:mapView_.myLocation.coordinate.longitude
+                                                                                      zoom:15]];
+    }
+}
+
 - (void)downloadStationData:(id)sender
 {
     NSURL *url = [NSURL URLWithString:@"http://citibikenyc.com/stations/json"];
@@ -58,7 +77,8 @@
         NSArray *stationsList = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
                                                                        error:NULL];
-        NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"]; 
+        NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
+        NSLog(@"Current Location = %@", mapView_.myLocation);
         self.stations = stations;
         [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
             [self createMarkerObjectsWithJson:stationsList];
@@ -81,16 +101,6 @@
 didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
     NSLog(@"You tapped at %f,%f", coordinate.latitude, coordinate.longitude);
 }
-
-//-(float)kilometresBetweenPlace1:(CLLocationCoordinate2D) currentLocation andPlace2:(CLLocationCoordinate2D) place2
-//{
-//    CLLocation *userLoc = [[CLLocation alloc] initWithLatitude:currentLocation.latitude longitude:currentLocation.longitude];
-//    CLLocation *poiLoc = [[CLLocation alloc] initWithLatitude:place2.latitude longitude:place2.longitude];
-//    CLLocationDistance dist = [userLoc getDistanceFrom:poiLoc]/(1000*distance);
-//    NSString *strDistance = [NSString stringWithFormat:@"%.2f", dist];
-//    NSLog(@"%@",strDistance);
-//    return [strDistance floatValue];
-//}
 
 
 @end
