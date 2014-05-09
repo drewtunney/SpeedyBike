@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface MapVC : UIViewController
+@interface MapVC : UIViewController<CLLocationManagerDelegate>
 
 @property (strong, nonatomic) NSArray *stations;
 
