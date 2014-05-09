@@ -11,5 +11,7 @@
 @interface StationMarker : GMSMarker
 
 @property (nonatomic, copy)NSString *objectID;
+@property (strong, nonatomic) NSString *stationId;
+@property (strong, nonatomic) NSString *location;
 
 @end

@@ -25,7 +25,7 @@
 
 - (void)viewDidLoad {
     
-      NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     self.getStations = [NSURLSession sessionWithConfiguration:config];
 
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:37.7833
@@ -39,13 +39,12 @@
 
     
     GMSMarker *marker = [[GMSMarker alloc] init];
-    marker.position = CLLocationCoordinate2DMake(40.7127, -74.0059);
-    marker.title = @"New York";
+    marker.position = CLLocationCoordinate2DMake(40.75968085, -73.97031366);
+    marker.title = @"E 55 St & Lexington Ave";
     marker.snippet = @"New York";
     marker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
     marker.map = mapView_;
     
-    [self downloadStationData:nil];
     
 }
 
@@ -53,7 +52,7 @@
 {
     [super viewWillAppear:animated];
     
-    // Implement here to check if already KVO is implemented.
+    // Implement here to check if KVO is already implemented.
 
     [self.view addObserver:self forKeyPath:@"myLocation" options:NSKeyValueObservingOptionNew context: nil];
 }
@@ -64,7 +63,7 @@
     {
         [mapView_ animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:mapView_.myLocation.coordinate.latitude
                                                                                  longitude:mapView_.myLocation.coordinate.longitude
-                                                                                      zoom:15]];
+                                                                                      zoom:13]];
     }
 }
 
@@ -90,9 +89,22 @@
 - (void)createMarkerObjectsWithJson:(NSArray *)markers
 {
 
-    StationMarker *newMarker = [[StationMarker alloc] init];
-    newMarker.title = [self.stations valueForKeyPath:@"availableBikes"];
-    NSLog(@"title = %@", self.stations);
+//    StationMarker *newMarker = [[StationMarker alloc] init];
+    for (StationMarker *obj in self.stations)
+    {
+        if ([[obj valueForKeyPath:@"availableBikes"]intValue] > 1) {
+            GMSMarker *marker = [[GMSMarker alloc] init];
+            marker.position = CLLocationCoordinate2DMake([[obj valueForKeyPath:@"latitude"]floatValue], [[obj valueForKeyPath:@"longitude"]floatValue]);
+            NSLog(@"latitude %f", [[obj valueForKeyPath:@"latitude"]floatValue]);
+            marker.title = [obj valueForKeyPath:@"stAddress1"];
+            marker.snippet = [[obj valueForKeyPath:@"availableBikes"] stringValue];
+            marker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
+            marker.map = mapView_;
+        }
+        else {
+//            NSLog(@"No Bikes at %@ %@", [obj valueForKeyPath:@"availableBikes"],[obj valueForKeyPath:@"stAddress1"]);
+        }
+    }
 }
 
 #pragma mark - GMSMapViewDelegate
@@ -100,6 +112,7 @@
 - (void)mapView:(GMSMapView *)mapView_
 didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
     NSLog(@"You tapped at %f,%f", coordinate.latitude, coordinate.longitude);
+    [self downloadStationData:nil];
 }
 
 
