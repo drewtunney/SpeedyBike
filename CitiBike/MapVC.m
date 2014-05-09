@@ -10,6 +10,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import "StationMarker.h"
 #import "AppDelegate.h"
+#import "LocationsViewController.h"
 
 @interface MapVC () <GMSMapViewDelegate>
 
@@ -21,6 +22,7 @@
 @property (nonatomic) CGFloat latitude;
 @property (nonatomic) CGFloat longitude;
 @property (strong, nonatomic) UIButton *button;
+@property (strong, nonatomic) NSString *location;
 
 
 
@@ -208,9 +210,18 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
 {
     NSLog(@"Tapped Button");
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController *locationsViewController = [storyBoard instantiateViewControllerWithIdentifier:@"LocationsViewController"];
+    LocationsViewController *locationsViewController = [storyBoard instantiateViewControllerWithIdentifier:@"LocationsViewController"];
+    locationsViewController.latitude = self.latitude;
+    locationsViewController.longitude = self.longitude;
+    locationsViewController.locationDelegate = self;
     [self presentViewController:locationsViewController animated:YES completion:nil];
     
+}
+
+-(void)secondViewControllerDismissed:(NSString *)locationStringForMap
+{
+    self.location = locationStringForMap;
+    NSLog(@"%@", self.location);
 }
 
 

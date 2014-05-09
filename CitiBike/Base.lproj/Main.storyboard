@@ -104,6 +104,7 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="ySC-87-jMp" id="QhE-E2-HAA"/>
+                        <outlet property="textField" destination="ENA-Ac-alF" id="69N-a5-APU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XUn-fd-bwm" userLabel="First Responder" sceneMemberID="firstResponder"/>
