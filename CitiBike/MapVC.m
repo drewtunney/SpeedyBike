@@ -9,6 +9,7 @@
 #import "MapVC.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import "StationMarker.h"
+#import "AppDelegate.h"
 
 @interface MapVC () <GMSMapViewDelegate>
 
@@ -19,6 +20,8 @@
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (nonatomic) CGFloat latitude;
 @property (nonatomic) CGFloat longitude;
+@property (strong, nonatomic) UIButton *button;
+
 
 
 @end
@@ -30,7 +33,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self startDeterminingUserLocation];
+    
+    [self.button removeFromSuperview];
     
     // Implement here to check if KVO is already implemented.
     
@@ -39,10 +43,11 @@
 
 - (void)viewDidLoad {
     
+    [self startDeterminingUserLocation];
+    
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     self.getStations = [NSURLSession sessionWithConfiguration:config];
 
-#warning set to current location
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:mapView_.myLocation.coordinate.latitude
                                                             longitude:mapView_.myLocation.coordinate.longitude
                                                                  zoom:16];
@@ -51,8 +56,6 @@
     mapView_.settings.myLocationButton = YES;
     self.view = mapView_;
     mapView_.delegate = self;
-
-#warning set markers for nearest stations
     
 }
 
@@ -163,6 +166,7 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
     self.latitude = coordinate.latitude;
     self.longitude = coordinate.longitude;
     [self downloadStationData:nil];
+    [self.button removeFromSuperview];
 }
 
 -(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView{
@@ -173,6 +177,40 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
     self.longitude = mapView.myLocation.coordinate.longitude;
      [self downloadStationData:nil];
     return YES;
+}
+
+-(BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker{
+    [mapView setSelectedMarker:marker];
+    NSLog(@"%f, %f", marker.position.latitude, marker.position.longitude);
+    [self showDestinationTextbox];
+    
+    return YES;
+}
+
+-(void)showDestinationTextbox
+
+{
+    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    NSLog(@"%f", appDelegate.window.frame.size.width);
+  
+    self.button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.button setFrame:CGRectMake(self.view.frame.origin.x+10, self.view.frame.origin.y + 50,appDelegate.window.frame.size.width-20, 30.0f)];
+    [self.button setTitle:@"Set Destination" forState:UIControlStateNormal];
+    [self.button.titleLabel setTextColor:[UIColor blackColor]];
+    self.button.backgroundColor = [UIColor whiteColor];
+    [self.button addTarget:self action:@selector(didTapDestinationButton) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.button];
+    
+    
+}
+
+-(void)didTapDestinationButton
+{
+    NSLog(@"Tapped Button");
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *locationsViewController = [storyBoard instantiateViewControllerWithIdentifier:@"LocationsViewController"];
+    [self presentViewController:locationsViewController animated:YES completion:nil];
+    
 }
 
 
