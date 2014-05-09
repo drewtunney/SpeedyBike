@@ -11,6 +11,7 @@
 #import "StationMarker.h"
 #import "AppDelegate.h"
 #import "LocationsViewController.h"
+#import "Constants.h"
 
 @interface MapVC () <GMSMapViewDelegate>
 
@@ -21,8 +22,13 @@
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (nonatomic) CGFloat latitude;
 @property (nonatomic) CGFloat longitude;
+@property (nonatomic) CGFloat directionsOriginLatitude;
+@property (nonatomic) CGFloat directionsOriginLongitude;
+@property (nonatomic) CGFloat directionsDestinationLatitude;
+@property (nonatomic) CGFloat directionsDestinationLongitude;
 @property (strong, nonatomic) UIButton *button;
 @property (strong, nonatomic) NSString *location;
+@property (strong, nonatomic) GMSPolyline *directionsLine;
 
 
 
@@ -181,8 +187,11 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
     return YES;
 }
 
--(BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker{
+-(BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
+{
     [mapView setSelectedMarker:marker];
+    self.directionsOriginLatitude = marker.position.latitude;
+    self.directionsOriginLongitude = marker.position.longitude;
     NSLog(@"%f, %f", marker.position.latitude, marker.position.longitude);
     [self showDestinationTextbox];
     
@@ -221,8 +230,66 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
 -(void)secondViewControllerDismissed:(NSString *)locationStringForMap
 {
     self.location = locationStringForMap;
+    [self getCoordinatesForLocationForDestination:[self.location stringByReplacingOccurrencesOfString:@" " withString:@"+"]];
     NSLog(@"%@", self.location);
 }
+
+-(void)getDirectionFromBikeDock
+{
+
+   // NSString *URLformattedDestination = [self.location stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    
+    //URLformattedDestination = [URLformattedDestination stringByReplacingOccurrencesOfString:@"," withString:@"-"];
+    
+    NSString *directionsURL = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&sensor=false&key=%@&avoid=ferries&mode=bicycling", self.directionsOriginLatitude, self.directionsOriginLongitude,self.directionsDestinationLatitude, self.directionsDestinationLongitude,Web_Browser_Key];
+    NSURL *url = [NSURL URLWithString:directionsURL];
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    [[session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSDictionary *JSONResponseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        NSLog(@"%@", JSONResponseDict);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+           
+            GMSPath *path = [GMSPath pathFromEncodedPath:JSONResponseDict[@"routes"][0][@"overview_polyline"][@"points"]];
+            self.directionsLine = [GMSPolyline polylineWithPath:path];
+            self.directionsLine.strokeWidth = 7;
+            self.directionsLine.strokeColor = [UIColor greenColor];
+            self.directionsLine.map = mapView_;
+
+        });
+               //NSLog(@"%@", JSONResponseDict[@"predictions"][0][@"description"]);
+                NSLog(@"%@", error);
+    }]resume];
+
+}
+
+-(void)getCoordinatesForLocationForDestination:(NSString *)location
+{
+#warning investigate call response for unknown addresses e.g. Warby Parker, Apple SoHo etc. 
+    
+    NSString*urlString = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/geocode/json?address=%@&sensor=true&key=%@", location, Web_Browser_Key];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    [[session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSDictionary *JSONResponseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        
+       // NSLog(@"%@", JSONResponseDict);
+        
+        NSLog(@"%@", JSONResponseDict);
+        self.directionsDestinationLatitude = [JSONResponseDict[@"results"][0][@"geometry"][@"location"][@"lat"] floatValue];
+        self.directionsDestinationLongitude = [JSONResponseDict[@"results"][0][@"geometry"][@"location"][@"lng"] floatValue];
+        NSLog(@"Given coordinates: %f, %f", self.directionsDestinationLatitude, self.directionsDestinationLongitude);
+        
+        [self getDirectionFromBikeDock];
+        //NSLog(@"%@", JSONResponseDict);
+        
+        NSLog(@"%@", error);
+    }]resume];
+}
+
 
 
 @end
