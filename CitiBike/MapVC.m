@@ -92,7 +92,7 @@
 //    StationMarker *newMarker = [[StationMarker alloc] init];
     for (StationMarker *obj in self.stations)
     {
-        if ([[obj valueForKeyPath:@"availableBikes"]intValue] > 1) {
+        if ([[obj valueForKeyPath:@"availableBikes"]intValue] > 10) {
             GMSMarker *marker = [[GMSMarker alloc] init];
             marker.position = CLLocationCoordinate2DMake([[obj valueForKeyPath:@"latitude"]floatValue], [[obj valueForKeyPath:@"longitude"]floatValue]);
             NSLog(@"latitude %f", [[obj valueForKeyPath:@"latitude"]floatValue]);
@@ -106,6 +106,11 @@
         }
     }
 }
+
+//- (void)calculateDistance:(float *)lat1, (float *)lat2, (float *)lon1, (float *)lon2
+//{
+//    
+//}
 
 #pragma mark - GMSMapViewDelegate
 
