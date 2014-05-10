@@ -69,7 +69,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectedLocation = self.responseDictArray[indexPath.row][@"description"];
+    self.selectedLocation = self.responseDictArray[indexPath.row][@"reference"];
     if ([self.locationDelegate respondsToSelector:@selector(secondViewControllerDismissed:)]) {
         [self.locationDelegate secondViewControllerDismissed:self.selectedLocation];
     }
@@ -91,7 +91,7 @@
 - (IBAction)routeButtonTapped:(id)sender
 {
     if ([self.responseDictArray count] > 0) {
-        self.selectedLocation = self.responseDictArray[0][@"description"];
+        self.selectedLocation = self.responseDictArray[0][@"reference"];
         if ([self.locationDelegate respondsToSelector:@selector(secondViewControllerDismissed:)]) {
             [self.locationDelegate secondViewControllerDismissed:self.selectedLocation];
         }
@@ -109,7 +109,7 @@
 {
     self.responseDictArray = [[NSMutableArray alloc]init];
     
-    NSString *searchString = [textInput stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+    NSString *searchString = [textInput stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     
     NSString *urlString = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/autocomplete/json?input=%@&location=%f,%f&radius=17000&sensor=true&key=%@", searchString, self.latitude, self.longitude, Web_Browser_Key];
     
@@ -122,6 +122,7 @@
         
         //NSLog(@"%@", JSONResponseDict[@"predictions"][0][@"description"]);
         for (NSDictionary *location in JSONResponseDict[@"predictions"]) {
+            
             [self.responseDictArray addObject:location];
         }
         NSLog(@"%@", error);

@@ -27,7 +27,7 @@
 @property (nonatomic) CGFloat directionsDestinationLatitude;
 @property (nonatomic) CGFloat directionsDestinationLongitude;
 @property (strong, nonatomic) UIButton *button;
-@property (strong, nonatomic) NSString *location;
+@property (strong, nonatomic) NSString *locationReference;
 @property (strong, nonatomic) GMSPolyline *directionsLine;
 
 
@@ -227,11 +227,10 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
     
 }
 
--(void)secondViewControllerDismissed:(NSString *)locationStringForMap
+-(void)secondViewControllerDismissed:(NSString *)locationReferenceStringForMap
 {
-    self.location = locationStringForMap;
-    [self getCoordinatesForLocationForDestination:[self.location stringByReplacingOccurrencesOfString:@" " withString:@"+"]];
-    NSLog(@"%@", self.location);
+    [self getAddressForLocationReferenceID:locationReferenceStringForMap];
+    //NSLog(@"%@", self.location);
 }
 
 -(void)getDirectionFromBikeDock
@@ -247,7 +246,7 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
     
     [[session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSDictionary *JSONResponseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-        NSLog(@"%@", JSONResponseDict);
+        //NSLog(@"%@", JSONResponseDict);
         
         dispatch_async(dispatch_get_main_queue(), ^{
            
@@ -264,11 +263,10 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
 
 }
 
--(void)getCoordinatesForLocationForDestination:(NSString *)location
+-(void)getCoordinatesForLocationForDestination:(NSString *)address
 {
-#warning investigate call response for unknown addresses e.g. Warby Parker, Apple SoHo etc. 
     
-    NSString*urlString = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/geocode/json?address=%@&sensor=true&key=%@", location, Web_Browser_Key];
+    NSString*urlString = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/geocode/json?address=%@&sensor=true&key=%@", address, Web_Browser_Key];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLSession *session = [NSURLSession sharedSession];
@@ -278,16 +276,39 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
         
        // NSLog(@"%@", JSONResponseDict);
         
-        NSLog(@"%@", JSONResponseDict);
+        //NSLog(@"%@", JSONResponseDict);
         self.directionsDestinationLatitude = [JSONResponseDict[@"results"][0][@"geometry"][@"location"][@"lat"] floatValue];
         self.directionsDestinationLongitude = [JSONResponseDict[@"results"][0][@"geometry"][@"location"][@"lng"] floatValue];
-        NSLog(@"Given coordinates: %f, %f", self.directionsDestinationLatitude, self.directionsDestinationLongitude);
+       // NSLog(@"Given coordinates: %f, %f", self.directionsDestinationLatitude, self.directionsDestinationLongitude);
         
         [self getDirectionFromBikeDock];
         //NSLog(@"%@", JSONResponseDict);
         
         NSLog(@"%@", error);
     }]resume];
+}
+
+-(void)getAddressForLocationReferenceID:(NSString *)ID
+{
+    
+    NSString*urlString = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/json?reference=%@&sensor=true&key=%@", ID, Web_Browser_Key];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    [[session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSDictionary *JSONResponseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        
+        NSString *streetNumber = JSONResponseDict[@"result"][@"address_components"][0][@"long_name"];
+        NSString *streetName = JSONResponseDict[@"result"][@"address_components"][1][@"long_name"];
+        NSString *zipCode = [((NSArray *) JSONResponseDict[@"result"][@"address_components"])lastObject][@"long_name"];
+        NSString *fullAddress = [NSString stringWithFormat:@"%@+%@+%@", streetNumber, streetName, zipCode];
+        fullAddress = [fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        [self getCoordinatesForLocationForDestination:fullAddress];
+        
+        NSLog(@"%@", error);
+    }]resume];
+
 }
 
 
