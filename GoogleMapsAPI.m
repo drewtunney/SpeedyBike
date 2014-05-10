@@ -57,6 +57,9 @@
         NSString *fullAddress = [NSString stringWithFormat:@"%@+%@+%@", streetNumber, streetName, zipCode];
         fullAddress = [fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];
 
+        if ([streetNumber isEqualToString:@"New York"]) {
+            fullAddress = [JSONResponseDict[@"result"][@"name"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        }
         NSLog(@"%@", error);
         
         completion(fullAddress);
