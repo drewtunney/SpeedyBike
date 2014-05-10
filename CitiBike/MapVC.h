@@ -12,6 +12,4 @@
 
 @interface MapVC : UIViewController<CLLocationManagerDelegate, SecondDelegate, UIAlertViewDelegate>
 
-
-
 @end

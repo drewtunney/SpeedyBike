@@ -8,16 +8,18 @@
 
 #import <UIKit/UIKit.h>
 @protocol SecondDelegate <NSObject>
+
 -(void)secondViewControllerDismissed:(NSString *)locationStringForMap;
+
 @end
 
 @interface LocationsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 {
     id locationDelegate;
 }
+
 @property (nonatomic) CGFloat latitude;
 @property (nonatomic) CGFloat longitude;
 @property (nonatomic, assign) id<SecondDelegate> locationDelegate;
-
 
 @end

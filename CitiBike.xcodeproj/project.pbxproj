@@ -195,9 +195,9 @@
 		0FE3A6D0190EA23E00CC325A /* CitiBike */ = {
 			isa = PBXGroup;
 			children = (
+				0FE3A6DC190EA23E00CC325A /* Main.storyboard */,
 				45CA2101191D73090098A536 /* Constants.h */,
 				45CA2102191D73090098A536 /* Constants.m */,
-				0FE3A6DC190EA23E00CC325A /* Main.storyboard */,
 				45CA20FB191D5A380098A536 /* LocationsViewController.h */,
 				45CA20FC191D5A380098A536 /* LocationsViewController.m */,
 				0FE3A70A1914147700CC325A /* MapVC.h */,

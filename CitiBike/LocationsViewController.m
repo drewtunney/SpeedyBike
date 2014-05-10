@@ -19,10 +19,10 @@
 @property (strong, nonatomic) NSMutableArray *responseDictArray;
 @property (strong, nonatomic) NSString *selectedLocation;
 
-
 @end
 
 @implementation LocationsViewController
+
 @synthesize locationDelegate = _locationDelegate;
 
 - (void)viewDidLoad
@@ -36,6 +36,7 @@
 {
     return 1;
 }
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [self.responseDictArray count];
@@ -49,7 +50,6 @@
     
     return cell;
 }
-
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -74,7 +74,6 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
-        
     }];
 }
 
@@ -91,8 +90,6 @@
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"No locations found" message:@"There are no locations matching you search query" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
     }
-    
-    
 }
 
 @end

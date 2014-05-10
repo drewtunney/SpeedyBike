@@ -17,7 +17,6 @@
 
 @interface MapVC () <GMSMapViewDelegate>
 
-
 @property(strong, nonatomic) NSSet *markers;
 @property (strong, nonatomic) NSMutableArray *closestStations;
 @property (strong, nonatomic) CLLocation *currentLocation;
@@ -33,8 +32,6 @@
 @property (nonatomic) BOOL isRouting;
 @property (strong, nonatomic) UIAlertView *cancelRouteAlert;
 
-
-
 @end
 
 @implementation MapVC {
@@ -47,8 +44,8 @@
     [self.button removeFromSuperview];
 }
 
-- (void)viewDidLoad {
-    
+- (void)viewDidLoad
+{
     [self startDeterminingUserLocation];
     self.isRouting = NO;
     self.cancelRouteAlert = [[UIAlertView alloc]initWithTitle:@"Cancel Route" message:@"Would you like to cancel your current route and clear the map?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
@@ -62,7 +59,6 @@
     mapView_.settings.myLocationButton = YES;
     self.view = mapView_;
     mapView_.delegate = self;
-    
 }
 
 -(void)startDeterminingUserLocation
@@ -119,7 +115,6 @@
     self.closestStations = [CitiBikeAPI findNearestStationsforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
 }
 
-
 -(void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
     [self.button removeFromSuperview];
@@ -135,7 +130,8 @@
     }
 }
 
--(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView{
+-(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView
+{
     if (self.isRouting) {
         [mapView animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:mapView.myLocation.coordinate.latitude
                                                                      longitude:mapView.myLocation.coordinate.longitude
@@ -150,7 +146,6 @@
     self.longitude = mapView.myLocation.coordinate.longitude;
     [self setPinsForStation];
     }
-    
     return YES;
 }
 
@@ -160,16 +155,14 @@
     [mapView setSelectedMarker:marker];
     self.directionsOriginLatitude = marker.position.latitude;
     self.directionsOriginLongitude = marker.position.longitude;
-    NSLog(@"%f, %f", marker.position.latitude, marker.position.longitude);
-    [self showDestinationTextbox];
+    [self showDestinationButton];
     
     return YES;
 }
 
--(void)showDestinationTextbox
+-(void)showDestinationButton
 {
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-    NSLog(@"%f", appDelegate.window.frame.size.width);
     
     self.button = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.button setFrame:CGRectMake(self.view.frame.origin.x+10, self.view.frame.origin.y + 50,appDelegate.window.frame.size.width-20, 30.0f)];

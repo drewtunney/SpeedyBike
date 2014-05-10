@@ -35,7 +35,6 @@
             CLLocationCoordinate2D destinationPosition = CLLocationCoordinate2DMake(destinationLat, destinationLong);
             GMSMarker *destinationMarker = [GMSMarker markerWithPosition:destinationPosition];
             destinationMarker.map = map;
-            
         });
         NSLog(@"%@", error);
     }]resume];
@@ -43,7 +42,6 @@
 
 +(void)getAddressForLocationReferenceID:(NSString *)ID withCompletion:(void (^)(NSString *))completion
 {
-    
     NSString*urlString = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/json?reference=%@&sensor=true&key=%@", ID, Web_Browser_Key];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLSession *session = [NSURLSession sharedSession];
@@ -56,10 +54,11 @@
         NSString *zipCode = [((NSArray *) JSONResponseDict[@"result"][@"address_components"])lastObject][@"long_name"];
         NSString *fullAddress = [NSString stringWithFormat:@"%@+%@+%@", streetNumber, streetName, zipCode];
         fullAddress = [fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-
+        
         if ([streetNumber isEqualToString:@"New York"]) {
             fullAddress = [JSONResponseDict[@"result"][@"name"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
         }
+        
         NSLog(@"%@", error);
         
         completion(fullAddress);
@@ -88,12 +87,8 @@
 +(void)updateListWithSuggestedPlacesForName:(NSString *)textInput forLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude withCompletion:(void (^)(NSMutableArray *))completion
 {
     NSMutableArray *responseDictArray = [[NSMutableArray alloc]init];
-    
     NSString *searchString = [textInput stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    
     NSString *urlString = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/autocomplete/json?input=%@&location=%f,%f&radius=17000&sensor=true&key=%@", searchString, latitude, longitude, Web_Browser_Key];
-    
-    
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLSession *session = [NSURLSession sharedSession];
     

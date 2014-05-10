@@ -15,14 +15,13 @@
 {
     NSURL *url = [NSURL URLWithString:@"http://citibikenyc.com/stations/json"];
     NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionDataTask *task = [session dataTaskWithURL:url completionHandler:^ (NSData *data, NSURLResponse *response, NSError *error)
-                                  {
-                                      NSArray *stationsList = [NSJSONSerialization JSONObjectWithData:data
-                                                                                              options:0
-                                                                                                error:NULL];
-                                      NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
-                                      completion (stations);
-                                  }];
+    NSURLSessionDataTask *task = [session dataTaskWithURL:url completionHandler:^ (NSData *data, NSURLResponse *response, NSError *error){
+        NSArray *stationsList = [NSJSONSerialization JSONObjectWithData:data
+                                                                options:0
+                                                                  error:NULL];
+        NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
+        completion (stations);
+    }];
     [task resume];
 }
 
@@ -41,8 +40,10 @@
             [closestStations addObject:availableStationDict];
         }
     }
+    
     NSSortDescriptor *distanceSort = [NSSortDescriptor sortDescriptorWithKey:@"distance" ascending:YES];
     [closestStations sortUsingDescriptors:@[distanceSort]];
+   
     return closestStations;
 }
 
