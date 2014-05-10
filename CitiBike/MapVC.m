@@ -122,6 +122,8 @@
 
 -(void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
+    [self.button removeFromSuperview];
+    
     if (self.isRouting) {
          [self.cancelRouteAlert show];
     }
@@ -154,6 +156,7 @@
 
 -(BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
 {
+    [self.button removeFromSuperview];
     [mapView setSelectedMarker:marker];
     self.directionsOriginLatitude = marker.position.latitude;
     self.directionsOriginLongitude = marker.position.longitude;
