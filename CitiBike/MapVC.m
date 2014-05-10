@@ -134,12 +134,6 @@
 }
 
 
-
-//- (void)calculateDistance:(float *)lat1, (float *)lat2, (float *)lon1, (float *)lon2
-//{
-//    
-//}
-
 #pragma mark - GMSMapViewDelegate
 
 -(void)findNearestStations:(NSArray *)stations
@@ -229,6 +223,8 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
 
 -(void)secondViewControllerDismissed:(NSString *)locationReferenceStringForMap
 {
+     [mapView_ clear];
+    
     [self getAddressForLocationReferenceID:locationReferenceStringForMap];
     //NSLog(@"%@", self.location);
 }
@@ -236,9 +232,6 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
 -(void)getDirectionFromBikeDock
 {
 
-   // NSString *URLformattedDestination = [self.location stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    
-    //URLformattedDestination = [URLformattedDestination stringByReplacingOccurrencesOfString:@"," withString:@"-"];
     
     NSString *directionsURL = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&sensor=false&key=%@&avoid=ferries&mode=bicycling", self.directionsOriginLatitude, self.directionsOriginLongitude,self.directionsDestinationLatitude, self.directionsDestinationLongitude,Web_Browser_Key];
     NSURL *url = [NSURL URLWithString:directionsURL];
@@ -255,6 +248,14 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
             self.directionsLine.strokeWidth = 7;
             self.directionsLine.strokeColor = [UIColor greenColor];
             self.directionsLine.map = mapView_;
+            
+            CLLocationCoordinate2D originPosition = CLLocationCoordinate2DMake(self.directionsOriginLatitude, self.directionsOriginLongitude);
+            GMSMarker *originMarker = [GMSMarker markerWithPosition:originPosition];
+            originMarker.map = mapView_;
+            
+            CLLocationCoordinate2D destinationPosition = CLLocationCoordinate2DMake(self.directionsDestinationLatitude, self.directionsDestinationLongitude);
+            GMSMarker *destinationMarker = [GMSMarker markerWithPosition:destinationPosition];
+            destinationMarker.map = mapView_;
 
         });
                //NSLog(@"%@", JSONResponseDict[@"predictions"][0][@"description"]);
