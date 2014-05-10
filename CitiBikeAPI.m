@@ -12,10 +12,8 @@
 
 
 + (void)downloadStationDataWithCompletion:(void (^)(NSArray *))completion
-
 {
     NSURL *url = [NSURL URLWithString:@"http://citibikenyc.com/stations/json"];
-    
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *task = [session dataTaskWithURL:url completionHandler:^ (NSData *data, NSURLResponse *response, NSError *error)
                                   {
@@ -28,27 +26,20 @@
     [task resume];
 }
 
-
-
-
 +(NSMutableArray *)findNearestStationsforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations
 {
-   NSMutableArray *closestStations = [[NSMutableArray alloc]init];
+    NSMutableArray *closestStations = [[NSMutableArray alloc]init];
     
     for (NSDictionary *station in allStations) {
-        
         if ([station[@"availableBikes"] integerValue] > 1 && [station[@"statusValue"] isEqualToString:@"In Service"]) {
-             CGFloat latitudeDifference = latitude - [station[@"latitude"] floatValue];
-             CGFloat longitudeDifference = longitude - [station[@"longitude"] floatValue];
+            CGFloat latitudeDifference = latitude - [station[@"latitude"] floatValue];
+            CGFloat longitudeDifference = longitude - [station[@"longitude"] floatValue];
             CGFloat distanceFloat = latitudeDifference*latitudeDifference + longitudeDifference*longitudeDifference;
             NSNumber *distance = [NSNumber numberWithFloat:distanceFloat];
             NSMutableDictionary *availableStationDict = [NSMutableDictionary dictionaryWithDictionary:station];
             [availableStationDict setObject:distance forKey:@"distance"];
             [closestStations addObject:availableStationDict];
-            
-            
         }
-        
     }
     return closestStations;
 }

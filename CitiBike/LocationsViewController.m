@@ -8,6 +8,7 @@
 
 #import "LocationsViewController.h"
 #import "Constants.h"
+#import "GoogleMapsAPI.h"
 
 @interface LocationsViewController ()
 - (IBAction)cancelButtonTapped:(id)sender;
@@ -22,29 +23,13 @@
 @end
 
 @implementation LocationsViewController
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@synthesize locationDelegate = _locationDelegate;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    // Do any additional setup after loading the view.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -55,7 +40,6 @@
 {
     return [self.responseDictArray count];
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -84,8 +68,14 @@
 
 - (IBAction)textFieldEditingChanged:(id)sender
 {
-    [self updateListWithSuggestedPlacesForName:self.textField.text];
-    
+    [GoogleMapsAPI updateListWithSuggestedPlacesForName:self.textField.text forLatitude:self.latitude andLongitude:self.longitude withCompletion:^(NSMutableArray *responseObjects) {
+        self.responseDictArray = responseObjects;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+        
+    }];
 }
 
 - (IBAction)routeButtonTapped:(id)sender
@@ -102,36 +92,7 @@
         [alert show];
     }
     
-   
-}
-
--(void)updateListWithSuggestedPlacesForName:(NSString *)textInput
-{
-    self.responseDictArray = [[NSMutableArray alloc]init];
     
-    NSString *searchString = [textInput stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    
-    NSString *urlString = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/autocomplete/json?input=%@&location=%f,%f&radius=17000&sensor=true&key=%@", searchString, self.latitude, self.longitude, Web_Browser_Key];
-    
-    
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLSession *session = [NSURLSession sharedSession];
-    
-    [[session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSDictionary *JSONResponseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-        
-        //NSLog(@"%@", JSONResponseDict[@"predictions"][0][@"description"]);
-        for (NSDictionary *location in JSONResponseDict[@"predictions"]) {
-            
-            [self.responseDictArray addObject:location];
-        }
-        NSLog(@"%@", error);
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
-        
-    }]resume];
 }
 
 @end
