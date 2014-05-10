@@ -29,8 +29,9 @@
 @property (nonatomic) CGFloat directionsDestinationLatitude;
 @property (nonatomic) CGFloat directionsDestinationLongitude;
 @property (strong, nonatomic) UIButton *button;
-@property (strong, nonatomic) NSString *locationReference;
 @property (strong, nonatomic) NSArray *stations;
+@property (nonatomic) BOOL isRouting;
+@property (strong, nonatomic) UIAlertView *cancelRouteAlert;
 
 
 
@@ -49,6 +50,9 @@
 - (void)viewDidLoad {
     
     [self startDeterminingUserLocation];
+    self.isRouting = NO;
+    self.cancelRouteAlert = [[UIAlertView alloc]initWithTitle:@"Cancel Route" message:@"Would you like to cancel your current route and clear the map?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    self.cancelRouteAlert.delegate = self;
     
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:mapView_.myLocation.coordinate.latitude
                                                             longitude:mapView_.myLocation.coordinate.longitude
@@ -99,14 +103,12 @@
     
     self.closestStations = [CitiBikeAPI findNearestStationsforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
     
-    [self sortStationsByDistance];
-    
     NSArray *closestThreeStations = [[NSArray alloc]initWithObjects:self.closestStations[0], self.closestStations[1], self.closestStations[2], nil];
     for (NSDictionary *station in closestThreeStations){
         GMSMarker *marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake([[station valueForKeyPath:@"latitude"]floatValue], [[station valueForKeyPath:@"longitude"]floatValue]);
         marker.title = [station valueForKeyPath:@"stAddress1"];
-        marker.snippet = [[station valueForKeyPath:@"availableBikes"] stringValue];
+        marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[[station valueForKeyPath:@"availableBikes"] stringValue]];
         marker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
         marker.map = mapView_;
     }
@@ -118,28 +120,34 @@
 }
 
 
--(void)sortStationsByDistance
+-(void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
-    NSSortDescriptor *distanceSort = [NSSortDescriptor sortDescriptorWithKey:@"distance" ascending:YES];
-    [self.closestStations sortUsingDescriptors:@[distanceSort]];
-}
-
-- (void)mapView:(GMSMapView *)mapView_
-didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
-    // NSLog(@"You tapped at %f,%f", coordinate.latitude, coordinate.longitude);
+    if (self.isRouting) {
+         [self.cancelRouteAlert show];
+    }
+    else{
     self.latitude = coordinate.latitude;
     self.longitude = coordinate.longitude;
     [self setPinsForStation];
     [self.button removeFromSuperview];
+    }
 }
 
 -(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView{
-    [mapView_ animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:mapView.myLocation.coordinate.latitude
+    if (self.isRouting) {
+        [mapView animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:mapView.myLocation.coordinate.latitude
+                                                                     longitude:mapView.myLocation.coordinate.longitude
+                                                                          zoom:16]];
+    }
+    else{
+    [mapView clear];
+    [mapView animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:mapView.myLocation.coordinate.latitude
                                                                   longitude:mapView.myLocation.coordinate.longitude
                                                                        zoom:16]];
     self.latitude = mapView.myLocation.coordinate.latitude;
     self.longitude = mapView.myLocation.coordinate.longitude;
     [self setPinsForStation];
+    }
     
     return YES;
 }
@@ -172,20 +180,23 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
 
 -(void)didTapDestinationButton
 {
-    NSLog(@"Tapped Button");
+    if (self.isRouting) {
+        [self.cancelRouteAlert show];
+    }else{
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     LocationsViewController *locationsViewController = [storyBoard instantiateViewControllerWithIdentifier:@"LocationsViewController"];
     locationsViewController.latitude = self.latitude;
     locationsViewController.longitude = self.longitude;
     locationsViewController.locationDelegate = self;
     [self presentViewController:locationsViewController animated:YES completion:nil];
+    }
 }
 
 -(void)secondViewControllerDismissed:(NSString *)locationReferenceStringForMap
 {
     [mapView_ clear];
     [self.button removeFromSuperview];
-    //[self getAddressForLocationReferenceID:locationReferenceStringForMap];
+    self.isRouting = YES;
     [self mapDirectionsforDestinationReference:locationReferenceStringForMap];
 }
 
@@ -198,6 +209,18 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
             [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.directionsDestinationLatitude andDestinationLongitude:self.directionsDestinationLongitude onMap:mapView_];
         }];
     }];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex ==1) {
+        [mapView_ clear];
+        [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+        self.isRouting = NO;
+    }
+    else{
+        [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    }
 }
 
 @end

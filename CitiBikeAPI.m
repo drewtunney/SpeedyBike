@@ -41,6 +41,8 @@
             [closestStations addObject:availableStationDict];
         }
     }
+    NSSortDescriptor *distanceSort = [NSSortDescriptor sortDescriptorWithKey:@"distance" ascending:YES];
+    [closestStations sortUsingDescriptors:@[distanceSort]];
     return closestStations;
 }
 
