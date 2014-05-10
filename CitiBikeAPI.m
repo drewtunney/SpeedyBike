@@ -1,0 +1,56 @@
+//
+//  CitiBikeAPI.m
+//  CitiBike
+//
+//  Created by Dare Ryan on 5/10/14.
+//  Copyright (c) 2014 drewtunney. All rights reserved.
+//
+
+#import "CitiBikeAPI.h"
+
+@implementation CitiBikeAPI
+
+
++ (void)downloadStationDataWithCompletion:(void (^)(NSArray *))completion
+
+{
+    NSURL *url = [NSURL URLWithString:@"http://citibikenyc.com/stations/json"];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *task = [session dataTaskWithURL:url completionHandler:^ (NSData *data, NSURLResponse *response, NSError *error)
+                                  {
+                                      NSArray *stationsList = [NSJSONSerialization JSONObjectWithData:data
+                                                                                              options:0
+                                                                                                error:NULL];
+                                      NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
+                                      completion (stations);
+                                  }];
+    [task resume];
+}
+
+
+
+
++(NSMutableArray *)findNearestStationsforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations
+{
+   NSMutableArray *closestStations = [[NSMutableArray alloc]init];
+    
+    for (NSDictionary *station in allStations) {
+        
+        if ([station[@"availableBikes"] integerValue] > 1 && [station[@"statusValue"] isEqualToString:@"In Service"]) {
+             CGFloat latitudeDifference = latitude - [station[@"latitude"] floatValue];
+             CGFloat longitudeDifference = longitude - [station[@"longitude"] floatValue];
+            CGFloat distanceFloat = latitudeDifference*latitudeDifference + longitudeDifference*longitudeDifference;
+            NSNumber *distance = [NSNumber numberWithFloat:distanceFloat];
+            NSMutableDictionary *availableStationDict = [NSMutableDictionary dictionaryWithDictionary:station];
+            [availableStationDict setObject:distance forKey:@"distance"];
+            [closestStations addObject:availableStationDict];
+            
+            
+        }
+        
+    }
+    return closestStations;
+}
+
+@end

@@ -12,6 +12,6 @@
 
 @interface MapVC : UIViewController<CLLocationManagerDelegate, SecondDelegate>
 
-@property (strong, nonatomic) NSArray *stations;
+
 
 @end

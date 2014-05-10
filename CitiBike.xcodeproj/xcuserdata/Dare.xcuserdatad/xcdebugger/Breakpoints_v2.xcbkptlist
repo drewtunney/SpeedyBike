@@ -19,13 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CitiBike/MapVC.m"
-            timestampString = "421442713.063762"
+            filePath = "CitiBikeAPI.m"
+            timestampString = "421447850.54756"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
-            landmarkName = "-getAddressForLocationReferenceID:"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "+findNearestStationsforLatitude:andLongitude:inArrayOfStations:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

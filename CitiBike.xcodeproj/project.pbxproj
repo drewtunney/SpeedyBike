@@ -21,7 +21,6 @@
 		0FE3A6EC190EA23E00CC325A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A6CE190EA23E00CC325A /* UIKit.framework */; };
 		0FE3A6F4190EA23E00CC325A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0FE3A6F2190EA23E00CC325A /* InfoPlist.strings */; };
 		0FE3A6F6190EA23E00CC325A /* CitiBikeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FE3A6F5190EA23E00CC325A /* CitiBikeTests.m */; };
-		0FE3A701190EA2B000CC325A /* StationInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FE3A700190EA2B000CC325A /* StationInfoTableViewController.m */; };
 		0FE3A704190FB2A600CC325A /* StationModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0FE3A702190FB2A600CC325A /* StationModel.xcdatamodeld */; };
 		0FE3A70C1914147700CC325A /* MapVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FE3A70B1914147700CC325A /* MapVC.m */; };
 		0FE3A70E1914193F00CC325A /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A70D1914193F00CC325A /* GoogleMaps.framework */; };
@@ -38,6 +37,8 @@
 		0FE3A72419141AB500CC325A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A72319141AB400CC325A /* OpenGLES.framework */; };
 		0FE3A72619141ABF00CC325A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A72519141ABF00CC325A /* QuartzCore.framework */; };
 		0FE3A72819141ACF00CC325A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A72719141ACF00CC325A /* SystemConfiguration.framework */; };
+		45C031D3191EC11D007B251C /* GoogleMapsAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C031D2191EC11D007B251C /* GoogleMapsAPI.m */; };
+		45C031D6191EC12D007B251C /* CitiBikeAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C031D5191EC12D007B251C /* CitiBikeAPI.m */; };
 		45CA20FD191D5A380098A536 /* LocationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA20FC191D5A380098A536 /* LocationsViewController.m */; };
 		45CA2103191D73090098A536 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA2102191D73090098A536 /* Constants.m */; };
 /* End PBXBuildFile section */
@@ -72,8 +73,6 @@
 		0FE3A6F1190EA23E00CC325A /* CitiBikeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CitiBikeTests-Info.plist"; sourceTree = "<group>"; };
 		0FE3A6F3190EA23E00CC325A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0FE3A6F5190EA23E00CC325A /* CitiBikeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CitiBikeTests.m; sourceTree = "<group>"; };
-		0FE3A6FF190EA2B000CC325A /* StationInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationInfoTableViewController.h; sourceTree = "<group>"; };
-		0FE3A700190EA2B000CC325A /* StationInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StationInfoTableViewController.m; sourceTree = "<group>"; };
 		0FE3A703190FB2A600CC325A /* StationModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StationModel.xcdatamodel; sourceTree = "<group>"; };
 		0FE3A708191177F200CC325A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		0FE3A70A1914147700CC325A /* MapVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapVC.h; sourceTree = "<group>"; };
@@ -92,6 +91,10 @@
 		0FE3A72319141AB400CC325A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		0FE3A72519141ABF00CC325A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0FE3A72719141ACF00CC325A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		45C031D1191EC11D007B251C /* GoogleMapsAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GoogleMapsAPI.h; path = ../GoogleMapsAPI.h; sourceTree = "<group>"; };
+		45C031D2191EC11D007B251C /* GoogleMapsAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GoogleMapsAPI.m; path = ../GoogleMapsAPI.m; sourceTree = "<group>"; };
+		45C031D4191EC12D007B251C /* CitiBikeAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CitiBikeAPI.h; sourceTree = SOURCE_ROOT; };
+		45C031D5191EC12D007B251C /* CitiBikeAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CitiBikeAPI.m; sourceTree = SOURCE_ROOT; };
 		45CA20FB191D5A380098A536 /* LocationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationsViewController.h; sourceTree = "<group>"; };
 		45CA20FC191D5A380098A536 /* LocationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationsViewController.m; sourceTree = "<group>"; };
 		45CA2101191D73090098A536 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -199,8 +202,10 @@
 				45CA20FC191D5A380098A536 /* LocationsViewController.m */,
 				0FE3A70A1914147700CC325A /* MapVC.h */,
 				0FE3A70B1914147700CC325A /* MapVC.m */,
-				0FE3A6FF190EA2B000CC325A /* StationInfoTableViewController.h */,
-				0FE3A700190EA2B000CC325A /* StationInfoTableViewController.m */,
+				45C031D1191EC11D007B251C /* GoogleMapsAPI.h */,
+				45C031D2191EC11D007B251C /* GoogleMapsAPI.m */,
+				45C031D4191EC12D007B251C /* CitiBikeAPI.h */,
+				45C031D5191EC12D007B251C /* CitiBikeAPI.m */,
 				0FE3A6E2190EA23E00CC325A /* Images.xcassets */,
 				0FE3A702190FB2A600CC325A /* StationModel.xcdatamodeld */,
 				0F6F1DF41918E36F007846F8 /* Models */,
@@ -339,8 +344,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FE3A70C1914147700CC325A /* MapVC.m in Sources */,
-				0FE3A701190EA2B000CC325A /* StationInfoTableViewController.m in Sources */,
 				0F6F1DF31917E78C007846F8 /* StationMarker.m in Sources */,
+				45C031D3191EC11D007B251C /* GoogleMapsAPI.m in Sources */,
+				45C031D6191EC12D007B251C /* CitiBikeAPI.m in Sources */,
 				0FE3A704190FB2A600CC325A /* StationModel.xcdatamodeld in Sources */,
 				0FE3A6DB190EA23E00CC325A /* AppDelegate.m in Sources */,
 				0FE3A6D7190EA23E00CC325A /* main.m in Sources */,

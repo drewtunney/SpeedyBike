@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "LocationsViewController.h"
 #import "Constants.h"
+#import "CitiBikeAPI.h"
 
 @interface MapVC () <GMSMapViewDelegate>
 
@@ -29,6 +30,7 @@
 @property (strong, nonatomic) UIButton *button;
 @property (strong, nonatomic) NSString *locationReference;
 @property (strong, nonatomic) GMSPolyline *directionsLine;
+@property (strong, nonatomic) NSArray *stations;
 
 
 
@@ -85,35 +87,27 @@
                                                                        zoom:16]];
     self.latitude = self.currentLocation.coordinate.latitude;
     self.longitude = self.currentLocation.coordinate.longitude;
-    [self downloadStationData:nil];
+    [self setPinsForStation];
 }
 
-
-- (void)downloadStationData:(id)sender
+- (void)setPinsForStation
 {
-    NSURL *url = [NSURL URLWithString:@"http://citibikenyc.com/stations/json"];
-    
-    NSURLSessionDataTask *task = [self.getStations dataTaskWithURL:url completionHandler:^ (NSData *data, NSURLResponse *response, NSError *error)
-    {
-        NSArray *stationsList = [NSJSONSerialization JSONObjectWithData:data
-                                                                    options:0
-                                                                       error:NULL];
-        NSArray *stations = [stationsList valueForKeyPath:@"stationBeanList"];
-       // NSLog(@"Current Location = %@", mapView_.myLocation);
+    [CitiBikeAPI downloadStationDataWithCompletion:^(NSArray *stations) {
         self.stations = stations;
         [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
-            [self createMarkerObjectsWithJson:stationsList];
+            [self createMarkerObjects];
         }];
+
     }];
-    [task resume];
 }
 
-- (void)createMarkerObjectsWithJson:(NSArray *)markers
+- (void)createMarkerObjects
 {
 
     [mapView_ clear];
    
-        [self findNearestStations:self.stations];
+        //[self findNearestStations:self.stations];
+    self.closestStations = [CitiBikeAPI findNearestStationsforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
         [self sortStationsByDistance];
         
        // NSLog(@"Closest Stations Log: %@", self.closestStations);
@@ -136,25 +130,11 @@
 
 #pragma mark - GMSMapViewDelegate
 
--(void)findNearestStations:(NSArray *)stations
+-(void) setNearestStationsArray
 {
-    self.closestStations = [[NSMutableArray alloc]init];
-    
-    for (NSDictionary *station in self.stations) {
-        
-        if ([station[@"availableBikes"] integerValue] > 1 && [station[@"statusValue"] isEqualToString:@"In Service"]) {
-            CGFloat latitude = self.latitude - [station[@"latitude"] floatValue];
-            CGFloat longitude = self.longitude - [station[@"longitude"] floatValue];
-            CGFloat distanceFloat = latitude*latitude + longitude*longitude;
-            NSNumber *distance = [NSNumber numberWithFloat:distanceFloat];
-            NSMutableDictionary *availableStationDict = [NSMutableDictionary dictionaryWithDictionary:station];
-            [availableStationDict setObject:distance forKey:@"distance"];
-            [self.closestStations addObject:availableStationDict];
-            
-        }
-        
-    }
+   self.closestStations = [CitiBikeAPI findNearestStationsforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
 }
+
 
 -(void)sortStationsByDistance
 {
@@ -167,7 +147,7 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
    // NSLog(@"You tapped at %f,%f", coordinate.latitude, coordinate.longitude);
     self.latitude = coordinate.latitude;
     self.longitude = coordinate.longitude;
-    [self downloadStationData:nil];
+    [self setPinsForStation];
     [self.button removeFromSuperview];
 }
 
@@ -177,7 +157,7 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
                                                                        zoom:16]];
     self.latitude = mapView.myLocation.coordinate.latitude;
     self.longitude = mapView.myLocation.coordinate.longitude;
-     [self downloadStationData:nil];
+     [self setPinsForStation];
     return YES;
 }
 
@@ -202,7 +182,8 @@ didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
     [self.button setFrame:CGRectMake(self.view.frame.origin.x+10, self.view.frame.origin.y + 50,appDelegate.window.frame.size.width-20, 30.0f)];
     [self.button setTitle:@"Set Destination" forState:UIControlStateNormal];
     [self.button.titleLabel setTextColor:[UIColor blackColor]];
-    self.button.backgroundColor = [UIColor whiteColor];
+    UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
+    self.button.backgroundColor = backgroundColor;
     [self.button addTarget:self action:@selector(didTapDestinationButton) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.button];
     
