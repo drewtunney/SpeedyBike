@@ -30,6 +30,7 @@
             
             CLLocationCoordinate2D originPosition = CLLocationCoordinate2DMake(originLat, originLong);
             GMSMarker *originMarker = [GMSMarker markerWithPosition:originPosition];
+            originMarker.icon = [GMSMarker markerImageWithColor:[UIColor greenColor]];
             originMarker.map = map;
             
             CLLocationCoordinate2D destinationPosition = CLLocationCoordinate2DMake(destinationLat, destinationLong);

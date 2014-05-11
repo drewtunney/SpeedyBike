@@ -156,7 +156,6 @@
     self.directionsOriginLatitude = marker.position.latitude;
     self.directionsOriginLongitude = marker.position.longitude;
     [self showDestinationButton];
-    
     return YES;
 }
 
