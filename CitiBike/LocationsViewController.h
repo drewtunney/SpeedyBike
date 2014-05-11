@@ -22,6 +22,6 @@
 @property (nonatomic) CGFloat longitude;
 @property (nonatomic, assign) id<LocationsVCDelegate> locationDelegate;
 
--(void)updateSearchResults;
+-(void)updateSearchResultsWithCompletion:(void (^)())completion;
 
 @end

@@ -187,10 +187,13 @@
 
 -(void)secondViewControllerDismissed:(NSString *)locationReferenceStringForMap
 {
-    [mapView_ clear];
-    [self.button removeFromSuperview];
-    self.isRouting = YES;
-    [self mapDirectionsforDestinationReference:locationReferenceStringForMap];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [mapView_ clear];
+        [self.button removeFromSuperview];
+        self.isRouting = YES;
+        [self mapDirectionsforDestinationReference:locationReferenceStringForMap];
+
+    });
 }
 
 -(void)mapDirectionsforDestinationReference:(NSString *)reference

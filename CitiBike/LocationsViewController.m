@@ -64,19 +64,29 @@
 
 - (IBAction)textFieldEditingChanged:(id)sender
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateSearchResults) object:nil];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateSearchResultsWithCompletion:) object:nil];
     
-    [self performSelector:@selector(updateSearchResults) withObject:nil afterDelay:0.75];
+    [self performSelector:@selector(updateSearchResultsWithCompletion:) withObject:nil afterDelay:0.75];
 }
 
 - (IBAction)returnPressed:(id)sender
 {
-    [self updateSearchResults];
-    self.selectedLocation = self.responseDictArray[0][@"reference"];
-    if ([self.locationDelegate respondsToSelector:@selector(secondViewControllerDismissed:)]) {
-        [self.locationDelegate secondViewControllerDismissed:self.selectedLocation];
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateSearchResultsWithCompletion:) object:nil];
+    [self updateSearchResultsWithCompletion:^{
+        if ([self.responseDictArray count]==0 && ![self.textField.text isEqualToString:@""]) {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"No locations found" message:@"There are no locations matching you search query" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+        else{
+            self.selectedLocation = self.responseDictArray[0][@"reference"];
+            if ([self.locationDelegate respondsToSelector:@selector(secondViewControllerDismissed:)]) {
+                [self.locationDelegate secondViewControllerDismissed:self.selectedLocation];
+            }
+           dispatch_async(dispatch_get_main_queue(), ^{
+               [self dismissViewControllerAnimated:YES completion:nil];
+           });
+        }
+    }];
 }
 
 - (IBAction)cancelButtonTapped:(id)sender
@@ -84,19 +94,15 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)updateSearchResults
+-(void)updateSearchResultsWithCompletion:(void (^)())completion
 {
     [GoogleMapsAPI updateListWithSuggestedPlacesForName:self.textField.text forLatitude:self.latitude andLongitude:self.longitude withCompletion:^(NSMutableArray *responseObjects) {
         self.responseDictArray = responseObjects;
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([self.responseDictArray count]==0 && ![self.textField.text isEqualToString:@""]) {
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"No locations found" message:@"There are no locations matching you search query" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                
-                [alert show];
-            }
             [self.tableView reloadData];
         });
+        completion();
     }];
 }
 
