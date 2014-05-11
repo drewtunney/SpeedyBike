@@ -14,6 +14,6 @@
 
 +(NSMutableArray *)findNearestStationsWithBikesforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations;
 
-+(NSMutableArray *)findNearestStationsWithDocksforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations;
++(void)findNearestStationsWithDocksforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations withCompletion:(void (^)(NSArray *))completion;
 
 @end

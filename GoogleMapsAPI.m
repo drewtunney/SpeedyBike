@@ -7,12 +7,14 @@
 //
 
 #import "GoogleMapsAPI.h"
+#import "CitiBikeAPI.h"
 
 
 @implementation GoogleMapsAPI
 
 +(void)displayDirectionsfromOriginLatitude:(CGFloat)originLat andOriginLongitude:(CGFloat)originLong toDestinationLatitude:(CGFloat)destinationLat andDestinationLongitude:(CGFloat)destinationLong onMap:(GMSMapView *)map
 {
+    
     NSString *directionsURL = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&sensor=false&key=%@&avoid=ferries&mode=bicycling", originLat, originLong,destinationLat,destinationLong,Web_Browser_Key];
     NSURL *url = [NSURL URLWithString:directionsURL];
     NSURLSession *session = [NSURLSession sharedSession];
@@ -35,6 +37,7 @@
             
             CLLocationCoordinate2D destinationPosition = CLLocationCoordinate2DMake(destinationLat, destinationLong);
             GMSMarker *destinationMarker = [GMSMarker markerWithPosition:destinationPosition];
+            destinationMarker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
             destinationMarker.map = map;
         });
         if (error) {
@@ -83,6 +86,7 @@
         NSDictionary *JSONResponseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
         NSNumber *directionsDestinationLatitude = [NSNumber numberWithFloat:[JSONResponseDict[@"results"][0][@"geometry"][@"location"][@"lat"]floatValue]];
         NSNumber *directionsDestinationLongitude = [NSNumber numberWithFloat:[JSONResponseDict[@"results"][0][@"geometry"][@"location"][@"lng"]floatValue]];
+        
         NSDictionary *coordinates = @{@"lat":directionsDestinationLatitude, @"lng":directionsDestinationLongitude};
         
         if (error) {
