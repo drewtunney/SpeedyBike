@@ -35,10 +35,10 @@
                                 <rect key="frame" x="20" y="28" width="236" height="43"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="route"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="search"/>
                                 <connections>
+                                    <action selector="returnPressed:" destination="RGS-LX-5eH" eventType="editingDidEndOnExit" id="uSb-qd-WQJ"/>
                                     <action selector="routeButtonTapped:" destination="RGS-LX-5eH" eventType="editingDidEndOnExit" id="ZMV-vF-EJ0"/>
-                                    <action selector="textFieldEditingChanged:" destination="RGS-LX-5eH" eventType="editingChanged" id="V1n-x2-QeN"/>
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVW-ug-4af">

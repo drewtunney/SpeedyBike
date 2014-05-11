@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@protocol SecondDelegate <NSObject>
+@protocol LocationsVCDelegate <NSObject>
 
 -(void)secondViewControllerDismissed:(NSString *)locationStringForMap;
 
@@ -20,6 +20,6 @@
 
 @property (nonatomic) CGFloat latitude;
 @property (nonatomic) CGFloat longitude;
-@property (nonatomic, assign) id<SecondDelegate> locationDelegate;
+@property (nonatomic, assign) id<LocationsVCDelegate> locationDelegate;
 
 @end

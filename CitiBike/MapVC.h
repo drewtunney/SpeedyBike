@@ -10,6 +10,6 @@
 #import <CoreLocation/CoreLocation.h>
 #import "LocationsViewController.h"
 
-@interface MapVC : UIViewController<CLLocationManagerDelegate, SecondDelegate, UIAlertViewDelegate>
+@interface MapVC : UIViewController<CLLocationManagerDelegate, LocationsVCDelegate, UIAlertViewDelegate>
 
 @end

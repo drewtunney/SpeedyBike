@@ -11,6 +11,7 @@
 #import "GoogleMapsAPI.h"
 
 @interface LocationsViewController ()
+- (IBAction)returnPressed:(id)sender;
 - (IBAction)cancelButtonTapped:(id)sender;
 - (IBAction)textFieldEditingChanged:(id)sender;
 - (IBAction)routeButtonTapped:(id)sender;
@@ -61,12 +62,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)cancelButtonTapped:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction)textFieldEditingChanged:(id)sender
+- (IBAction)returnPressed:(id)sender
 {
     [GoogleMapsAPI updateListWithSuggestedPlacesForName:self.textField.text forLatitude:self.latitude andLongitude:self.longitude withCompletion:^(NSMutableArray *responseObjects) {
         self.responseDictArray = responseObjects;
@@ -75,6 +71,12 @@
             [self.tableView reloadData];
         });
     }];
+
+}
+
+- (IBAction)cancelButtonTapped:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)routeButtonTapped:(id)sender
