@@ -66,7 +66,7 @@
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateSearchResults) object:nil];
     
-    [self performSelector:@selector(updateSearchResults) withObject:nil afterDelay:1.5];
+    [self performSelector:@selector(updateSearchResults) withObject:nil afterDelay:0.75];
 }
 
 - (IBAction)returnPressed:(id)sender
@@ -90,7 +90,7 @@
         self.responseDictArray = responseObjects;
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if ([self.responseDictArray count]==0) {
+            if ([self.responseDictArray count]==0 && ![self.textField.text isEqualToString:@""]) {
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"No locations found" message:@"There are no locations matching you search query" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 
                 [alert show];
