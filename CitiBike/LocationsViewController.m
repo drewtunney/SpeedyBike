@@ -64,7 +64,7 @@
 
 - (IBAction)textFieldEditingChanged:(id)sender
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(request) object:nil];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateSearchResults) object:nil];
     
     [self performSelector:@selector(updateSearchResults) withObject:nil afterDelay:1.5];
 }
