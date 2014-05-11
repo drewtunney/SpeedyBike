@@ -64,14 +64,14 @@
 
 - (IBAction)textFieldEditingChanged:(id)sender
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateSearchResultsWithCompletion:) object:nil];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateSearchResults) object:nil];
     
-    [self performSelector:@selector(updateSearchResultsWithCompletion:) withObject:nil afterDelay:0.75];
+    [self performSelector:@selector(updateSearchResults) withObject:nil afterDelay:0.75];
 }
 
 - (IBAction)returnPressed:(id)sender
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateSearchResultsWithCompletion:) object:nil];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateSearchResults) object:nil];
     [self updateSearchResultsWithCompletion:^{
         if ([self.responseDictArray count]==0 && ![self.textField.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"No locations found" message:@"There are no locations matching you search query" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -103,6 +103,17 @@
             [self.tableView reloadData];
         });
         completion();
+    }];
+}
+
+-(void)updateSearchResults
+{
+    [GoogleMapsAPI updateListWithSuggestedPlacesForName:self.textField.text forLatitude:self.latitude andLongitude:self.longitude withCompletion:^(NSMutableArray *responseObjects) {
+        self.responseDictArray = responseObjects;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
     }];
 }
 

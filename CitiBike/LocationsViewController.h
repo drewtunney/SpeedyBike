@@ -23,5 +23,6 @@
 @property (nonatomic, assign) id<LocationsVCDelegate> locationDelegate;
 
 -(void)updateSearchResultsWithCompletion:(void (^)())completion;
+-(void)updateSearchResults;
 
 @end
