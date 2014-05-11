@@ -33,6 +33,9 @@
     self.textField.delegate = self;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [self.textField becomeFirstResponder];
+}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
