@@ -52,14 +52,18 @@
     [[session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSDictionary *JSONResponseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
         
-        NSString *streetNumber = JSONResponseDict[@"result"][@"address_components"][0][@"long_name"];
-        NSString *streetName = JSONResponseDict[@"result"][@"address_components"][1][@"long_name"];
-        NSString *zipCode = [((NSArray *) JSONResponseDict[@"result"][@"address_components"])lastObject][@"long_name"];
-        NSString *fullAddress = [NSString stringWithFormat:@"%@+%@+%@", streetNumber, streetName, zipCode];
-        fullAddress = [fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        NSString *fullAddress;
         
-        if ([streetNumber isEqualToString:@"New York"]) {
+        if ([JSONResponseDict[@"result"][@"address_components"][0][@"long_name"] isEqualToString:@"New York"]) {
             fullAddress = [JSONResponseDict[@"result"][@"name"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        }
+        else{
+            NSMutableArray *addressArray = [[NSMutableArray alloc]init];
+            for (NSDictionary *components in JSONResponseDict[@"result"][@"address_components"]) {
+                [addressArray addObject:components[@"long_name"]];
+            }
+            fullAddress = [addressArray componentsJoinedByString:@"+"];
+            fullAddress = [fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];
         }
         if (error) {
             NSLog(@"%@", error);
