@@ -66,7 +66,7 @@
         self.responseDictArray = responseObjects;
         [sender resignFirstResponder];
         
-        if (![self.responseDictArray count] > 0) {
+        if ([self.responseDictArray count]==0) {
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"No locations found" message:@"There are no locations matching you search query" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
         }
