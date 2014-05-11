@@ -103,9 +103,9 @@
     NSArray *closestThreeStations = [[NSArray alloc]initWithObjects:self.closestStationsWithBikes[0], self.closestStationsWithBikes[1], self.closestStationsWithBikes[2], nil];
     for (NSDictionary *station in closestThreeStations){
         GMSMarker *marker = [[GMSMarker alloc] init];
-        marker.position = CLLocationCoordinate2DMake([[station valueForKeyPath:@"latitude"]floatValue], [[station valueForKeyPath:@"longitude"]floatValue]);
-        marker.title = [station valueForKeyPath:@"stAddress1"];
-        marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[[station valueForKeyPath:@"availableBikes"] stringValue]];
+        marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
+        marker.title = station[@"stAddress1"];
+        marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
         marker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
         marker.map = mapView_;
     }
