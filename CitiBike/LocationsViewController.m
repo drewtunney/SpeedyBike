@@ -75,16 +75,18 @@
     [self updateSearchResultsWithCompletion:^{
         if ([self.responseDictArray count]==0 && ![self.textField.text isEqualToString:@""]) {
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"No locations found" message:@"There are no locations matching you search query" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [alert show];
+            });
         }
         else{
             self.selectedLocation = self.responseDictArray[0][@"reference"];
             if ([self.locationDelegate respondsToSelector:@selector(secondViewControllerDismissed:)]) {
                 [self.locationDelegate secondViewControllerDismissed:self.selectedLocation];
             }
-           dispatch_async(dispatch_get_main_queue(), ^{
-               [self dismissViewControllerAnimated:YES completion:nil];
-           });
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self dismissViewControllerAnimated:YES completion:nil];
+            });
         }
     }];
 }
