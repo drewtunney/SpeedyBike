@@ -13,7 +13,7 @@
 
 @end
 
-@interface LocationsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface LocationsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 {
     id locationDelegate;
 }
@@ -21,5 +21,7 @@
 @property (nonatomic) CGFloat latitude;
 @property (nonatomic) CGFloat longitude;
 @property (nonatomic, assign) id<LocationsVCDelegate> locationDelegate;
+
+-(void)updateSearchResults;
 
 @end

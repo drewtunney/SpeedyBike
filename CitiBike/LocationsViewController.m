@@ -11,6 +11,7 @@
 #import "GoogleMapsAPI.h"
 
 @interface LocationsViewController ()
+- (IBAction)textFieldEditingChanged:(id)sender;
 - (IBAction)returnPressed:(id)sender;
 - (IBAction)cancelButtonTapped:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
@@ -29,6 +30,7 @@
     [super viewDidLoad];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.textField.delegate = self;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -60,11 +62,32 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (IBAction)textFieldEditingChanged:(id)sender
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(request) object:nil];
+    
+    [self performSelector:@selector(updateSearchResults) withObject:nil afterDelay:1.5];
+}
+
 - (IBAction)returnPressed:(id)sender
+{
+    [self updateSearchResults];
+    self.selectedLocation = self.responseDictArray[0][@"reference"];
+    if ([self.locationDelegate respondsToSelector:@selector(secondViewControllerDismissed:)]) {
+        [self.locationDelegate secondViewControllerDismissed:self.selectedLocation];
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)cancelButtonTapped:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void)updateSearchResults
 {
     [GoogleMapsAPI updateListWithSuggestedPlacesForName:self.textField.text forLatitude:self.latitude andLongitude:self.longitude withCompletion:^(NSMutableArray *responseObjects) {
         self.responseDictArray = responseObjects;
-        [sender resignFirstResponder];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([self.responseDictArray count]==0) {
@@ -77,9 +100,9 @@
     }];
 }
 
-- (IBAction)cancelButtonTapped:(id)sender
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.textField resignFirstResponder];
 }
 
 
