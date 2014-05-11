@@ -13,8 +13,6 @@
 @interface LocationsViewController ()
 - (IBAction)returnPressed:(id)sender;
 - (IBAction)cancelButtonTapped:(id)sender;
-- (IBAction)textFieldEditingChanged:(id)sender;
-- (IBAction)routeButtonTapped:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *responseDictArray;
@@ -66,12 +64,17 @@
 {
     [GoogleMapsAPI updateListWithSuggestedPlacesForName:self.textField.text forLatitude:self.latitude andLongitude:self.longitude withCompletion:^(NSMutableArray *responseObjects) {
         self.responseDictArray = responseObjects;
+        [sender resignFirstResponder];
+        
+        if (![self.responseDictArray count] > 0) {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"No locations found" message:@"There are no locations matching you search query" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
     }];
-
 }
 
 - (IBAction)cancelButtonTapped:(id)sender
@@ -79,19 +82,5 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)routeButtonTapped:(id)sender
-{
-    if ([self.responseDictArray count] > 0) {
-        self.selectedLocation = self.responseDictArray[0][@"reference"];
-        if ([self.locationDelegate respondsToSelector:@selector(secondViewControllerDismissed:)]) {
-            [self.locationDelegate secondViewControllerDismissed:self.selectedLocation];
-        }
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else{
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"No locations found" message:@"There are no locations matching you search query" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-    }
-}
 
 @end

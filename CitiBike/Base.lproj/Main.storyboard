@@ -38,7 +38,6 @@
                                 <textInputTraits key="textInputTraits" returnKeyType="search"/>
                                 <connections>
                                     <action selector="returnPressed:" destination="RGS-LX-5eH" eventType="editingDidEndOnExit" id="uSb-qd-WQJ"/>
-                                    <action selector="routeButtonTapped:" destination="RGS-LX-5eH" eventType="editingDidEndOnExit" id="ZMV-vF-EJ0"/>
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVW-ug-4af">
