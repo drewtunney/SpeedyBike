@@ -12,6 +12,8 @@
 
 + (void)downloadStationDataWithCompletion:(void (^)(NSArray *))completion;
 
-+(NSMutableArray *)findNearestStationsforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations;
++(NSMutableArray *)findNearestStationsWithBikesforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations;
+
++(NSMutableArray *)findNearestStationsWithDocksforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations;
 
 @end

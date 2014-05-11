@@ -18,7 +18,8 @@
 @interface MapVC () <GMSMapViewDelegate>
 
 @property(strong, nonatomic) NSSet *markers;
-@property (strong, nonatomic) NSMutableArray *closestStations;
+@property (strong, nonatomic) NSMutableArray *closestStationsWithBikes;
+@property (strong, nonatomic) NSMutableArray *closestStationsWithDocks;
 @property (strong, nonatomic) CLLocation *currentLocation;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (nonatomic) CGFloat latitude;
@@ -97,9 +98,9 @@
 {
     [mapView_ clear];
     
-    self.closestStations = [CitiBikeAPI findNearestStationsforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
+    self.closestStationsWithBikes = [CitiBikeAPI findNearestStationsWithBikesforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
     
-    NSArray *closestThreeStations = [[NSArray alloc]initWithObjects:self.closestStations[0], self.closestStations[1], self.closestStations[2], nil];
+    NSArray *closestThreeStations = [[NSArray alloc]initWithObjects:self.closestStationsWithBikes[0], self.closestStationsWithBikes[1], self.closestStationsWithBikes[2], nil];
     for (NSDictionary *station in closestThreeStations){
         GMSMarker *marker = [[GMSMarker alloc] init];
         marker.position = CLLocationCoordinate2DMake([[station valueForKeyPath:@"latitude"]floatValue], [[station valueForKeyPath:@"longitude"]floatValue]);
@@ -112,7 +113,7 @@
 
 -(void) setNearestStationsArray
 {
-    self.closestStations = [CitiBikeAPI findNearestStationsforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
+    self.closestStationsWithBikes = [CitiBikeAPI findNearestStationsWithBikesforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
 }
 
 -(void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate
@@ -199,8 +200,9 @@
 {
     [GoogleMapsAPI getAddressForLocationReferenceID:reference withCompletion:^(NSString *address) {
         [GoogleMapsAPI getCoordinatesForLocationForDestination:address withCompletion:^(NSDictionary *destinationCoordinates) {
-            self.directionsDestinationLatitude = [destinationCoordinates[@"lat"] floatValue];
-            self.directionsDestinationLongitude = [destinationCoordinates[@"lng"] floatValue];
+            self.closestStationsWithDocks = [CitiBikeAPI findNearestStationsWithBikesforLatitude:[destinationCoordinates[@"lat"] floatValue] andLongitude:[destinationCoordinates[@"lng"] floatValue] inArrayOfStations:self.stations];
+            self.directionsDestinationLatitude = [self.closestStationsWithDocks[0][@"latitude"] floatValue];
+            self.directionsDestinationLongitude = [self.closestStationsWithDocks[0][@"longitude"] floatValue];
             [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.directionsDestinationLatitude andDestinationLongitude:self.directionsDestinationLongitude onMap:mapView_];
         }];
     }];

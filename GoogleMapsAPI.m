@@ -37,7 +37,9 @@
             GMSMarker *destinationMarker = [GMSMarker markerWithPosition:destinationPosition];
             destinationMarker.map = map;
         });
-        NSLog(@"%@", error);
+        if (error) {
+            NSLog(@"%@", error);
+        }
     }]resume];
 }
 
@@ -59,9 +61,9 @@
         if ([streetNumber isEqualToString:@"New York"]) {
             fullAddress = [JSONResponseDict[@"result"][@"name"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
         }
-        
-        NSLog(@"%@", error);
-        
+        if (error) {
+            NSLog(@"%@", error);
+        }
         completion(fullAddress);
     }]resume];
 }
@@ -79,8 +81,9 @@
         NSNumber *directionsDestinationLongitude = [NSNumber numberWithFloat:[JSONResponseDict[@"results"][0][@"geometry"][@"location"][@"lng"]floatValue]];
         NSDictionary *coordinates = @{@"lat":directionsDestinationLatitude, @"lng":directionsDestinationLongitude};
         
-        NSLog(@"%@", error);
-        
+        if (error) {
+            NSLog(@"%@", error);
+        }
         completion(coordinates);
     }]resume];
 }
@@ -99,8 +102,9 @@
             [responseDictArray addObject:location];
         }
         
-        NSLog(@"%@", error);
-        
+        if (error) {
+            NSLog(@"%@", error);
+        }
         completion(responseDictArray);
     }]resume];
 }

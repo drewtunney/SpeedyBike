@@ -25,7 +25,7 @@
     [task resume];
 }
 
-+(NSMutableArray *)findNearestStationsforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations
++(NSMutableArray *)findNearestStationsWithBikesforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations
 {
     NSMutableArray *closestStations = [[NSMutableArray alloc]init];
     
@@ -46,5 +46,28 @@
    
     return closestStations;
 }
+
++(NSMutableArray *)findNearestStationsWithDocksforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations
+{
+    NSMutableArray *closestStations = [[NSMutableArray alloc]init];
+    
+    for (NSDictionary *station in allStations) {
+        if ([station[@"availableDocks"] integerValue] > 1 && [station[@"statusValue"] isEqualToString:@"In Service"]) {
+            CGFloat latitudeDifference = latitude - [station[@"latitude"] floatValue];
+            CGFloat longitudeDifference = longitude - [station[@"longitude"] floatValue];
+            CGFloat distanceFloat = latitudeDifference*latitudeDifference + longitudeDifference*longitudeDifference;
+            NSNumber *distance = [NSNumber numberWithFloat:distanceFloat];
+            NSMutableDictionary *availableStationDict = [NSMutableDictionary dictionaryWithDictionary:station];
+            [availableStationDict setObject:distance forKey:@"distance"];
+            [closestStations addObject:availableStationDict];
+        }
+    }
+    
+    NSSortDescriptor *distanceSort = [NSSortDescriptor sortDescriptorWithKey:@"distance" ascending:YES];
+    [closestStations sortUsingDescriptors:@[distanceSort]];
+    
+    return closestStations;
+}
+
 
 @end
