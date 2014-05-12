@@ -14,7 +14,9 @@
 
 +(void)displayDirectionsfromOriginLatitude:(CGFloat)originLat andOriginLongitude:(CGFloat)originLong toDestinationLatitude:(CGFloat)destinationLat andDestinationLongitude:(CGFloat)destinationLong onMap:(GMSMapView *)map
 {
-    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [map clear];
+    });
     NSString *directionsURL = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&sensor=false&key=%@&avoid=ferries&mode=bicycling", originLat, originLong,destinationLat,destinationLong,Web_Browser_Key];
     NSURL *url = [NSURL URLWithString:directionsURL];
     NSURLSession *session = [NSURLSession sharedSession];
@@ -37,7 +39,13 @@
             
             CLLocationCoordinate2D destinationPosition = CLLocationCoordinate2DMake(destinationLat, destinationLong);
             GMSMarker *destinationMarker = [GMSMarker markerWithPosition:destinationPosition];
-            destinationMarker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
+            //destinationMarker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
+            if (destinationMarker.position.latitude == destinationLat && destinationMarker.position.longitude == destinationLong) {
+                destinationMarker.icon = [GMSMarker markerImageWithColor:[UIColor redColor]];
+            }
+            else{
+                destinationMarker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
+            }
             destinationMarker.map = map;
         });
         if (error) {

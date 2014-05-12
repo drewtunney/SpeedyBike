@@ -29,6 +29,11 @@
 @property (strong, nonatomic) NSArray *stations;
 @property (nonatomic) BOOL isRouting;
 @property (strong, nonatomic) UIAlertView *cancelRouteAlert;
+@property (strong, nonatomic) GMSMarker *selectedDestination;
+@property (nonatomic) CGFloat selectedMarkerLat;
+@property (nonatomic) CGFloat selectedMarkerLng
+;
+
 
 @end
 
@@ -110,20 +115,21 @@
 
 -(void)createMarkerObjectsForAvailableDocks:(NSArray *)docks
 {
-    [mapView_ clear];
-    
-    
-    NSArray *closestThreeStations = @[docks[0], docks[1], docks[2]];
-    
-    for (NSDictionary *station in closestThreeStations){
-        GMSMarker *marker = [[GMSMarker alloc] init];
-        marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
-        marker.title = station[@"stAddress1"];
-        //marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
-        marker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
-        marker.map = mapView_;
-    }
-    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [mapView_ clear];
+        NSArray *closestThreeStations = @[docks[0], docks[1], docks[2]];
+        for (NSDictionary *station in closestThreeStations){
+            GMSMarker *marker = [[GMSMarker alloc] init];
+            marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
+            marker.title = station[@"stAddress1"];
+            
+            if (marker.position.latitude != self.selectedMarkerLat && marker.position.longitude != self.selectedMarkerLng) {
+                marker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
+                marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
+                marker.map = mapView_;
+            }
+        }
+    });
 }
 
 -(void) setNearestStationsArray
@@ -169,13 +175,12 @@
 {
     if (self.isRouting){
         [self.button removeFromSuperview];
-        CGFloat markerLat = marker.position.latitude;
-        CGFloat markerLng = marker.position.longitude;
+        self.selectedMarkerLat = marker.position.latitude;
+        self.selectedMarkerLng = marker.position.longitude;
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [mapView_ clear];
-        });
-        [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:markerLat andDestinationLongitude:markerLng onMap:mapView_];
-        dispatch_async(dispatch_get_main_queue(), ^{
+            [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.selectedMarkerLat andDestinationLongitude:self.selectedMarkerLng onMap:mapView_];
             [self createMarkerObjectsForAvailableDocks:self.closestStationsWithDocks];
         });
     }
@@ -237,9 +242,10 @@
                 self.closestStationsWithDocks = openDocks;
                 self.directionsDestinationLatitude = [openDocks[0][@"latitude"] floatValue];
                 self.directionsDestinationLongitude = [openDocks[0][@"longitude"] floatValue];
-                [self createMarkerObjectsForAvailableDocks:openDocks];
+                
                 
                 [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.directionsDestinationLatitude andDestinationLongitude:self.directionsDestinationLongitude onMap:mapView_];
+                [self createMarkerObjectsForAvailableDocks:openDocks];
             }];
         }];
     }];
