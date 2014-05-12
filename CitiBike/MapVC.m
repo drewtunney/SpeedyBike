@@ -103,7 +103,7 @@
         marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
         marker.title = station[@"stAddress1"];
         marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
-        marker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
+        marker.icon = [GMSMarker markerImageWithColor:[UIColor blueColor]];
         marker.map = mapView_;
     }
 }
@@ -121,6 +121,7 @@
         marker.title = station[@"stAddress1"];
         //marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
         marker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
+        marker.opacity = 0.6;
         marker.map = mapView_;
     }
     
