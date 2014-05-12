@@ -26,12 +26,14 @@
             GMSPolyline *directionsLine;
             directionsLine = [GMSPolyline polylineWithPath:path];
             directionsLine.strokeWidth = 7;
-            directionsLine.strokeColor = [UIColor greenColor];
+            UIColor *lineColor = [UIColor colorWithRed:0.106 green:0.643 blue:1.0 alpha:0.75];
+            directionsLine.strokeColor = lineColor;
             directionsLine.map = map;
             
             CLLocationCoordinate2D originPosition = CLLocationCoordinate2DMake(originLat, originLong);
             GMSMarker *originMarker = [GMSMarker markerWithPosition:originPosition];
-            originMarker.icon = [GMSMarker markerImageWithColor:[UIColor greenColor]];
+            UIColor *markerColor = [UIColor colorWithRed:0.106 green:0.643 blue:1.0 alpha:1.0];
+            originMarker.icon = [GMSMarker markerImageWithColor:markerColor];
             originMarker.map = map;
         });
         if (error) {

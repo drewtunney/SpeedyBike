@@ -106,7 +106,8 @@
         marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
         marker.title = station[@"stAddress1"];
         marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
-        marker.icon = [GMSMarker markerImageWithColor:[UIColor blueColor]];
+        UIColor *markerColor = [UIColor colorWithRed:0.106 green:0.643 blue:1.0 alpha:1.0];
+        marker.icon = [GMSMarker markerImageWithColor:markerColor];
         marker.map = mapView_;
     }
 }
@@ -120,16 +121,18 @@
             marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
             if ([station[@"latitude"]floatValue] == self.selectedMarkerLat && [station[@"longitude"]floatValue] == self.selectedMarkerLng) {
                 marker.title = station[@"stAddress1"];
-                marker.icon = [GMSMarker markerImageWithColor:[UIColor redColor]];
-                                marker.map = mapView_;
+                UIColor *markerColor = [UIColor orangeColor];
+                marker.icon = [GMSMarker markerImageWithColor:markerColor];
+                marker.map = mapView_;
             }
             else{
                 marker.title = station[@"stAddress1"];
-                marker.icon = [GMSMarker markerImageWithColor:[UIColor blueColor]];
-                marker.opacity = 0.6;
-               
+                UIColor *markerColor = [UIColor orangeColor];
+                marker.icon = [GMSMarker markerImageWithColor:markerColor];
+                marker.opacity = 0.4;
+                
                 marker.map = mapView_;
-
+                
             }
         }
     });
