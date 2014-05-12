@@ -47,7 +47,7 @@
     return closestStations;
 }
 
-+(void)findNearestStationsWithDocksforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations withCompletion:(void (^)(NSArray *))completion
++(NSArray *)findNearestStationsWithDocksforLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude inArrayOfStations:(NSArray *)allStations
 {
     NSMutableArray *closestStations = [[NSMutableArray alloc]init];
     
@@ -66,7 +66,9 @@
     NSSortDescriptor *distanceSort = [NSSortDescriptor sortDescriptorWithKey:@"distance" ascending:YES];
     [closestStations sortUsingDescriptors:@[distanceSort]];
     
-    completion(closestStations);
+    NSArray *closestStationsCopy = [NSArray arrayWithArray:closestStations];
+    
+    return closestStationsCopy;
 }
 
 

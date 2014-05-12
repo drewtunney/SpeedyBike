@@ -268,20 +268,19 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [GoogleMapsAPI getAddressForLocationReferenceID:reference withCompletion:^(NSString *address){
             [GoogleMapsAPI getCoordinatesForLocationForDestination:address withCompletion:^(NSDictionary *destinationCoordinates){
-                [CitiBikeAPI findNearestStationsWithDocksforLatitude:[destinationCoordinates[@"lat"] floatValue] andLongitude:[destinationCoordinates[@"lng"] floatValue] inArrayOfStations:self.stations withCompletion:^(NSArray *openDocks){
-                    self.closestStationsWithDocks = openDocks;
-                    self.directionsDestinationLatitude = [openDocks[0][@"latitude"] floatValue];
-                    self.directionsDestinationLongitude = [openDocks[0][@"longitude"] floatValue];
-                    self.selectedMarkerLat = [openDocks[0][@"latitude"] floatValue];
-                    self.selectedMarkerLng = [openDocks[0][@"longitude"] floatValue];
-                    
-                    GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.directionsOriginLatitude, self.directionsOriginLongitude) coordinate:CLLocationCoordinate2DMake(self.directionsDestinationLatitude, self.directionsDestinationLongitude)];
-                    
-                    [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds]];
-                    
-                    [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.directionsDestinationLatitude andDestinationLongitude:self.directionsDestinationLongitude onMap:mapView_];
-                    [self createMarkerObjectsForAvailableDocks:openDocks];
-                }];
+                
+                self.closestStationsWithDocks = [CitiBikeAPI findNearestStationsWithBikesforLatitude:[destinationCoordinates[@"lat"] floatValue] andLongitude:[destinationCoordinates[@"lng"] floatValue] inArrayOfStations:self.stations];
+                self.directionsDestinationLatitude = [self.closestStationsWithDocks[0][@"latitude"] floatValue];
+                self.directionsDestinationLongitude = [self.closestStationsWithDocks[0][@"longitude"] floatValue];
+                self.selectedMarkerLat = [self.closestStationsWithDocks[0][@"latitude"] floatValue];
+                self.selectedMarkerLng = [self.closestStationsWithDocks[0][@"longitude"] floatValue];
+                
+                GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.directionsOriginLatitude, self.directionsOriginLongitude) coordinate:CLLocationCoordinate2DMake(self.directionsDestinationLatitude, self.directionsDestinationLongitude)];
+                
+                [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds]];
+                
+                [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.directionsDestinationLatitude andDestinationLongitude:self.directionsDestinationLongitude onMap:mapView_];
+                [self createMarkerObjectsForAvailableDocks:self.closestStationsWithDocks];
             }];
         }];
     });
