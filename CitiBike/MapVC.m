@@ -28,6 +28,7 @@
 @property (strong, nonatomic) UIButton *button;
 @property (strong, nonatomic) NSArray *stations;
 @property (nonatomic) BOOL isRouting;
+@property (nonatomic) BOOL isDisplayingDestinationInfo;
 @property (strong, nonatomic) UIAlertView *cancelRouteAlert;
 @property (strong, nonatomic) GMSMarker *selectedDestination;
 @property (nonatomic) CGFloat selectedMarkerLat;
@@ -49,6 +50,7 @@
 {
     [self startDeterminingUserLocation];
     self.isRouting = NO;
+    self.isDisplayingDestinationInfo = NO;
     self.cancelRouteAlert = [[UIAlertView alloc]initWithTitle:@"Cancel Route" message:@"Would you like to cancel your current route and clear the map?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     self.cancelRouteAlert.delegate = self;
     
@@ -129,6 +131,7 @@
                 marker.icon = [GMSMarker markerImageWithColor:markerColor];
                 marker.map = mapView_;
                 [mapView_ setSelectedMarker:marker];
+                self.isDisplayingDestinationInfo = YES;
             }
             else{
                 marker.title = station[@"stAddress1"];
@@ -151,8 +154,11 @@
 -(void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
     [self.button removeFromSuperview];
-    
-    if (self.isRouting) {
+    if (self.isRouting && self.isDisplayingDestinationInfo) {
+        [mapView setSelectedMarker:nil];
+        self.isDisplayingDestinationInfo = NO;
+    }
+    else if (self.isRouting && !self.isDisplayingDestinationInfo) {
         [self.cancelRouteAlert show];
     }
     else{
