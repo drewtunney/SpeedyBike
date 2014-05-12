@@ -87,29 +87,32 @@
 {
     [CitiBikeAPI downloadStationDataWithCompletion:^(NSArray *stations) {
         self.stations = stations;
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^ {
-            [self createMarkerObjectsForAvailableBikes];
-        }];
         
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self createMarkerObjectsForAvailableBikes];
+        });
     }];
 }
 
 - (void)createMarkerObjectsForAvailableBikes
 {
-    [mapView_ clear];
-    
-    self.closestStationsWithBikes = [CitiBikeAPI findNearestStationsWithBikesforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
-    
-    NSArray *closestThreeStations = [[NSArray alloc]initWithObjects:self.closestStationsWithBikes[0], self.closestStationsWithBikes[1], self.closestStationsWithBikes[2], nil];
-    for (NSDictionary *station in closestThreeStations){
-        GMSMarker *marker = [[GMSMarker alloc] init];
-        marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
-        marker.title = station[@"stAddress1"];
-        marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
-        UIColor *markerColor = [UIColor colorWithRed:0.106 green:0.643 blue:1.0 alpha:1.0];
-        marker.icon = [GMSMarker markerImageWithColor:markerColor];
-        marker.map = mapView_;
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [mapView_ clear];
+        
+        self.closestStationsWithBikes = [CitiBikeAPI findNearestStationsWithBikesforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
+        
+        NSArray *closestThreeStations = [[NSArray alloc]initWithObjects:self.closestStationsWithBikes[0], self.closestStationsWithBikes[1], self.closestStationsWithBikes[2], nil];
+        for (NSDictionary *station in closestThreeStations){
+            GMSMarker *marker = [[GMSMarker alloc] init];
+            marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
+            marker.title = station[@"stAddress1"];
+            marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
+            UIColor *markerColor = [UIColor colorWithRed:0.106 green:0.643 blue:1.0 alpha:1.0];
+            marker.icon = [GMSMarker markerImageWithColor:markerColor];
+            marker.map = mapView_;
+        }
+    });
 }
 
 -(void)createMarkerObjectsForAvailableDocks:(NSArray *)docks
@@ -242,20 +245,25 @@
 
 -(void)mapDirectionsforDestinationReference:(NSString *)reference
 {
-    [GoogleMapsAPI getAddressForLocationReferenceID:reference withCompletion:^(NSString *address) {
-        [GoogleMapsAPI getCoordinatesForLocationForDestination:address withCompletion:^(NSDictionary *destinationCoordinates) {
-            [CitiBikeAPI findNearestStationsWithDocksforLatitude:[destinationCoordinates[@"lat"] floatValue] andLongitude:[destinationCoordinates[@"lng"] floatValue] inArrayOfStations:self.stations withCompletion:^(NSArray *openDocks) {
-                self.closestStationsWithDocks = openDocks;
-                self.directionsDestinationLatitude = [openDocks[0][@"latitude"] floatValue];
-                self.directionsDestinationLongitude = [openDocks[0][@"longitude"] floatValue];
-                self.selectedMarkerLat = [openDocks[0][@"latitude"] floatValue];
-                self.selectedMarkerLng = [openDocks[0][@"longitude"] floatValue];
-                
-                [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.directionsDestinationLatitude andDestinationLongitude:self.directionsDestinationLongitude onMap:mapView_];
-                [self createMarkerObjectsForAvailableDocks:openDocks];
-            }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [GoogleMapsAPI getAddressForLocationReferenceID:reference withCompletion:^(NSString *address) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [GoogleMapsAPI getCoordinatesForLocationForDestination:address withCompletion:^(NSDictionary *destinationCoordinates) {
+                    [CitiBikeAPI findNearestStationsWithDocksforLatitude:[destinationCoordinates[@"lat"] floatValue] andLongitude:[destinationCoordinates[@"lng"] floatValue] inArrayOfStations:self.stations withCompletion:^(NSArray *openDocks) {
+                        self.closestStationsWithDocks = openDocks;
+                        self.directionsDestinationLatitude = [openDocks[0][@"latitude"] floatValue];
+                        self.directionsDestinationLongitude = [openDocks[0][@"longitude"] floatValue];
+                        self.selectedMarkerLat = [openDocks[0][@"latitude"] floatValue];
+                        self.selectedMarkerLng = [openDocks[0][@"longitude"] floatValue];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.directionsDestinationLatitude andDestinationLongitude:self.directionsDestinationLongitude onMap:mapView_];
+                            [self createMarkerObjectsForAvailableDocks:openDocks];
+                        });
+                    }];
+                }];
+            });
         }];
-    }];
+    });
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

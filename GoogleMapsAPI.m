@@ -51,28 +51,23 @@
     [[session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSDictionary *JSONResponseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            NSString *fullAddress;
-            
-            if ([JSONResponseDict[@"result"][@"address_components"][0][@"long_name"] isEqualToString:@"New York"]) {
-                fullAddress = [JSONResponseDict[@"result"][@"name"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-            }
-            else{
-                NSMutableArray *addressArray = [[NSMutableArray alloc]init];
-                for (NSDictionary *components in JSONResponseDict[@"result"][@"address_components"]) {
-                    [addressArray addObject:components[@"long_name"]];
-                }
-                fullAddress = [addressArray componentsJoinedByString:@"+"];
-                fullAddress = [fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-            }
-            if (error) {
-                NSLog(@"%@", error);
-            }
-            completion(fullAddress);
-            
-        });
+        NSString *fullAddress;
         
+        if ([JSONResponseDict[@"result"][@"address_components"][0][@"long_name"] isEqualToString:@"New York"]) {
+            fullAddress = [JSONResponseDict[@"result"][@"name"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        }
+        else{
+            NSMutableArray *addressArray = [[NSMutableArray alloc]init];
+            for (NSDictionary *components in JSONResponseDict[@"result"][@"address_components"]) {
+                [addressArray addObject:components[@"long_name"]];
+            }
+            fullAddress = [addressArray componentsJoinedByString:@"+"];
+            fullAddress = [fullAddress stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        }
+        if (error) {
+            NSLog(@"%@", error);
+        }
+        completion(fullAddress);
     }]resume];
 }
 
@@ -85,19 +80,16 @@
     [[session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSDictionary *JSONResponseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSNumber *directionsDestinationLatitude = [NSNumber numberWithFloat:[JSONResponseDict[@"results"][0][@"geometry"][@"location"][@"lat"]floatValue]];
-            NSNumber *directionsDestinationLongitude = [NSNumber numberWithFloat:[JSONResponseDict[@"results"][0][@"geometry"][@"location"][@"lng"]floatValue]];
-            
-            NSDictionary *coordinates = @{@"lat":directionsDestinationLatitude, @"lng":directionsDestinationLongitude};
-            
-            if (error) {
-                NSLog(@"%@", error);
-            }
-            completion(coordinates);
-            
-        });
         
+        NSNumber *directionsDestinationLatitude = [NSNumber numberWithFloat:[JSONResponseDict[@"results"][0][@"geometry"][@"location"][@"lat"]floatValue]];
+        NSNumber *directionsDestinationLongitude = [NSNumber numberWithFloat:[JSONResponseDict[@"results"][0][@"geometry"][@"location"][@"lng"]floatValue]];
+        
+        NSDictionary *coordinates = @{@"lat":directionsDestinationLatitude, @"lng":directionsDestinationLongitude};
+        
+        if (error) {
+            NSLog(@"%@", error);
+        }
+        completion(coordinates);
     }]resume];
 }
 
