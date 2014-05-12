@@ -99,12 +99,12 @@
 - (void)createMarkerObjectsForAvailableBikes
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        
         [mapView_ clear];
         
         self.closestStationsWithBikes = [CitiBikeAPI findNearestStationsWithBikesforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
         
         NSArray *closestThreeStations = [[NSArray alloc]initWithObjects:self.closestStationsWithBikes[0], self.closestStationsWithBikes[1], self.closestStationsWithBikes[2], nil];
+        
         for (NSDictionary *station in closestThreeStations){
             GMSMarker *marker = [[GMSMarker alloc] init];
             marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
@@ -120,6 +120,12 @@
 -(void)createMarkerObjectsForAvailableDocks:(NSArray *)docks
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        CLLocationCoordinate2D originPosition = CLLocationCoordinate2DMake(self.directionsOriginLatitude, self.directionsOriginLongitude);
+        GMSMarker *originMarker = [GMSMarker markerWithPosition:originPosition];
+        UIColor *markerColor = [UIColor colorWithRed:0.106 green:0.643 blue:1.0 alpha:1.0];
+        originMarker.icon = [GMSMarker markerImageWithColor:markerColor];
+        originMarker.map = mapView_;
+        
         NSArray *closestThreeStations = @[docks[0], docks[1], docks[2]];
         for (NSDictionary *station in closestThreeStations){
             GMSMarker *marker = [[GMSMarker alloc] init];
