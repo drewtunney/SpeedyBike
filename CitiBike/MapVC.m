@@ -31,9 +31,7 @@
 @property (strong, nonatomic) UIAlertView *cancelRouteAlert;
 @property (strong, nonatomic) GMSMarker *selectedDestination;
 @property (nonatomic) CGFloat selectedMarkerLat;
-@property (nonatomic) CGFloat selectedMarkerLng
-;
-
+@property (nonatomic) CGFloat selectedMarkerLng;
 
 @end
 
@@ -116,17 +114,22 @@
 -(void)createMarkerObjectsForAvailableDocks:(NSArray *)docks
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [mapView_ clear];
         NSArray *closestThreeStations = @[docks[0], docks[1], docks[2]];
         for (NSDictionary *station in closestThreeStations){
             GMSMarker *marker = [[GMSMarker alloc] init];
             marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
-            if (marker.position.latitude != self.selectedMarkerLat && marker.position.longitude != self.selectedMarkerLng) {
+            if ([station[@"latitude"]floatValue] == self.selectedMarkerLat && [station[@"longitude"]floatValue] == self.selectedMarkerLng) {
+                marker.title = station[@"stAddress1"];
+                marker.icon = [GMSMarker markerImageWithColor:[UIColor redColor]];
+                                marker.map = mapView_;
+            }
+            else{
                 marker.title = station[@"stAddress1"];
                 marker.icon = [GMSMarker markerImageWithColor:[UIColor blueColor]];
                 marker.opacity = 0.6;
-                marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
+               
                 marker.map = mapView_;
+
             }
         }
     });
@@ -242,7 +245,8 @@
                 self.closestStationsWithDocks = openDocks;
                 self.directionsDestinationLatitude = [openDocks[0][@"latitude"] floatValue];
                 self.directionsDestinationLongitude = [openDocks[0][@"longitude"] floatValue];
-                
+                self.selectedMarkerLat = [openDocks[0][@"latitude"] floatValue];
+                self.selectedMarkerLng = [openDocks[0][@"longitude"] floatValue];
                 
                 [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.directionsDestinationLatitude andDestinationLongitude:self.directionsDestinationLongitude onMap:mapView_];
                 [self createMarkerObjectsForAvailableDocks:openDocks];

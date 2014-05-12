@@ -19,13 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "GoogleMapsAPI.m"
-            timestampString = "421554817.707534"
+            filePath = "CitiBike/MapVC.m"
+            timestampString = "421601795.481795"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "+displayDirectionsfromOriginLatitude:andOriginLongitude:toDestinationLatitude:andDestinationLongitude:onMap:"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
+            landmarkName = "-createMarkerObjectsForAvailableDocks:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
