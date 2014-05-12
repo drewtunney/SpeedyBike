@@ -182,12 +182,19 @@
     }
     else{
         [mapView clear];
-        [mapView animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:mapView.myLocation.coordinate.latitude
-                                                                     longitude:mapView.myLocation.coordinate.longitude
-                                                                          zoom:16]];
         self.latitude = mapView.myLocation.coordinate.latitude;
         self.longitude = mapView.myLocation.coordinate.longitude;
-        [self setPinsForStation];
+        [CitiBikeAPI downloadStationDataWithCompletion:^(NSArray *stations) {
+            self.stations = stations;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self createMarkerObjectsForAvailableBikes];
+                
+                GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.latitude, self.longitude) coordinate:CLLocationCoordinate2DMake([stations[0][@"latitude"] floatValue], [stations[0][@"longitude"] floatValue])];
+                
+                [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds]];
+            });
+        }];
     }
     return YES;
 }
