@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CitiBike/MapVC.m"
-            timestampString = "421605823.419359"
+            timestampString = "421606248.807028"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
             landmarkName = "-createMarkerObjectsForAvailableDocks:"
             landmarkType = "5">
          </BreakpointContent>

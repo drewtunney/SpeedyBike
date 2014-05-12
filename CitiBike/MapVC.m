@@ -124,9 +124,11 @@
             marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
             if ([station[@"latitude"]floatValue] == self.selectedMarkerLat && [station[@"longitude"]floatValue] == self.selectedMarkerLng) {
                 marker.title = station[@"stAddress1"];
+                marker.snippet = [NSString stringWithFormat:@"%@ available docks",[station[@"availableDocks"] stringValue]];
                 UIColor *markerColor = [UIColor orangeColor];
                 marker.icon = [GMSMarker markerImageWithColor:markerColor];
                 marker.map = mapView_;
+                [mapView_ setSelectedMarker:marker];
             }
             else{
                 marker.title = station[@"stAddress1"];
