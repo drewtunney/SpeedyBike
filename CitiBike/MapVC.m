@@ -194,19 +194,20 @@
 
 -(BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
 {
+    [self.button removeFromSuperview];
     if (self.isRouting){
-        [self.button removeFromSuperview];
-        self.selectedMarkerLat = marker.position.latitude;
-        self.selectedMarkerLng = marker.position.longitude;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [mapView_ clear];
-            [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.selectedMarkerLat andDestinationLongitude:self.selectedMarkerLng onMap:mapView_];
-            [self createMarkerObjectsForAvailableDocks:self.closestStationsWithDocks];
-        });
+        if (marker.position.latitude != self.directionsOriginLatitude && marker.position.longitude != self.directionsOriginLongitude){
+            self.selectedMarkerLat = marker.position.latitude;
+            self.selectedMarkerLng = marker.position.longitude;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [mapView_ clear];
+                [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.selectedMarkerLat andDestinationLongitude:self.selectedMarkerLng onMap:mapView_];
+                [self createMarkerObjectsForAvailableDocks:self.closestStationsWithDocks];
+            });
+        }
     }
     else{
-        [self.button removeFromSuperview];
         [mapView setSelectedMarker:marker];
         self.directionsOriginLatitude = marker.position.latitude;
         self.directionsOriginLongitude = marker.position.longitude;
