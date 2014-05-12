@@ -35,11 +35,6 @@
             UIColor *markerColor = [UIColor colorWithRed:0.106 green:0.643 blue:1.0 alpha:1.0];
             originMarker.icon = [GMSMarker markerImageWithColor:markerColor];
             originMarker.map = map;
-
-            
-            GMSCoordinateBounds *bounds =
-            [[GMSCoordinateBounds alloc] initWithCoordinate:originPosition coordinate:CLLocationCoordinate2DMake(destinationLat, destinationLong)];
-            [map moveCamera:[GMSCameraUpdate fitBounds:bounds]];
         });
         if (error) {
             NSLog(@"%@", error);

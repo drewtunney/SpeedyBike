@@ -138,9 +138,7 @@
                 UIColor *markerColor = [UIColor orangeColor];
                 marker.icon = [GMSMarker markerImageWithColor:markerColor];
                 marker.opacity = 0.4;
-                
                 marker.map = mapView_;
-                
             }
         }
     });
@@ -264,6 +262,10 @@
                         self.selectedMarkerLat = [openDocks[0][@"latitude"] floatValue];
                         self.selectedMarkerLng = [openDocks[0][@"longitude"] floatValue];
                         dispatch_async(dispatch_get_main_queue(), ^{
+                            
+                            GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.directionsOriginLatitude, self.directionsOriginLongitude) coordinate:CLLocationCoordinate2DMake(self.directionsDestinationLatitude, self.directionsDestinationLongitude)];
+                            [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds]];
+                            
                             [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.directionsDestinationLatitude andDestinationLongitude:self.directionsDestinationLongitude onMap:mapView_];
                             [self createMarkerObjectsForAvailableDocks:openDocks];
                         });
