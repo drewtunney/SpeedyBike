@@ -108,7 +108,7 @@
         marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
         marker.title = station[@"stAddress1"];
         marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
-        marker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
+        marker.icon = [GMSMarker markerImageWithColor:[UIColor blueColor]];
         marker.map = mapView_;
     }
 }
@@ -121,10 +121,10 @@
         for (NSDictionary *station in closestThreeStations){
             GMSMarker *marker = [[GMSMarker alloc] init];
             marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
-            marker.title = station[@"stAddress1"];
-            
             if (marker.position.latitude != self.selectedMarkerLat && marker.position.longitude != self.selectedMarkerLng) {
-                marker.icon = [GMSMarker markerImageWithColor:[UIColor blackColor]];
+                marker.title = station[@"stAddress1"];
+                marker.icon = [GMSMarker markerImageWithColor:[UIColor blueColor]];
+                marker.opacity = 0.6;
                 marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
                 marker.map = mapView_;
             }
