@@ -43,10 +43,6 @@
     [self.backButton setTitle:nil];
     [self.backButton setImage:buttonImage];
     [self.backButton setTintColor:[UIColor orangeColor]];
-    
-#warning NOT WORKING
-
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated
