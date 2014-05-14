@@ -287,7 +287,8 @@
         [GoogleMapsAPI getAddressForLocationReferenceID:reference withCompletion:^(NSString *address){
             [GoogleMapsAPI getCoordinatesForLocationForDestination:address withCompletion:^(NSDictionary *destinationCoordinates){
                 
-                self.closestStationsWithDocks = [CitiBikeAPI findNearestStationsWithBikesforLatitude:[destinationCoordinates[@"lat"] floatValue] andLongitude:[destinationCoordinates[@"lng"] floatValue] inArrayOfStations:self.stations];
+                
+                self.closestStationsWithDocks = [CitiBikeAPI findNearestStationsWithDocksforLatitude:[destinationCoordinates[@"lat"] floatValue] andLongitude:[destinationCoordinates[@"lng"] floatValue] inArrayOfStations:self.stations];
                 self.directionsDestinationLatitude = [self.closestStationsWithDocks[0][@"latitude"] floatValue];
                 self.directionsDestinationLongitude = [self.closestStationsWithDocks[0][@"longitude"] floatValue];
                 self.selectedMarkerLat = [self.closestStationsWithDocks[0][@"latitude"] floatValue];
