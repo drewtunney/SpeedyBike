@@ -368,7 +368,7 @@
     UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeCustom];
     //[clearButton setFrame:CGRectMake(100, 100, 30.0f, 30.0f)];
     [clearButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [clearButton setTitle:@"New Route" forState:UIControlStateNormal];
+    [clearButton setTitle:@"Clear Map" forState:UIControlStateNormal];
     [clearButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
     [clearButton.titleLabel setTextColor:[UIColor whiteColor]];
     //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
