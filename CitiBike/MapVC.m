@@ -272,15 +272,15 @@
     
     self.button = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.button setFrame:CGRectMake(self.view.frame.origin.x + 10, self.view.frame.origin.y + 40,appDelegate.window.frame.size.width-20, 50.0f)];
-    [self.button setTitle:@"Get Directions From Here" forState:UIControlStateNormal];
-    [self.button.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    [self.button setTitle:@"Directions From Here" forState:UIControlStateNormal];
+    [self.button.titleLabel setFont:[UIFont systemFontOfSize:24]];
     [self.button.titleLabel setTextColor:[UIColor whiteColor]];
     //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
     UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
     self.button.backgroundColor = backgroundColor;
     [self.button addTarget:self action:@selector(didTapDestinationButton) forControlEvents:UIControlEventTouchUpInside];
     self.button.layer.cornerRadius = 5;
-    self.button.layer.borderWidth = 1;
+    self.button.layer.borderWidth = 0;
     [self.view addSubview:self.button];
 }
 
@@ -369,7 +369,7 @@
     //[clearButton setFrame:CGRectMake(100, 100, 30.0f, 30.0f)];
     [clearButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     [clearButton setTitle:@"New Route" forState:UIControlStateNormal];
-    [clearButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    [clearButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
     [clearButton.titleLabel setTextColor:[UIColor whiteColor]];
     //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
     UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
@@ -382,7 +382,7 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:-10]];
     clearButton.layer.cornerRadius = 5;
-    clearButton.layer.borderWidth = 1;
+    clearButton.layer.borderWidth = 0;
     
     self.clearButton = clearButton;
 }
