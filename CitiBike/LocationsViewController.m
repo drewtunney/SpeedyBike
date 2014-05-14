@@ -9,15 +9,18 @@
 #import "LocationsViewController.h"
 #import "Constants.h"
 #import "GoogleMapsAPI.h"
+#import <FontAwesomeKit/FontAwesomeKit.h>
 
 @interface LocationsViewController ()
 - (IBAction)textFieldEditingChanged:(id)sender;
 - (IBAction)returnPressed:(id)sender;
-- (IBAction)cancelButtonTapped:(id)sender;
+- (IBAction)backButtonTapped:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *responseDictArray;
 @property (strong, nonatomic) NSString *selectedLocation;
+@property (strong, nonatomic) IBOutlet UIView *mainView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *backButton;
 
 @end
 
@@ -31,10 +34,27 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.textField.delegate = self;
+    
+    [self.textField setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Bold" size:18]];
+    self.textField.placeholder = @"Enter Destination";
+    FAKFontAwesome *arrowIcon = [FAKFontAwesome angleLeftIconWithSize:35];
+    [arrowIcon addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor]];
+    UIImage *buttonImage = [arrowIcon imageWithSize:CGSizeMake(35,35)];
+    [self.backButton setTitle:nil];
+    [self.backButton setImage:buttonImage];
+    [self.backButton setTintColor:[UIColor orangeColor]];
+    
 }
 
--(void)viewDidAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.tableView setHidden:YES];
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    
     [self.textField becomeFirstResponder];
+    
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -50,6 +70,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
+    [cell.textLabel setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Light" size:18]];
     cell.textLabel.text = self.responseDictArray[indexPath.row][@"description"];
     
     return cell;
@@ -69,7 +90,7 @@
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateSearchResults) object:nil];
     
-    [self performSelector:@selector(updateSearchResults) withObject:nil afterDelay:0.75];
+    [self performSelector:@selector(updateSearchResults) withObject:nil afterDelay:0.50];
 }
 
 - (IBAction)returnPressed:(id)sender
@@ -94,17 +115,20 @@
     }];
 }
 
-- (IBAction)cancelButtonTapped:(id)sender
+- (IBAction)backButtonTapped:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 -(void)updateSearchResultsWithCompletion:(void (^)())completion
 {
+    
+    
     [GoogleMapsAPI updateListWithSuggestedPlacesForName:self.textField.text forLatitude:self.latitude andLongitude:self.longitude withCompletion:^(NSMutableArray *responseObjects) {
         self.responseDictArray = responseObjects;
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView setHidden:NO];
             [self.tableView reloadData];
         });
         completion();
@@ -117,6 +141,7 @@
         self.responseDictArray = responseObjects;
         
         dispatch_async(dispatch_get_main_queue(), ^{
+             [self.tableView setHidden:NO];
             [self.tableView reloadData];
         });
     }];

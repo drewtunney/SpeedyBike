@@ -228,10 +228,12 @@
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     
     self.button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.button setFrame:CGRectMake(self.view.frame.origin.x+10, self.view.frame.origin.y + 50,appDelegate.window.frame.size.width-20, 30.0f)];
-    [self.button setTitle:@"Set Destination" forState:UIControlStateNormal];
-    [self.button.titleLabel setTextColor:[UIColor blackColor]];
-    UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
+    [self.button setFrame:CGRectMake(self.view.frame.origin.x + 10, self.view.frame.origin.y + 40,appDelegate.window.frame.size.width-20, 50.0f)];
+    [self.button setTitle:@"Get Directions From Here" forState:UIControlStateNormal];
+    [self.button.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    [self.button.titleLabel setTextColor:[UIColor whiteColor]];
+    //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
+    UIColor *backgroundColor = [UIColor colorWithRed:0.0f green:0.8f blue:0.086f alpha:0.75f];
     self.button.backgroundColor = backgroundColor;
     [self.button addTarget:self action:@selector(didTapDestinationButton) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.button];
@@ -243,12 +245,16 @@
         [self.cancelRouteAlert show];
     }
     else{
+        NSDictionary *navBarTitleAttributes = @{NSForegroundColorAttributeName:[UIColor orangeColor]};
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UINavigationController *locationsNavController = [storyBoard instantiateViewControllerWithIdentifier:@"LocationsNavController"];
+        [locationsNavController.navigationBar setTitleTextAttributes:navBarTitleAttributes];
         LocationsViewController *locationsViewController = [storyBoard instantiateViewControllerWithIdentifier:@"LocationsViewController"];
+        [locationsNavController setViewControllers:@[locationsViewController] animated:YES];
         locationsViewController.latitude = self.latitude;
         locationsViewController.longitude = self.longitude;
         locationsViewController.locationDelegate = self;
-        [self presentViewController:locationsViewController animated:YES completion:nil];
+        [self presentViewController:locationsNavController animated:NO completion:nil];
     }
 }
 
@@ -277,7 +283,7 @@
                 
                 GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.directionsOriginLatitude, self.directionsOriginLongitude) coordinate:CLLocationCoordinate2DMake(self.directionsDestinationLatitude, self.directionsDestinationLongitude)];
                 
-                [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds]];
+                [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds withPadding:75.0f]];
                 
                 [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.directionsDestinationLatitude andDestinationLongitude:self.directionsDestinationLongitude onMap:mapView_];
                 [self createMarkerObjectsForAvailableDocks:self.closestStationsWithDocks];
