@@ -112,8 +112,13 @@
             marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
             marker.title = station[@"stAddress1"];
             marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
-            UIColor *markerColor = [UIColor colorWithRed:0.106 green:0.643 blue:1.0 alpha:1.0];
-            marker.icon = [GMSMarker markerImageWithColor:markerColor];
+            UIImage *image = [UIImage imageNamed:@"bicycle"];
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(35.0, 35.0), NO, 0.0);
+            [image drawInRect:CGRectMake(0, 0, 35, 35)];
+            UIImage *scaledBike = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            marker.icon = scaledBike;
+           
             marker.map = mapView_;
         }
     });
@@ -138,28 +143,42 @@
         NSArray *closestThreeStations = @[docks[0], docks[1], docks[2]];
         for (NSDictionary *station in closestThreeStations){
             GMSMarker *marker = [[GMSMarker alloc] init];
+            marker.snippet = [NSString stringWithFormat:@"%@ available docks",[station[@"availableDocks"] stringValue]];
             marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
             if ([station[@"latitude"]floatValue] == self.selectedMarkerLat && [station[@"longitude"]floatValue] == self.selectedMarkerLng) {
                 marker.title = station[@"stAddress1"];
                 marker.snippet = [NSString stringWithFormat:@"%@ available docks",[station[@"availableDocks"] stringValue]];
-                UIColor *markerColor = [UIColor orangeColor];
-                marker.icon = [GMSMarker markerImageWithColor:markerColor];
+                //UIColor *markerColor = [UIColor orangeColor];
+                UIImage *image = [UIImage imageNamed:@"bicycle"];
+                UIGraphicsBeginImageContextWithOptions(CGSizeMake(35.0, 35.0), NO, 0.0);
+                [image drawInRect:CGRectMake(0, 0, 35, 35)];
+                UIImage *scaledBike = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                marker.icon = scaledBike;
                 marker.map = mapView_;
-                if (marker.position.latitude == [closestThreeStations[0][@"latitude"] floatValue] && marker.position.longitude == [closestThreeStations[0][@"longitude"] floatValue]) {
-                    [mapView_ setSelectedMarker:marker];
-                }
+
+                   [mapView_ setSelectedMarker:marker];
+
                 self.isDisplayingDestinationInfo = YES;
             }
             else{
                 marker.title = station[@"stAddress1"];
-                UIColor *markerColor = [UIColor orangeColor];
-                marker.icon = [GMSMarker markerImageWithColor:markerColor];
+               // UIColor *markerColor = [UIColor orangeColor];
+                UIImage *image = [UIImage imageNamed:@"bicycle"];
+                UIGraphicsBeginImageContextWithOptions(CGSizeMake(35.0, 35.0), NO, 0.0);
+                [image drawInRect:CGRectMake(0, 0, 35, 35)];
+                UIImage *scaledBike = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                marker.icon = scaledBike;
                 marker.opacity = 0.4;
                 marker.map = mapView_;
+            
             }
         }
     });
 }
+
+
 
 -(void) setNearestStationsArray
 {
