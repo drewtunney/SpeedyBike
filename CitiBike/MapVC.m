@@ -385,7 +385,9 @@
 
 -(void)clearMap
 {
-    [self.cancelRouteAlert show];
+    [mapView_ clear];
+    self.isRouting = NO;
+    [self.clearButton removeFromSuperview];
 }
 
 @end
