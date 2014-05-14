@@ -279,6 +279,8 @@
     UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
     self.button.backgroundColor = backgroundColor;
     [self.button addTarget:self action:@selector(didTapDestinationButton) forControlEvents:UIControlEventTouchUpInside];
+    self.button.layer.cornerRadius = 5;
+    self.button.layer.borderWidth = 1;
     [self.view addSubview:self.button];
 }
 
@@ -379,6 +381,8 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1 constant:110]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:-10]];
+    clearButton.layer.cornerRadius = 5;
+    clearButton.layer.borderWidth = 1;
     
     self.clearButton = clearButton;
 }
