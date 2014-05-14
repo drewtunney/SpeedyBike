@@ -112,7 +112,7 @@
             GMSMarker *marker = [[GMSMarker alloc] init];
             marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
             marker.title = station[@"stAddress1"];
-            marker.snippet = [NSString stringWithFormat:@"%@ available bikes",[station[@"availableBikes"] stringValue]];
+            marker.snippet = [NSString stringWithFormat:@"%@ Bikes and %@ Docks",[station[@"availableBikes"] stringValue], [station[@"availableDocks"] stringValue]];
             UIImage *image = [UIImage imageNamed:@"bicycle"];
             UIGraphicsBeginImageContextWithOptions(CGSizeMake(35.0, 35.0), NO, 0.0);
             [image drawInRect:CGRectMake(0, 0, 35, 35)];
@@ -144,11 +144,10 @@
         NSArray *closestThreeStations = @[docks[0], docks[1], docks[2]];
         for (NSDictionary *station in closestThreeStations){
             GMSMarker *marker = [[GMSMarker alloc] init];
-            marker.snippet = [NSString stringWithFormat:@"%@ available docks",[station[@"availableDocks"] stringValue]];
             marker.position = CLLocationCoordinate2DMake([station[@"latitude"]floatValue],[station[@"longitude"]floatValue]);
             if ([station[@"latitude"]floatValue] == self.selectedMarkerLat && [station[@"longitude"]floatValue] == self.selectedMarkerLng) {
                 marker.title = station[@"stAddress1"];
-                marker.snippet = [NSString stringWithFormat:@"%@ available docks",[station[@"availableDocks"] stringValue]];
+                marker.snippet = [NSString stringWithFormat:@"%@ Docks",[station[@"availableDocks"] stringValue]];
                 //UIColor *markerColor = [UIColor orangeColor];
                 UIImage *image = [UIImage imageNamed:@"bicycle"];
                 UIGraphicsBeginImageContextWithOptions(CGSizeMake(35.0, 35.0), NO, 0.0);
