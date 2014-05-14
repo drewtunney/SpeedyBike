@@ -10,43 +10,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CitiBike/MapVC.m"
-            timestampString = "421791018.239322"
+            timestampString = "421793945.816562"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "325"
-            endingLineNumber = "325"
+            startingLineNumber = "328"
+            endingLineNumber = "328"
             landmarkName = "-mapDirectionsforDestinationReference:"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__46-[MapVC mapDirectionsforDestinationReference:]_block_invoke_2"
-                  moduleName = "CitiBike"
-                  urlString = "file:///Users/Dare/Desktop/CitiBike-iOS7/CitiBike/MapVC.m"
-                  timestampString = "421791456.81401"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "325"
-                  endingLineNumber = "325"
-                  offsetFromSymbolStart = "76">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__46-[MapVC mapDirectionsforDestinationReference:]_block_invoke_3"
-                  moduleName = "CitiBike"
-                  urlString = "file:///Users/Dare/Desktop/CitiBike-iOS7/CitiBike/MapVC.m"
-                  timestampString = "421791456.814177"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "325"
-                  endingLineNumber = "325"
-                  offsetFromSymbolStart = "58">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -56,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GoogleMapsAPI.m"
-            timestampString = "421791797.921008"
+            timestampString = "421792693.732195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
             landmarkName = "+getAddressForLocationReferenceID:withCompletion:"
             landmarkType = "5">
          </BreakpointContent>

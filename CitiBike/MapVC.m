@@ -36,6 +36,7 @@
 @property (nonatomic) CGFloat selectedMarkerLat;
 @property (nonatomic) CGFloat selectedMarkerLng;
 @property (strong, nonatomic) NSString *locationName;
+@property (strong, nonatomic) UIButton *clearButton;
 
 @end
 
@@ -51,6 +52,7 @@
 
 - (void)viewDidLoad
 {
+    
     [self startDeterminingUserLocation];
     self.isRouting = NO;
     self.isDisplayingDestinationInfo = NO;
@@ -274,7 +276,7 @@
     [self.button.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     [self.button.titleLabel setTextColor:[UIColor whiteColor]];
     //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
-    UIColor *backgroundColor = [UIColor colorWithRed:0.0f green:0.8f blue:0.086f alpha:0.75f];
+    UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
     self.button.backgroundColor = backgroundColor;
     [self.button addTarget:self action:@selector(didTapDestinationButton) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.button];
@@ -312,6 +314,7 @@
         [mapView_ clear];
         [self.button removeFromSuperview];
         self.isRouting = YES;
+        [self showClearButton];
         [self mapDirectionsforDestinationReference:locationReferenceStringForMap];
         
     });
@@ -350,10 +353,39 @@
         [mapView_ clear];
         [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
         self.isRouting = NO;
+        [self.clearButton removeFromSuperview];
     }
     else{
         [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
     }
+}
+
+-(void)showClearButton
+{
+    
+    UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    //[clearButton setFrame:CGRectMake(100, 100, 30.0f, 30.0f)];
+    [clearButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [clearButton setTitle:@"New Route" forState:UIControlStateNormal];
+    [clearButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    [clearButton.titleLabel setTextColor:[UIColor whiteColor]];
+    //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
+    UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
+    
+    clearButton.backgroundColor = backgroundColor;
+    [clearButton addTarget:self action:@selector(clearMap) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:clearButton];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:35]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1 constant:110]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:-10]];
+    
+    self.clearButton = clearButton;
+}
+
+-(void)clearMap
+{
+    [self.cancelRouteAlert show];
 }
 
 @end
