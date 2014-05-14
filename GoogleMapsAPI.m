@@ -36,7 +36,7 @@
     }]resume];
 }
 
-+(void)getAddressForLocationReferenceID:(NSString *)ID withCompletion:(void (^)(NSString *))completion
++(void)getAddressForLocationReferenceID:(NSString *)ID withCompletion:(void (^)(NSArray *))completion
 {
     NSString*urlString = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/json?reference=%@&sensor=true&key=%@", ID, Web_Browser_Key];
     NSURL *url = [NSURL URLWithString:urlString];
@@ -46,6 +46,8 @@
         NSDictionary *JSONResponseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
         
         NSString *fullAddress;
+        NSString *locationName = JSONResponseDict[@"result"][@"name"];
+        
         
         if ([JSONResponseDict[@"result"][@"address_components"][0][@"long_name"] isEqualToString:@"New York"]) {
             fullAddress = [JSONResponseDict[@"result"][@"name"] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
@@ -61,7 +63,9 @@
         if (error) {
             NSLog(@"%@", error);
         }
-        completion(fullAddress);
+        
+        
+        completion(@[fullAddress, locationName]);
     }]resume];
 }
 

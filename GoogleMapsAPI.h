@@ -14,7 +14,7 @@
 
 +(void)displayDirectionsfromOriginLatitude:(CGFloat)originLat andOriginLongitude:(CGFloat)originLong toDestinationLatitude:(CGFloat)destinationLat andDestinationLongitude:(CGFloat)destinationLong onMap:(GMSMapView *)map;
 
-+(void)getAddressForLocationReferenceID:(NSString *)ID withCompletion:(void (^)(NSString *))completion;
++(void)getAddressForLocationReferenceID:(NSString *)ID withCompletion:(void (^)(NSArray *))completion;
 
 +(void)getCoordinatesForLocationForDestination:(NSString *)address withCompletion:(void (^)(NSDictionary *))completion;
 

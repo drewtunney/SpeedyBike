@@ -35,6 +35,7 @@
 @property (strong, nonatomic) GMSMarker *selectedDestination;
 @property (nonatomic) CGFloat selectedMarkerLat;
 @property (nonatomic) CGFloat selectedMarkerLng;
+@property (strong, nonatomic) NSString *locationName;
 
 @end
 
@@ -137,7 +138,7 @@
         GMSMarker *destinationMarker = [GMSMarker markerWithPosition:destinationPosition];
         UIColor *endRed = [UIColor colorWithRed:0.949 green:0.267 blue:0.263 alpha:1];
         destinationMarker.icon = [GMSMarker markerImageWithColor:endRed];
-        destinationMarker.title = @"End";
+        destinationMarker.title = self.locationName;
         destinationMarker.map = mapView_;
         
         NSArray *closestThreeStations = @[docks[0], docks[1], docks[2]];
@@ -320,9 +321,9 @@
 -(void)mapDirectionsforDestinationReference:(NSString *)reference
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [GoogleMapsAPI getAddressForLocationReferenceID:reference withCompletion:^(NSString *address){
-            [GoogleMapsAPI getCoordinatesForLocationForDestination:address withCompletion:^(NSDictionary *destinationCoordinates){
-                
+        [GoogleMapsAPI getAddressForLocationReferenceID:reference withCompletion:^(NSArray *address){
+            [GoogleMapsAPI getCoordinatesForLocationForDestination:address[0] withCompletion:^(NSDictionary *destinationCoordinates){
+                self.locationName = address[1];
                 self.destinationLatitude = [destinationCoordinates[@"lat"]floatValue];
                 self.destinationLongitude = [destinationCoordinates[@"lng"] floatValue];
                 
