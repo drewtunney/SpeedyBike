@@ -186,13 +186,18 @@
         self.longitude = mapView.myLocation.coordinate.longitude;
         [CitiBikeAPI downloadStationDataWithCompletion:^(NSArray *stations) {
             self.stations = stations;
+            self.closestStationsWithBikes =[CitiBikeAPI findNearestStationsWithBikesforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self createMarkerObjectsForAvailableBikes];
                 
-                GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.latitude, self.longitude) coordinate:CLLocationCoordinate2DMake([stations[0][@"latitude"] floatValue], [stations[0][@"longitude"] floatValue])];
+                GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.latitude,self.longitude) coordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[2][@"latitude"] floatValue], [self.closestStationsWithBikes[2][@"longitude"] floatValue])];
                 
-                [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds]];
+                bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[1][@"latitude"] floatValue], [self.closestStationsWithBikes[1][@"longitude"] floatValue])];
+                
+                bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[0][@"latitude"] floatValue], [self.closestStationsWithBikes[0][@"longitude"] floatValue])];
+                
+                [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds withPadding:100.0f]];
             });
         }];
     }
@@ -250,10 +255,17 @@
         UINavigationController *locationsNavController = [storyBoard instantiateViewControllerWithIdentifier:@"LocationsNavController"];
         [locationsNavController.navigationBar setTitleTextAttributes:navBarTitleAttributes];
         LocationsViewController *locationsViewController = [storyBoard instantiateViewControllerWithIdentifier:@"LocationsViewController"];
-        [locationsNavController setViewControllers:@[locationsViewController] animated:YES];
+        [locationsNavController setViewControllers:@[locationsViewController] animated:NO];
         locationsViewController.latitude = self.latitude;
         locationsViewController.longitude = self.longitude;
         locationsViewController.locationDelegate = self;
+        
+        CATransition *transition = [CATransition animation];
+        transition.duration = 0.35;
+        transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+        transition.type = kCATransitionMoveIn;
+        transition.subtype = kCATransitionFromRight;
+        [self.view.window.layer addAnimation:transition forKey:nil];
         [self presentViewController:locationsNavController animated:NO completion:nil];
     }
 }
@@ -281,9 +293,10 @@
                 self.selectedMarkerLat = [self.closestStationsWithDocks[0][@"latitude"] floatValue];
                 self.selectedMarkerLng = [self.closestStationsWithDocks[0][@"longitude"] floatValue];
                 
-                GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.directionsOriginLatitude, self.directionsOriginLongitude) coordinate:CLLocationCoordinate2DMake(self.directionsDestinationLatitude, self.directionsDestinationLongitude)];
-                
-                [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds withPadding:75.0f]];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.directionsOriginLatitude, self.directionsOriginLongitude) coordinate:CLLocationCoordinate2DMake(self.directionsDestinationLatitude, self.directionsDestinationLongitude)];
+                    [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds withPadding:75.0f]];
+                });
                 
                 [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginLatitude andOriginLongitude:self.directionsOriginLongitude toDestinationLatitude:self.directionsDestinationLatitude andDestinationLongitude:self.directionsDestinationLongitude onMap:mapView_];
                 [self createMarkerObjectsForAvailableDocks:self.closestStationsWithDocks];

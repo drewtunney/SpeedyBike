@@ -44,6 +44,9 @@
     [self.backButton setImage:buttonImage];
     [self.backButton setTintColor:[UIColor orangeColor]];
     
+#warning NOT WORKING
+
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -82,8 +85,14 @@
     if ([self.locationDelegate respondsToSelector:@selector(secondViewControllerDismissed:)]) {
         [self.locationDelegate secondViewControllerDismissed:self.selectedLocation];
     }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.35;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionMoveIn;
+    transition.subtype = kCATransitionFromLeft;
+    [self.view.window.layer addAnimation:transition forKey:nil];
+
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (IBAction)textFieldEditingChanged:(id)sender
@@ -109,7 +118,14 @@
                 [self.locationDelegate secondViewControllerDismissed:self.selectedLocation];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self dismissViewControllerAnimated:YES completion:nil];
+                CATransition *transition = [CATransition animation];
+                transition.duration = 0.35;
+                transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                transition.type = kCATransitionMoveIn;
+                transition.subtype = kCATransitionFromLeft;
+                [self.view.window.layer addAnimation:transition forKey:nil];
+
+                [self dismissViewControllerAnimated:NO completion:nil];
             });
         }
     }];
@@ -117,6 +133,13 @@
 
 - (IBAction)backButtonTapped:(id)sender
 {
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.35;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.type = kCATransitionMoveIn;
+    transition.subtype = kCATransitionFromLeft;
+    [self.view.window.layer addAnimation:transition forKey:nil];
+
      [self dismissViewControllerAnimated:NO completion:nil];
 }
 
