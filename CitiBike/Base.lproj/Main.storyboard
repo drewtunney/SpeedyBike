@@ -45,7 +45,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Destination" id="BUl-5u-FvT">
-                        <barButtonItem key="leftBarButtonItem" title="Item" style="plain" id="bFK-Vc-yOI">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="bFK-Vc-yOI">
                             <connections>
                                 <action selector="backButtonTapped:" destination="RGS-LX-5eH" id="AH1-MP-rmf"/>
                             </connections>

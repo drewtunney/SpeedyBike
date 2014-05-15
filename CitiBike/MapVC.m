@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "CitiBikeAPI.h"
 #import "GoogleMapsAPI.h"
+#import <FontAwesomeKit/FontAwesomeKit.h>
 
 @interface MapVC () <GMSMapViewDelegate>
 
@@ -64,9 +65,10 @@
                                                                  zoom:16];
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     mapView_.myLocationEnabled = YES;
-    mapView_.settings.myLocationButton = YES;
+    mapView_.settings.myLocationButton = NO;
     self.view = mapView_;
     mapView_.delegate = self;
+    [self showCurrentLocationButton];
 }
 
 -(void)startDeterminingUserLocation
@@ -82,11 +84,32 @@
 {
     [self.locationManager stopUpdatingLocation];
     self.currentLocation = [locations lastObject];
-    [mapView_ animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:self.currentLocation.coordinate.latitude
-                                                                  longitude:self.currentLocation.coordinate.longitude
-                                                                       zoom:16]];
+//    [mapView_ animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:self.currentLocation.coordinate.latitude
+//                                                                  longitude:self.currentLocation.coordinate.longitude
+//                                                                       zoom:16]];
     self.latitude = self.currentLocation.coordinate.latitude;
     self.longitude = self.currentLocation.coordinate.longitude;
+    
+    
+    [mapView_ clear];
+    
+    [CitiBikeAPI downloadStationDataWithCompletion:^(NSArray *stations) {
+        self.stations = stations;
+        self.closestStationsWithBikes =[CitiBikeAPI findNearestStationsWithBikesforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self createMarkerObjectsForAvailableBikes];
+            
+            GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.latitude,self.longitude) coordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[2][@"latitude"] floatValue], [self.closestStationsWithBikes[2][@"longitude"] floatValue])];
+            
+            bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[1][@"latitude"] floatValue], [self.closestStationsWithBikes[1][@"longitude"] floatValue])];
+            
+            bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[0][@"latitude"] floatValue], [self.closestStationsWithBikes[0][@"longitude"] floatValue])];
+            
+            [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds withPadding:100.0f]];
+        });
+    }];
+
     [self setPinsForStation];
 }
 
@@ -203,37 +226,6 @@
         [self setPinsForStation];
         [self.button removeFromSuperview];
     }
-}
-
--(BOOL)didTapMyLocationButtonForMapView:(GMSMapView *)mapView
-{
-    if (self.isRouting) {
-        [mapView animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:mapView.myLocation.coordinate.latitude
-                                                                     longitude:mapView.myLocation.coordinate.longitude
-                                                                          zoom:16]];
-    }
-    else{
-        [mapView clear];
-        self.latitude = mapView.myLocation.coordinate.latitude;
-        self.longitude = mapView.myLocation.coordinate.longitude;
-        [CitiBikeAPI downloadStationDataWithCompletion:^(NSArray *stations) {
-            self.stations = stations;
-            self.closestStationsWithBikes =[CitiBikeAPI findNearestStationsWithBikesforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self createMarkerObjectsForAvailableBikes];
-                
-                GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.latitude,self.longitude) coordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[2][@"latitude"] floatValue], [self.closestStationsWithBikes[2][@"longitude"] floatValue])];
-                
-                bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[1][@"latitude"] floatValue], [self.closestStationsWithBikes[1][@"longitude"] floatValue])];
-                
-                bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[0][@"latitude"] floatValue], [self.closestStationsWithBikes[0][@"longitude"] floatValue])];
-                
-                [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds withPadding:100.0f]];
-            });
-        }];
-    }
-    return YES;
 }
 
 -(BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
@@ -392,6 +384,68 @@
     [mapView_ clear];
     self.isRouting = NO;
     [self.clearButton removeFromSuperview];
+}
+
+-(void)showCurrentLocationButton
+{
+    UIButton *locButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [locButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+#warning add icon
+    FAKFontAwesome *icon = [FAKFontAwesome locationArrowIconWithSize:20];
+    [icon addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor]];
+                                                             
+    UIImage *iconImage = [icon imageWithSize:CGSizeMake(20, 20)];
+    [locButton setImage:iconImage forState:UIControlStateNormal];
+    
+    // [clearButton setTitle:@"Clear Map" forState:UIControlStateNormal];
+    //[clearButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
+    //[clearButton.titleLabel setTextColor:[UIColor whiteColor]];
+    //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
+    
+    UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
+    
+    locButton.backgroundColor = backgroundColor;
+#warning add method
+     [locButton addTarget:self action:@selector(focusOnCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:locButton];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:locButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:35]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:locButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1 constant:35]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:locButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:-20]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:locButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:-10]];
+    locButton.layer.cornerRadius = 5;
+    locButton.layer.borderWidth = 0;
+
+}
+
+-(void)focusOnCurrentLocation
+{
+    if (self.isRouting) {
+        [mapView_ animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:mapView_.myLocation.coordinate.latitude
+                                                                     longitude:mapView_.myLocation.coordinate.longitude
+                                                                          zoom:16]];
+    }
+    else{
+        [mapView_ clear];
+        self.latitude = mapView_.myLocation.coordinate.latitude;
+        self.longitude = mapView_.myLocation.coordinate.longitude;
+        [CitiBikeAPI downloadStationDataWithCompletion:^(NSArray *stations) {
+            self.stations = stations;
+            self.closestStationsWithBikes =[CitiBikeAPI findNearestStationsWithBikesforLatitude:self.latitude andLongitude:self.longitude inArrayOfStations:self.stations];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self createMarkerObjectsForAvailableBikes];
+                
+                GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.latitude,self.longitude) coordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[2][@"latitude"] floatValue], [self.closestStationsWithBikes[2][@"longitude"] floatValue])];
+                
+                bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[1][@"latitude"] floatValue], [self.closestStationsWithBikes[1][@"longitude"] floatValue])];
+                
+                bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[0][@"latitude"] floatValue], [self.closestStationsWithBikes[0][@"longitude"] floatValue])];
+                
+                [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds withPadding:100.0f]];
+            });
+        }];
+    }
+
 }
 
 @end
