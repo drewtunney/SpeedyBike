@@ -25,21 +25,39 @@
 {
     [super viewDidLoad];
 	self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.view addSubview:self.tableView];
-    [self.view setBackgroundColor:[UIColor orangeColor]];
+    [self.tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.frame = CGRectMake(0, CGRectGetMaxY(self.view.bounds) - 40, 320, 30);
+//    backButton.frame = CGRectMake(0, CGRectGetMaxY(self.view.bounds) - 40, 320, 30);
     [backButton setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal];
     [backButton setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateHighlighted];
     [backButton setTitle:@"Back To Map" forState:UIControlStateNormal];
+    [backButton setBackgroundColor:[UIColor orangeColor]];
     
     [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+    [backButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:backButton];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:backButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:-50]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:backButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:backButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:backButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1 constant:20]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:backButton attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+    
 
+   
 }
 
 
