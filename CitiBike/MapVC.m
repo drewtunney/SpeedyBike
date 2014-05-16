@@ -12,6 +12,7 @@
 #import "CitiBikeAPI.h"
 #import "GoogleMapsAPI.h"
 #import <FontAwesomeKit/FontAwesomeKit.h>
+#import "DirectionsVC.h"
 
 @interface MapVC () <GMSMapViewDelegate>
 
@@ -28,7 +29,7 @@
 @property (nonatomic) CGFloat directionsDestinationDockLongitude;
 @property (nonatomic) CGFloat destinationLatitude;
 @property (nonatomic) CGFloat destinationLongitude;
-@property (strong, nonatomic) UIButton *button;
+@property (strong, nonatomic) UIButton *routeButton;
 @property (strong, nonatomic) NSArray *stations;
 @property (nonatomic) BOOL isRouting;
 @property (nonatomic) BOOL isDisplayingDestinationInfo;
@@ -38,6 +39,8 @@
 @property (nonatomic) CGFloat selectedMarkerLng;
 @property (strong, nonatomic) NSString *locationName;
 @property (strong, nonatomic) UIButton *clearButton;
+@property (strong, nonatomic) UIButton *directionsListButton;
+@property (strong, nonatomic) NSArray *steps;
 
 @end
 
@@ -48,7 +51,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.button removeFromSuperview];
+    [self.routeButton removeFromSuperview];
 }
 
 - (void)viewDidLoad
@@ -67,8 +70,9 @@
     mapView_.myLocationEnabled = YES;
     mapView_.settings.myLocationButton = NO;
     self.view = mapView_;
-    mapView_.delegate = self;
     [self showCurrentLocationButton];
+    mapView_.delegate = self;
+   
 }
 
 -(void)startDeterminingUserLocation
@@ -84,9 +88,9 @@
 {
     [self.locationManager stopUpdatingLocation];
     self.currentLocation = [locations lastObject];
-//    [mapView_ animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:self.currentLocation.coordinate.latitude
-//                                                                  longitude:self.currentLocation.coordinate.longitude
-//                                                                       zoom:16]];
+    //    [mapView_ animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:self.currentLocation.coordinate.latitude
+    //                                                                  longitude:self.currentLocation.coordinate.longitude
+    //                                                                       zoom:16]];
     self.latitude = self.currentLocation.coordinate.latitude;
     self.longitude = self.currentLocation.coordinate.longitude;
     
@@ -109,7 +113,7 @@
             [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds withPadding:100.0f]];
         });
     }];
-
+    
     [self setPinsForStation];
 }
 
@@ -144,7 +148,7 @@
             UIImage *scaledBike = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
             marker.icon = scaledBike;
-           
+            
             marker.map = mapView_;
         }
     });
@@ -181,14 +185,14 @@
                 UIGraphicsEndImageContext();
                 marker.icon = scaledBike;
                 marker.map = mapView_;
-
-                   [mapView_ setSelectedMarker:marker];
-
+                
+                [mapView_ setSelectedMarker:marker];
+                
                 self.isDisplayingDestinationInfo = YES;
             }
             else{
                 marker.title = station[@"stAddress1"];
-               // UIColor *markerColor = [UIColor orangeColor];
+                // UIColor *markerColor = [UIColor orangeColor];
                 UIImage *image = [UIImage imageNamed:@"bicycle"];
                 UIGraphicsBeginImageContextWithOptions(CGSizeMake(35.0, 35.0), NO, 0.0);
                 [image drawInRect:CGRectMake(0, 0, 35, 35)];
@@ -197,7 +201,7 @@
                 marker.icon = scaledBike;
                 marker.opacity = 0.4;
                 marker.map = mapView_;
-            
+                
             }
         }
     });
@@ -212,7 +216,7 @@
 
 -(void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
-    [self.button removeFromSuperview];
+    [self.routeButton removeFromSuperview];
     if (self.isRouting && self.isDisplayingDestinationInfo) {
         [mapView setSelectedMarker:nil];
         self.isDisplayingDestinationInfo = NO;
@@ -224,13 +228,13 @@
         self.latitude = coordinate.latitude;
         self.longitude = coordinate.longitude;
         [self setPinsForStation];
-        [self.button removeFromSuperview];
+        [self.routeButton removeFromSuperview];
     }
 }
 
 -(BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker
 {
-    [self.button removeFromSuperview];
+    [self.routeButton removeFromSuperview];
     if (self.isRouting){
         
         if (marker.position.latitude != self.directionsOriginDockLatitude && marker.position.longitude != self.directionsOriginDockLongitude && marker.position.latitude != self.destinationLatitude && marker.position.longitude != self.destinationLongitude){
@@ -239,7 +243,9 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [mapView_ clear];
-                [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginDockLatitude andOriginLongitude:self.directionsOriginDockLongitude toDestinationLatitude:self.selectedMarkerLat andDestinationLongitude:self.selectedMarkerLng onMap:mapView_];
+                [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginDockLatitude andOriginLongitude:self.directionsOriginDockLongitude toDestinationLatitude:self.selectedMarkerLat andDestinationLongitude:self.selectedMarkerLng onMap:mapView_ withCompletion:^(NSDictionary *steps) {
+                   self.steps = steps[@"routes"][0][@"legs"][0][@"steps"];
+                }];
                 [self createMarkerObjectsForAvailableDocks:self.closestStationsWithDocks];
             });
         }
@@ -262,18 +268,18 @@
 {
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     
-    self.button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.button setFrame:CGRectMake(self.view.frame.origin.x + 10, self.view.frame.origin.y + 40,appDelegate.window.frame.size.width-20, 50.0f)];
-    [self.button setTitle:@"Directions From Here" forState:UIControlStateNormal];
-    [self.button.titleLabel setFont:[UIFont systemFontOfSize:24]];
-    [self.button.titleLabel setTextColor:[UIColor whiteColor]];
+    self.routeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.routeButton setFrame:CGRectMake(self.view.frame.origin.x + 10, self.view.frame.origin.y + 40,appDelegate.window.frame.size.width-20, 50.0f)];
+    [self.routeButton setTitle:@"Directions From Here" forState:UIControlStateNormal];
+    [self.routeButton.titleLabel setFont:[UIFont systemFontOfSize:24]];
+    [self.routeButton.titleLabel setTextColor:[UIColor whiteColor]];
     //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
     UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
-    self.button.backgroundColor = backgroundColor;
-    [self.button addTarget:self action:@selector(didTapDestinationButton) forControlEvents:UIControlEventTouchUpInside];
-    self.button.layer.cornerRadius = 5;
-    self.button.layer.borderWidth = 0;
-    [self.view addSubview:self.button];
+    self.routeButton.backgroundColor = backgroundColor;
+    [self.routeButton addTarget:self action:@selector(didTapDestinationButton) forControlEvents:UIControlEventTouchUpInside];
+    self.routeButton.layer.cornerRadius = 5;
+    self.routeButton.layer.borderWidth = 0;
+    [self.view addSubview:self.routeButton];
 }
 
 -(void)didTapDestinationButton
@@ -306,9 +312,10 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [mapView_ clear];
-        [self.button removeFromSuperview];
+        [self.routeButton removeFromSuperview];
         self.isRouting = YES;
         [self showClearButton];
+        [self createDirectionsListButton];
         [self mapDirectionsforDestinationReference:locationReferenceStringForMap];
         
     });
@@ -334,7 +341,9 @@
                     [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds withPadding:75.0f]];
                 });
                 
-                [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginDockLatitude andOriginLongitude:self.directionsOriginDockLongitude toDestinationLatitude:self.directionsDestinationDockLatitude andDestinationLongitude:self.directionsDestinationDockLongitude onMap:mapView_];
+                [GoogleMapsAPI displayDirectionsfromOriginLatitude:self.directionsOriginDockLatitude andOriginLongitude:self.directionsOriginDockLongitude toDestinationLatitude:self.directionsDestinationDockLatitude andDestinationLongitude:self.directionsDestinationDockLongitude onMap:mapView_ withCompletion:^(NSDictionary *steps) {
+                    self.steps = steps[@"routes"][0][@"legs"][0][@"steps"];
+                }];
                 [self createMarkerObjectsForAvailableDocks:self.closestStationsWithDocks];
             }];
         }];
@@ -348,6 +357,7 @@
         [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
         self.isRouting = NO;
         [self.clearButton removeFromSuperview];
+        [self.directionsListButton removeFromSuperview];
     }
     else{
         [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
@@ -363,14 +373,14 @@
     [clearButton setTitle:@"Clear Map" forState:UIControlStateNormal];
     [clearButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
     [clearButton.titleLabel setTextColor:[UIColor whiteColor]];
-    //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
+   
     UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
-    
     clearButton.backgroundColor = backgroundColor;
+    
     [clearButton addTarget:self action:@selector(clearMap) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:clearButton];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:35]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1 constant:110]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:45]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1 constant:120]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:clearButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:-10]];
     clearButton.layer.cornerRadius = 5;
@@ -384,48 +394,44 @@
     [mapView_ clear];
     self.isRouting = NO;
     [self.clearButton removeFromSuperview];
+    [self.directionsListButton removeFromSuperview];
 }
 
 -(void)showCurrentLocationButton
 {
     UIButton *locButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [locButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-#warning add icon
     FAKFontAwesome *icon = [FAKFontAwesome locationArrowIconWithSize:20];
     [icon addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor]];
-                                                             
     UIImage *iconImage = [icon imageWithSize:CGSizeMake(20, 20)];
     [locButton setImage:iconImage forState:UIControlStateNormal];
     
-    // [clearButton setTitle:@"Clear Map" forState:UIControlStateNormal];
-    //[clearButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
-    //[clearButton.titleLabel setTextColor:[UIColor whiteColor]];
-    //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
-    
     UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
-    
     locButton.backgroundColor = backgroundColor;
-#warning add method
-     [locButton addTarget:self action:@selector(focusOnCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
+    
+    [locButton addTarget:self action:@selector(focusOnCurrentLocation) forControlEvents:UIControlEventTouchUpInside];
+   
     [self.view addSubview:locButton];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:locButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:35]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:locButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1 constant:35]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:locButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:45]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:locButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1 constant:45]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:locButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:-20]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:locButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:-10]];
     locButton.layer.cornerRadius = 5;
     locButton.layer.borderWidth = 0;
-
+    
 }
 
 -(void)focusOnCurrentLocation
 {
     if (self.isRouting) {
         [mapView_ animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:mapView_.myLocation.coordinate.latitude
-                                                                     longitude:mapView_.myLocation.coordinate.longitude
-                                                                          zoom:16]];
+                                                                      longitude:mapView_.myLocation.coordinate.longitude
+                                                                           zoom:16]];
     }
     else{
         [mapView_ clear];
+        [self.routeButton removeFromSuperview];
         self.latitude = mapView_.myLocation.coordinate.latitude;
         self.longitude = mapView_.myLocation.coordinate.longitude;
         [CitiBikeAPI downloadStationDataWithCompletion:^(NSArray *stations) {
@@ -445,7 +451,43 @@
             });
         }];
     }
+    
+}
 
+-(void)createDirectionsListButton
+{
+    UIButton *directionsListButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [directionsListButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    FAKFontAwesome *icon = [FAKFontAwesome listIconWithSize:20];
+    [icon addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor]];
+    UIImage *iconImage = [icon imageWithSize:CGSizeMake(20, 20)];
+    [directionsListButton setImage:iconImage forState:UIControlStateNormal];
+    
+    UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
+    directionsListButton.backgroundColor = backgroundColor;
+    
+#warning add method
+    [directionsListButton addTarget:self action:@selector(showDirectionsListVC) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:directionsListButton];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:directionsListButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:45]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:directionsListButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeWidth multiplier:1 constant:45]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:directionsListButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1 constant:20]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:directionsListButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:-10]];
+    directionsListButton.layer.cornerRadius = 5;
+    directionsListButton.layer.borderWidth = 0;
+    self.directionsListButton = directionsListButton;
+
+}
+
+-(void)showDirectionsListVC
+{
+    DirectionsVC *directionsVC = [[DirectionsVC alloc] init];
+    directionsVC.steps = self.steps;
+    [self presentViewController:directionsVC animated:YES completion:^{
+        nil;
+    }];
 }
 
 @end

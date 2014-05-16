@@ -38,6 +38,8 @@
 		0FE3A72619141ABF00CC325A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A72519141ABF00CC325A /* QuartzCore.framework */; };
 		0FE3A72819141ACF00CC325A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A72719141ACF00CC325A /* SystemConfiguration.framework */; };
 		4529D7DE1924041800C18953 /* bicycle.png in Resources */ = {isa = PBXBuildFile; fileRef = 4529D7DD1924041800C18953 /* bicycle.png */; };
+		4592563719266D8E0066979E /* DirectionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4592563319266D8E0066979E /* DirectionsCell.m */; };
+		4592563819266D8E0066979E /* DirectionsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4592563619266D8E0066979E /* DirectionsVC.m */; };
 		45C031D3191EC11D007B251C /* GoogleMapsAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C031D2191EC11D007B251C /* GoogleMapsAPI.m */; };
 		45C031D6191EC12D007B251C /* CitiBikeAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C031D5191EC12D007B251C /* CitiBikeAPI.m */; };
 		45CA20FD191D5A380098A536 /* LocationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA20FC191D5A380098A536 /* LocationsViewController.m */; };
@@ -95,6 +97,10 @@
 		0FE3A72719141ACF00CC325A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		1B70F3A1DF304163BCE0001B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4529D7DD1924041800C18953 /* bicycle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bicycle.png; sourceTree = "<group>"; };
+		4592563319266D8E0066979E /* DirectionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectionsCell.m; sourceTree = "<group>"; };
+		4592563419266D8E0066979E /* DirectionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectionsCell.h; sourceTree = "<group>"; };
+		4592563519266D8E0066979E /* DirectionsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectionsVC.h; sourceTree = "<group>"; };
+		4592563619266D8E0066979E /* DirectionsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectionsVC.m; sourceTree = "<group>"; };
 		45C031D1191EC11D007B251C /* GoogleMapsAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GoogleMapsAPI.h; path = ../GoogleMapsAPI.h; sourceTree = "<group>"; };
 		45C031D2191EC11D007B251C /* GoogleMapsAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GoogleMapsAPI.m; path = ../GoogleMapsAPI.m; sourceTree = "<group>"; };
 		45C031D4191EC12D007B251C /* CitiBikeAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CitiBikeAPI.h; sourceTree = SOURCE_ROOT; };
@@ -206,14 +212,18 @@
 				0FE3A6DC190EA23E00CC325A /* Main.storyboard */,
 				45CA2101191D73090098A536 /* Constants.h */,
 				45CA2102191D73090098A536 /* Constants.m */,
-				45CA20FB191D5A380098A536 /* LocationsViewController.h */,
-				45CA20FC191D5A380098A536 /* LocationsViewController.m */,
 				0FE3A70A1914147700CC325A /* MapVC.h */,
 				0FE3A70B1914147700CC325A /* MapVC.m */,
+				45CA20FB191D5A380098A536 /* LocationsViewController.h */,
+				45CA20FC191D5A380098A536 /* LocationsViewController.m */,
 				45C031D1191EC11D007B251C /* GoogleMapsAPI.h */,
 				45C031D2191EC11D007B251C /* GoogleMapsAPI.m */,
 				45C031D4191EC12D007B251C /* CitiBikeAPI.h */,
 				45C031D5191EC12D007B251C /* CitiBikeAPI.m */,
+				4592563419266D8E0066979E /* DirectionsCell.h */,
+				4592563319266D8E0066979E /* DirectionsCell.m */,
+				4592563519266D8E0066979E /* DirectionsVC.h */,
+				4592563619266D8E0066979E /* DirectionsVC.m */,
 				4529D7DD1924041800C18953 /* bicycle.png */,
 				0FE3A6E2190EA23E00CC325A /* Images.xcassets */,
 				0FE3A702190FB2A600CC325A /* StationModel.xcdatamodeld */,
@@ -394,9 +404,11 @@
 				45C031D6191EC12D007B251C /* CitiBikeAPI.m in Sources */,
 				0FE3A704190FB2A600CC325A /* StationModel.xcdatamodeld in Sources */,
 				0FE3A6DB190EA23E00CC325A /* AppDelegate.m in Sources */,
+				4592563819266D8E0066979E /* DirectionsVC.m in Sources */,
 				0FE3A6D7190EA23E00CC325A /* main.m in Sources */,
 				45CA20FD191D5A380098A536 /* LocationsViewController.m in Sources */,
 				45CA2103191D73090098A536 /* Constants.m in Sources */,
+				4592563719266D8E0066979E /* DirectionsCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

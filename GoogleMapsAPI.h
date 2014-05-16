@@ -12,7 +12,7 @@
 
 @interface GoogleMapsAPI : NSObject
 
-+(void)displayDirectionsfromOriginLatitude:(CGFloat)originLat andOriginLongitude:(CGFloat)originLong toDestinationLatitude:(CGFloat)destinationLat andDestinationLongitude:(CGFloat)destinationLong onMap:(GMSMapView *)map;
++(void)displayDirectionsfromOriginLatitude:(CGFloat)originLat andOriginLongitude:(CGFloat)originLong toDestinationLatitude:(CGFloat)destinationLat andDestinationLongitude:(CGFloat)destinationLong onMap:(GMSMapView *)map withCompletion:(void (^)(NSDictionary *))completion;
 
 +(void)getAddressForLocationReferenceID:(NSString *)ID withCompletion:(void (^)(NSArray *))completion;
 
