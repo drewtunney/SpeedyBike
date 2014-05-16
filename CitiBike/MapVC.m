@@ -52,6 +52,10 @@
 {
     [super viewWillAppear:animated];
     [self.routeButton removeFromSuperview];
+    
+    [CitiBikeAPI downloadStationDataWithCompletion:^(NSArray *stations) {
+        self.stations = stations;
+    }];
 }
 
 - (void)viewDidLoad
