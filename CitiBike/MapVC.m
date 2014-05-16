@@ -88,9 +88,6 @@
 {
     [self.locationManager stopUpdatingLocation];
     self.currentLocation = [locations lastObject];
-    //    [mapView_ animateToCameraPosition:[GMSCameraPosition cameraWithLatitude:self.currentLocation.coordinate.latitude
-    //                                                                  longitude:self.currentLocation.coordinate.longitude
-    //                                                                       zoom:16]];
     self.latitude = self.currentLocation.coordinate.latitude;
     self.longitude = self.currentLocation.coordinate.longitude;
     
@@ -103,14 +100,6 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self createMarkerObjectsForAvailableBikes];
-            
-            GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.latitude,self.longitude) coordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[2][@"latitude"] floatValue], [self.closestStationsWithBikes[2][@"longitude"] floatValue])];
-            
-            bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[1][@"latitude"] floatValue], [self.closestStationsWithBikes[1][@"longitude"] floatValue])];
-            
-            bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[0][@"latitude"] floatValue], [self.closestStationsWithBikes[0][@"longitude"] floatValue])];
-            
-            [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds withPadding:100.0f]];
         });
     }];
     
@@ -148,8 +137,15 @@
             UIImage *scaledBike = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
             marker.icon = scaledBike;
-            
             marker.map = mapView_;
+            
+            GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.latitude,self.longitude) coordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[2][@"latitude"] floatValue], [self.closestStationsWithBikes[2][@"longitude"] floatValue])];
+            
+            bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[1][@"latitude"] floatValue], [self.closestStationsWithBikes[1][@"longitude"] floatValue])];
+            
+            bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[0][@"latitude"] floatValue], [self.closestStationsWithBikes[0][@"longitude"] floatValue])];
+    
+            [mapView_ animateWithCameraUpdate:[GMSCameraUpdate fitBounds:bounds withPadding:100.0f]];
         }
     });
 }
@@ -225,8 +221,10 @@
         [self.cancelRouteAlert show];
     }
     else{
+        
         self.latitude = coordinate.latitude;
         self.longitude = coordinate.longitude;
+        
         [self setPinsForStation];
         [self.routeButton removeFromSuperview];
     }
@@ -273,7 +271,6 @@
     [self.routeButton setTitle:@"Directions From Here" forState:UIControlStateNormal];
     [self.routeButton.titleLabel setFont:[UIFont systemFontOfSize:24]];
     [self.routeButton.titleLabel setTextColor:[UIColor whiteColor]];
-    //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
     UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
     self.routeButton.backgroundColor = backgroundColor;
     [self.routeButton addTarget:self action:@selector(didTapDestinationButton) forControlEvents:UIControlEventTouchUpInside];
@@ -368,7 +365,6 @@
 {
     
     UIButton *clearButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    //[clearButton setFrame:CGRectMake(100, 100, 30.0f, 30.0f)];
     [clearButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     [clearButton setTitle:@"Clear Map" forState:UIControlStateNormal];
     [clearButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
@@ -395,6 +391,7 @@
     self.isRouting = NO;
     [self.clearButton removeFromSuperview];
     [self.directionsListButton removeFromSuperview];
+    [self focusOnCurrentLocation];
 }
 
 -(void)showCurrentLocationButton
@@ -440,14 +437,6 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self createMarkerObjectsForAvailableBikes];
-                
-                GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc]initWithCoordinate:CLLocationCoordinate2DMake(self.latitude,self.longitude) coordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[2][@"latitude"] floatValue], [self.closestStationsWithBikes[2][@"longitude"] floatValue])];
-                
-                bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[1][@"latitude"] floatValue], [self.closestStationsWithBikes[1][@"longitude"] floatValue])];
-                
-                bounds = [bounds includingCoordinate:CLLocationCoordinate2DMake([self.closestStationsWithBikes[0][@"latitude"] floatValue], [self.closestStationsWithBikes[0][@"longitude"] floatValue])];
-                
-                [mapView_ moveCamera:[GMSCameraUpdate fitBounds:bounds withPadding:100.0f]];
             });
         }];
     }
@@ -466,7 +455,6 @@
     UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
     directionsListButton.backgroundColor = backgroundColor;
     
-#warning add method
     [directionsListButton addTarget:self action:@selector(showDirectionsListVC) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:directionsListButton];
