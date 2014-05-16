@@ -37,6 +37,7 @@
     
     [self.textField setFont:[UIFont fontWithName:@"AppleSDGothicNeo-Bold" size:18]];
     self.textField.placeholder = @"Enter Destination";
+    self.textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     FAKFontAwesome *arrowIcon = [FAKFontAwesome angleLeftIconWithSize:35];
     [arrowIcon addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor]];
     UIImage *buttonImage = [arrowIcon imageWithSize:CGSizeMake(35,35)];

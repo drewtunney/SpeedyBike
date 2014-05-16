@@ -139,8 +139,8 @@
             marker.title = station[@"stAddress1"];
             marker.snippet = [NSString stringWithFormat:@"%@ Bikes and %@ Docks",[station[@"availableBikes"] stringValue], [station[@"availableDocks"] stringValue]];
             UIImage *image = [UIImage imageNamed:@"bicycle"];
-            UIGraphicsBeginImageContextWithOptions(CGSizeMake(35.0, 35.0), NO, 0.0);
-            [image drawInRect:CGRectMake(0, 0, 35, 35)];
+            UIGraphicsBeginImageContextWithOptions(CGSizeMake(40.0, 40.0), NO, 0.0);
+            [image drawInRect:CGRectMake(0, 0, 40, 40)];
             UIImage *scaledBike = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
             marker.icon = scaledBike;
@@ -175,8 +175,8 @@
                 marker.snippet = [NSString stringWithFormat:@"%@ Docks",[station[@"availableDocks"] stringValue]];
                 //UIColor *markerColor = [UIColor orangeColor];
                 UIImage *image = [UIImage imageNamed:@"bicycle"];
-                UIGraphicsBeginImageContextWithOptions(CGSizeMake(35.0, 35.0), NO, 0.0);
-                [image drawInRect:CGRectMake(0, 0, 35, 35)];
+                UIGraphicsBeginImageContextWithOptions(CGSizeMake(40.0, 40.0), NO, 0.0);
+                [image drawInRect:CGRectMake(0, 0, 40, 40)];
                 UIImage *scaledBike = UIGraphicsGetImageFromCurrentImageContext();
                 UIGraphicsEndImageContext();
                 marker.icon = scaledBike;
@@ -190,8 +190,8 @@
                 marker.title = station[@"stAddress1"];
                // UIColor *markerColor = [UIColor orangeColor];
                 UIImage *image = [UIImage imageNamed:@"bicycle"];
-                UIGraphicsBeginImageContextWithOptions(CGSizeMake(35.0, 35.0), NO, 0.0);
-                [image drawInRect:CGRectMake(0, 0, 35, 35)];
+                UIGraphicsBeginImageContextWithOptions(CGSizeMake(40.0, 40.0), NO, 0.0);
+                [image drawInRect:CGRectMake(0, 0, 40, 40)];
                 UIImage *scaledBike = UIGraphicsGetImageFromCurrentImageContext();
                 UIGraphicsEndImageContext();
                 marker.icon = scaledBike;
@@ -265,7 +265,7 @@
     self.button = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.button setFrame:CGRectMake(self.view.frame.origin.x + 10, self.view.frame.origin.y + 40,appDelegate.window.frame.size.width-20, 50.0f)];
     [self.button setTitle:@"Directions From Here" forState:UIControlStateNormal];
-    [self.button.titleLabel setFont:[UIFont systemFontOfSize:24]];
+    [self.button.titleLabel setFont:[UIFont fontWithName:@"AvenirNext-Medium" size:24]];
     [self.button.titleLabel setTextColor:[UIColor whiteColor]];
     //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
     UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
@@ -361,7 +361,7 @@
     //[clearButton setFrame:CGRectMake(100, 100, 30.0f, 30.0f)];
     [clearButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     [clearButton setTitle:@"Clear Map" forState:UIControlStateNormal];
-    [clearButton.titleLabel setFont:[UIFont systemFontOfSize:20]];
+    [clearButton.titleLabel setFont:[UIFont fontWithName:@"AvenirNext-Medium" size:20]];
     [clearButton.titleLabel setTextColor:[UIColor whiteColor]];
     //UIColor *backgroundColor = [UIColor colorWithWhite:1.0 alpha:.75];
     UIColor *backgroundColor = [UIColor colorWithRed:1.0f green:0.568f blue:0.078f alpha:0.75f];
