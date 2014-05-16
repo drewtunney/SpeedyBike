@@ -60,7 +60,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XUn-fd-bwm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="561" y="-45"/>
+            <point key="canvasLocation" x="429" y="-607"/>
+        </scene>
+        <!--DirectionsVC-->
+        <scene sceneID="bgF-Qp-WII">
+            <objects>
+                <viewController id="R9e-KT-1yr" customClass="DirectionsVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lmc-Y4-mzn"/>
+                        <viewControllerLayoutGuide type="bottom" id="UuW-J0-Coj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="K3n-qP-eRI">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sN5-45-1fi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="269" y="226"/>
         </scene>
         <!--MapVC-->
         <scene sceneID="eYK-XC-RzJ">
@@ -83,7 +101,6 @@
         <!--Navigation Controller-->
         <scene sceneID="24C-rL-sQD">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="drX-F5-vvQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="LocationsNavController" automaticallyAdjustsScrollViewInsets="NO" id="wQK-OS-3Mj" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZQY-RE-xnc">
@@ -95,8 +112,9 @@
                         <segue destination="RGS-LX-5eH" kind="relationship" relationship="rootViewController" id="x4W-R6-NsL"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="drX-F5-vvQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="35" y="-45"/>
+            <point key="canvasLocation" x="-111" y="-607"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

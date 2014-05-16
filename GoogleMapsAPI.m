@@ -12,14 +12,14 @@
 
 @implementation GoogleMapsAPI
 
-+(void)displayDirectionsfromOriginLatitude:(CGFloat)originLat andOriginLongitude:(CGFloat)originLong toDestinationLatitude:(CGFloat)destinationLat andDestinationLongitude:(CGFloat)destinationLong onMap:(GMSMapView *)map
++(void)displayDirectionsfromOriginLatitude:(CGFloat)originLat andOriginLongitude:(CGFloat)originLong toDestinationLatitude:(CGFloat)destinationLat andDestinationLongitude:(CGFloat)destinationLong onMap:(GMSMapView *)map withCompletion:(void (^)(NSDictionary *))completion
 {
     NSString *directionsURL = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&sensor=false&key=%@&avoid=ferries&mode=bicycling", originLat, originLong,destinationLat,destinationLong,Web_Browser_Key];
     NSURL *url = [NSURL URLWithString:directionsURL];
     NSURLSession *session = [NSURLSession sharedSession];
     
     [[session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        NSDictionary *JSONResponseDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        NSDictionary *JSONResponseDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             GMSPath *path = [GMSPath pathFromEncodedPath:JSONResponseDict[@"routes"][0][@"overview_polyline"][@"points"]];
@@ -29,7 +29,10 @@
             UIColor *lineColor = [UIColor colorWithRed:0.106 green:0.643 blue:1.0 alpha:0.75];
             directionsLine.strokeColor = lineColor;
             directionsLine.map = map;
+            
+            completion (JSONResponseDict);
         });
+        
         if (error) {
             NSLog(@"%@", error);
         }
