@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="VUf-TI-WEM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="VUf-TI-WEM">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -61,24 +61,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XUn-fd-bwm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="429" y="-607"/>
-        </scene>
-        <!--DirectionsVC-->
-        <scene sceneID="bgF-Qp-WII">
-            <objects>
-                <viewController id="R9e-KT-1yr" customClass="DirectionsVC" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="lmc-Y4-mzn"/>
-                        <viewControllerLayoutGuide type="bottom" id="UuW-J0-Coj"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="K3n-qP-eRI">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sN5-45-1fi" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="269" y="226"/>
         </scene>
         <!--MapVC-->
         <scene sceneID="eYK-XC-RzJ">
