@@ -38,12 +38,14 @@
 		0FE3A72619141ABF00CC325A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A72519141ABF00CC325A /* QuartzCore.framework */; };
 		0FE3A72819141ACF00CC325A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FE3A72719141ACF00CC325A /* SystemConfiguration.framework */; };
 		4529D7DE1924041800C18953 /* bicycle.png in Resources */ = {isa = PBXBuildFile; fileRef = 4529D7DD1924041800C18953 /* bicycle.png */; };
+		453381DC192BAC9D00A59BAC /* NetworkUnavailableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 453381DB192BAC9D00A59BAC /* NetworkUnavailableVC.m */; };
 		4592563719266D8E0066979E /* DirectionsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4592563319266D8E0066979E /* DirectionsCell.m */; };
 		4592563819266D8E0066979E /* DirectionsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4592563619266D8E0066979E /* DirectionsVC.m */; };
 		45C031D3191EC11D007B251C /* GoogleMapsAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C031D2191EC11D007B251C /* GoogleMapsAPI.m */; };
 		45C031D6191EC12D007B251C /* CitiBikeAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C031D5191EC12D007B251C /* CitiBikeAPI.m */; };
 		45CA20FD191D5A380098A536 /* LocationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA20FC191D5A380098A536 /* LocationsViewController.m */; };
 		45CA2103191D73090098A536 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA2102191D73090098A536 /* Constants.m */; };
+		45CF6117192BCA8800E5C5C2 /* SplashScreenVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CF6116192BCA8800E5C5C2 /* SplashScreenVC.m */; };
 		C5B6DD0AE99A4768969996F9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B70F3A1DF304163BCE0001B /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +99,8 @@
 		0FE3A72719141ACF00CC325A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		1B70F3A1DF304163BCE0001B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4529D7DD1924041800C18953 /* bicycle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bicycle.png; sourceTree = "<group>"; };
+		453381DA192BAC9D00A59BAC /* NetworkUnavailableVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkUnavailableVC.h; sourceTree = "<group>"; };
+		453381DB192BAC9D00A59BAC /* NetworkUnavailableVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkUnavailableVC.m; sourceTree = "<group>"; };
 		4592563319266D8E0066979E /* DirectionsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectionsCell.m; sourceTree = "<group>"; };
 		4592563419266D8E0066979E /* DirectionsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectionsCell.h; sourceTree = "<group>"; };
 		4592563519266D8E0066979E /* DirectionsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectionsVC.h; sourceTree = "<group>"; };
@@ -109,6 +113,8 @@
 		45CA20FC191D5A380098A536 /* LocationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationsViewController.m; sourceTree = "<group>"; };
 		45CA2101191D73090098A536 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		45CA2102191D73090098A536 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		45CF6115192BCA8800E5C5C2 /* SplashScreenVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenVC.h; sourceTree = "<group>"; };
+		45CF6116192BCA8800E5C5C2 /* SplashScreenVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenVC.m; sourceTree = "<group>"; };
 		993921297B9F48F99602F07E /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -210,6 +216,10 @@
 			isa = PBXGroup;
 			children = (
 				0FE3A6DC190EA23E00CC325A /* Main.storyboard */,
+				45CF6115192BCA8800E5C5C2 /* SplashScreenVC.h */,
+				45CF6116192BCA8800E5C5C2 /* SplashScreenVC.m */,
+				453381DA192BAC9D00A59BAC /* NetworkUnavailableVC.h */,
+				453381DB192BAC9D00A59BAC /* NetworkUnavailableVC.m */,
 				45CA2101191D73090098A536 /* Constants.h */,
 				45CA2102191D73090098A536 /* Constants.m */,
 				0FE3A70A1914147700CC325A /* MapVC.h */,
@@ -406,8 +416,10 @@
 				0FE3A6DB190EA23E00CC325A /* AppDelegate.m in Sources */,
 				4592563819266D8E0066979E /* DirectionsVC.m in Sources */,
 				0FE3A6D7190EA23E00CC325A /* main.m in Sources */,
+				453381DC192BAC9D00A59BAC /* NetworkUnavailableVC.m in Sources */,
 				45CA20FD191D5A380098A536 /* LocationsViewController.m in Sources */,
 				45CA2103191D73090098A536 /* Constants.m in Sources */,
+				45CF6117192BCA8800E5C5C2 /* SplashScreenVC.m in Sources */,
 				4592563719266D8E0066979E /* DirectionsCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
