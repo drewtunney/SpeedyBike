@@ -444,7 +444,6 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:locButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:-10]];
     locButton.layer.cornerRadius = 5;
     locButton.layer.borderWidth = 0;
-    
 }
 
 -(void)focusOnCurrentLocation
