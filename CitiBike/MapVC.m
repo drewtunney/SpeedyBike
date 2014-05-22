@@ -32,7 +32,7 @@
 @property (nonatomic) CGFloat directionsDestinationDockLongitude;
 @property (nonatomic) CGFloat destinationLatitude;
 @property (nonatomic) CGFloat destinationLongitude;
-@property (strong, nonatomic) UIButton *routeButton;
+@property (weak, nonatomic) UIButton *routeButton;
 @property (strong, nonatomic) NSArray *stations;
 @property (nonatomic) BOOL isRouting;
 @property (nonatomic) BOOL isDisplayingDestinationInfo;
@@ -41,8 +41,8 @@
 @property (nonatomic) CGFloat selectedMarkerLat;
 @property (nonatomic) CGFloat selectedMarkerLng;
 @property (strong, nonatomic) NSString *locationName;
-@property (strong, nonatomic) UIButton *clearButton;
-@property (strong, nonatomic) UIButton *directionsListButton;
+@property (weak, nonatomic) UIButton *clearButton;
+@property (weak, nonatomic) UIButton *directionsListButton;
 @property (strong, nonatomic) NSArray *steps;
 
 @end
