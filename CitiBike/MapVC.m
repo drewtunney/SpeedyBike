@@ -44,6 +44,7 @@
 @property (weak, nonatomic) UIButton *clearButton;
 @property (weak, nonatomic) UIButton *directionsListButton;
 @property (strong, nonatomic) NSArray *steps;
+@property (weak, nonatomic) UIButton *currentLocationButton;
 
 @end
 
@@ -69,31 +70,20 @@
     self.isDisplayingDestinationInfo = NO;
     self.cancelRouteAlert = [[UIAlertView alloc]initWithTitle:@"Cancel Route" message:@"Would you like to cancel your current route and clear the map?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     self.cancelRouteAlert.delegate = self;
-    [self startDeterminingUserLocation];
     
-    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied ) {
-        
-        GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:40.73
-                                                                longitude:-73.99
-                                                                     zoom:12];
-        
-        mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
-        
-    }
-    else{
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:mapView_.myLocation.coordinate.latitude
-                                                            longitude:mapView_.myLocation.coordinate.longitude
-                                                                 zoom:16];
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:40.73
+                                                            longitude:-73.99
+                                                                 zoom:12];
     
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     
     mapView_.myLocationEnabled = YES;
     mapView_.settings.myLocationButton = NO;
-    [self showCurrentLocationButton];
-    }
     self.view = mapView_;
-    
     mapView_.delegate = self;
+    [self showCurrentLocationButton];
+    
+    [self startDeterminingUserLocation];
     
 }
 
@@ -123,6 +113,11 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self createMarkerObjectsForAvailableBikes];
+            GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:self.latitude
+                                                                    longitude:self.longitude
+                                                                         zoom:6];
+            
+            [mapView_ animateToCameraPosition:camera];
         });
     }];
     
@@ -136,7 +131,9 @@
                                                                  zoom:12];
     
     [mapView_ animateToCameraPosition:camera];
-
+    
+    [self.currentLocationButton removeFromSuperview];
+    
 }
 
 - (void)setPinsForStation
@@ -470,6 +467,7 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:locButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:-10]];
     locButton.layer.cornerRadius = 5;
     locButton.layer.borderWidth = 0;
+    self.currentLocationButton = locButton;
 }
 
 -(void)focusOnCurrentLocation
@@ -554,7 +552,7 @@
     {
         [reach stopNotifier];
         if (completion) {
-        completion();
+            completion();
         }
     };
     

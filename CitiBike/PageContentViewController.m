@@ -28,7 +28,7 @@
     [super viewDidLoad];
     
     self.backgroundImageView.image = [UIImage imageNamed:self.imageFile];
-    [self.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [self.titleLabel setFont:[UIFont fontWithName:@"GillSans" size:18]];
     self.titleLabel.text = self.titleText;
     
 }
