@@ -46,6 +46,8 @@
 		45CA20FD191D5A380098A536 /* LocationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA20FC191D5A380098A536 /* LocationsViewController.m */; };
 		45CA2103191D73090098A536 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CA2102191D73090098A536 /* Constants.m */; };
 		45CF6117192BCA8800E5C5C2 /* SplashScreenVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CF6116192BCA8800E5C5C2 /* SplashScreenVC.m */; };
+		45CF6157192E60D300E5C5C2 /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CF6156192E60D300E5C5C2 /* DemoViewController.m */; };
+		45CF615A192E612C00E5C5C2 /* PageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CF6159192E612C00E5C5C2 /* PageContentViewController.m */; };
 		C5B6DD0AE99A4768969996F9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B70F3A1DF304163BCE0001B /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -115,6 +117,10 @@
 		45CA2102191D73090098A536 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		45CF6115192BCA8800E5C5C2 /* SplashScreenVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScreenVC.h; sourceTree = "<group>"; };
 		45CF6116192BCA8800E5C5C2 /* SplashScreenVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashScreenVC.m; sourceTree = "<group>"; };
+		45CF6155192E60D300E5C5C2 /* DemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoViewController.h; sourceTree = "<group>"; };
+		45CF6156192E60D300E5C5C2 /* DemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoViewController.m; sourceTree = "<group>"; };
+		45CF6158192E612C00E5C5C2 /* PageContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageContentViewController.h; sourceTree = "<group>"; };
+		45CF6159192E612C00E5C5C2 /* PageContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageContentViewController.m; sourceTree = "<group>"; };
 		993921297B9F48F99602F07E /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -218,6 +224,10 @@
 				0FE3A6DC190EA23E00CC325A /* Main.storyboard */,
 				45CF6115192BCA8800E5C5C2 /* SplashScreenVC.h */,
 				45CF6116192BCA8800E5C5C2 /* SplashScreenVC.m */,
+				45CF6155192E60D300E5C5C2 /* DemoViewController.h */,
+				45CF6156192E60D300E5C5C2 /* DemoViewController.m */,
+				45CF6158192E612C00E5C5C2 /* PageContentViewController.h */,
+				45CF6159192E612C00E5C5C2 /* PageContentViewController.m */,
 				453381DA192BAC9D00A59BAC /* NetworkUnavailableVC.h */,
 				453381DB192BAC9D00A59BAC /* NetworkUnavailableVC.m */,
 				45CA2101191D73090098A536 /* Constants.h */,
@@ -410,9 +420,11 @@
 			files = (
 				0FE3A70C1914147700CC325A /* MapVC.m in Sources */,
 				0F6F1DF31917E78C007846F8 /* StationMarker.m in Sources */,
+				45CF615A192E612C00E5C5C2 /* PageContentViewController.m in Sources */,
 				45C031D3191EC11D007B251C /* GoogleMapsAPI.m in Sources */,
 				45C031D6191EC12D007B251C /* CitiBikeAPI.m in Sources */,
 				0FE3A704190FB2A600CC325A /* StationModel.xcdatamodeld in Sources */,
+				45CF6157192E60D300E5C5C2 /* DemoViewController.m in Sources */,
 				0FE3A6DB190EA23E00CC325A /* AppDelegate.m in Sources */,
 				4592563819266D8E0066979E /* DirectionsVC.m in Sources */,
 				0FE3A6D7190EA23E00CC325A /* main.m in Sources */,

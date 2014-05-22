@@ -82,6 +82,7 @@
     
 }
 
+
 -(void)startDeterminingUserLocation
 {
     self.locationManager = [[CLLocationManager alloc]init];

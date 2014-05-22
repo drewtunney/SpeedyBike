@@ -12,6 +12,7 @@
 #import "Constants.h"
 #import "NetworkUnavailableVC.h"
 #import "MapVC.h"
+#import "DemoViewController.h"
 
 @interface SplashScreenVC ()
 
@@ -31,41 +32,53 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor orangeColor]];
     
-    Reachability *reach = [Reachability reachabilityWithHostname:@"www.maps.google.com"];
+       // Do any additional setup after loading the view.
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    reach.reachableBlock = ^(Reachability *reach)
-    {
-        NSLog(@"Reachable");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            {
-                
+    if ([defaults objectForKey:@"DemoDone"]) {
+        Reachability *reach = [Reachability reachabilityWithHostname:@"www.maps.google.com"];
+        
+        reach.reachableBlock = ^(Reachability *reach)
+        {
+            NSLog(@"Reachable");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                {
                     UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                     MapVC *mapVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"MapVC"];
-                    [self presentViewController:mapVC animated:NO completion:nil];
-                [reach stopNotifier];
+                    [self presentViewController:mapVC animated:YES completion:nil];
+                    [reach stopNotifier];
                 }
-            
-        });
-    };
-    
-    reach.unreachableBlock = ^(Reachability *reach)
-    {
-        NSLog(@"Unreachable");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
+            });
+        };
+        reach.unreachableBlock = ^(Reachability *reach)
+        {
+            NSLog(@"Unreachable");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
                 
                 UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                 NetworkUnavailableVC *mapVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"NetworkUnavailableVC"];
-                [self presentViewController:mapVC animated:NO completion:nil];
-            [reach stopNotifier];
-            
-        });
-    };
+                [self presentViewController:mapVC animated:YES completion:nil];
+                [reach stopNotifier];
+                
+            });
+        };
+        [reach startNotifier];
+    }
+    else{
+        UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        DemoViewController *demoVC = [mainStoryBoard instantiateViewControllerWithIdentifier:@"DemoVC"];
+        [self presentViewController:demoVC animated:YES completion:nil];
+        
+    }
     
-    [reach startNotifier];
-    
-    // Do any additional setup after loading the view.
+
 }
 
 - (void)didReceiveMemoryWarning
