@@ -244,13 +244,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3cB-gs-8aF">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3cB-gs-8aF">
                                 <rect key="frame" x="52" y="119" width="216" height="376"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="216" id="KjB-el-Foa"/>
+                                    <constraint firstAttribute="height" constant="376" id="tdz-bb-2Lb"/>
+                                </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="263" translatesAutoresizingMaskIntoConstraints="NO" id="Una-C6-w9o">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="263" translatesAutoresizingMaskIntoConstraints="NO" id="Una-C6-w9o">
                                 <rect key="frame" x="29" y="28" width="263" height="83"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="83" id="HH4-px-Z1k"/>
+                                    <constraint firstAttribute="width" constant="263" id="T7W-w6-BL9"/>
+                                </constraints>
                                 <attributedString key="attributedText">
                                     <fragment content="Label">
                                         <attributes>
@@ -264,6 +272,15 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="3cB-gs-8aF" firstAttribute="top" secondItem="Una-C6-w9o" secondAttribute="bottom" constant="8" id="0va-to-lEP"/>
+                            <constraint firstItem="3cB-gs-8aF" firstAttribute="leading" secondItem="ncz-V0-GQj" secondAttribute="leading" constant="52" id="5hp-eZ-efJ"/>
+                            <constraint firstItem="3cB-gs-8aF" firstAttribute="top" secondItem="Una-C6-w9o" secondAttribute="bottom" constant="8" id="OEm-ac-ehm"/>
+                            <constraint firstAttribute="trailing" secondItem="Una-C6-w9o" secondAttribute="trailing" constant="28" id="dlF-Gb-d9J"/>
+                            <constraint firstAttribute="trailing" secondItem="3cB-gs-8aF" secondAttribute="trailing" constant="52" id="uD1-Vb-GR7"/>
+                            <constraint firstItem="Una-C6-w9o" firstAttribute="leading" secondItem="ncz-V0-GQj" secondAttribute="leading" constant="29" id="vEt-2L-EWx"/>
+                            <constraint firstItem="Una-C6-w9o" firstAttribute="top" secondItem="gMF-OD-ecL" secondAttribute="bottom" constant="8" id="vt9-PY-I4S"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="backgroundImageView" destination="3cB-gs-8aF" id="StH-ON-ydw"/>
@@ -272,7 +289,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wuu-tx-dgk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1016" y="48"/>
+            <point key="canvasLocation" x="-1016" y="60"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
