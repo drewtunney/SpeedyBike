@@ -70,14 +70,29 @@
     self.cancelRouteAlert = [[UIAlertView alloc]initWithTitle:@"Cancel Route" message:@"Would you like to cancel your current route and clear the map?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
     self.cancelRouteAlert.delegate = self;
     [self startDeterminingUserLocation];
+    
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied ) {
+        
+        GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:40.73
+                                                                longitude:-73.99
+                                                                     zoom:12];
+        
+        mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+        
+    }
+    else{
     GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:mapView_.myLocation.coordinate.latitude
                                                             longitude:mapView_.myLocation.coordinate.longitude
                                                                  zoom:16];
+    
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+    
     mapView_.myLocationEnabled = YES;
     mapView_.settings.myLocationButton = NO;
-    self.view = mapView_;
     [self showCurrentLocationButton];
+    }
+    self.view = mapView_;
+    
     mapView_.delegate = self;
     
 }
@@ -112,6 +127,16 @@
     }];
     
     [self setPinsForStation];
+}
+
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:40.73
+                                                            longitude:-73.99
+                                                                 zoom:12];
+    
+    [mapView_ animateToCameraPosition:camera];
+
 }
 
 - (void)setPinsForStation

@@ -18,6 +18,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
 	// Create the data model
     _pageTitles = @[@"See 3 closest stations with bikes. Tap anywhere on the map to find bikes in that area.", @"Tap a station to see bike and dock availability. Tap Directions From Here to plan your trip.", @"Start typing your destination.", @"See your route! (tap another station if you'd rather go there). Yup, the directions are bike path optimized.", @"Want step by step directions? We have that too. Happy Biking.", @""];
     _pageImages = @[@"page1.png", @"page2.png", @"page3.png", @"page4.png", @"page5", @"letsride"];
@@ -36,6 +38,7 @@
     [self addChildViewController:_pageViewController];
     [self.view addSubview:_pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
+   
     
 }
 
@@ -49,6 +52,7 @@
     PageContentViewController *startingViewController = [self viewControllerAtIndex:0];
     NSArray *viewControllers = @[startingViewController];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+    
 }
 
 - (PageContentViewController *)viewControllerAtIndex:(NSUInteger)index
@@ -62,6 +66,7 @@
         pageContentViewController.imageFile = self.pageImages[index];
         pageContentViewController.titleText = self.pageTitles[index];
         pageContentViewController.pageIndex = index;
+    
         
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didTap)];
         tapGestureRecognizer.numberOfTapsRequired = 1;
@@ -76,6 +81,7 @@
     }
     
     // Create a new view controller and pass suitable data.
+    
     PageContentViewController *pageContentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageContentViewController"];
     pageContentViewController.imageFile = self.pageImages[index];
     pageContentViewController.titleText = self.pageTitles[index];
@@ -90,7 +96,7 @@
 
 -(void)didTap
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:@"DemoDone" forKey:@"DemoDone"];
     [defaults synchronize];
     UIStoryboard *mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
