@@ -21,7 +21,7 @@
     
     
 	// Create the data model
-    _pageTitles = @[@"See 3 closest stations with bikes. Tap anywhere on the map to find bikes in that area.", @"Tap a station to see bike and dock availability. Tap Directions From Here to plan your trip.", @"Start typing your destination.", @"See your route! (tap another station if you'd rather go there). Yup, the directions are bike path optimized.", @"Want step by step directions? We have that too. Happy Biking.", @""];
+    _pageTitles = @[@"Tap anywhere on the map to find the 3 closest bike stations", @"Tap a station for bike and dock availability. Tap 'Directions From Here' to plan your ride.", @"Tell us where you want to go.", @"Check out your route! Yup, the directions are bike path optimized. Thanks, Google.", @"Want turn by turn directions? We have that too. Happy Biking.", @""];
     _pageImages = @[@"page1.png", @"page2.png", @"page3.png", @"page4.png", @"page5", @"letsride2"];
     
     // Create page view controller
